@@ -28,8 +28,8 @@ export default function CourseDetailPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`/api/courses/${id}`).then((r) => r.json()).then((d) => setCourse(d.course));
-    fetch("/api/auth/me").then((r) => r.json()).then((d) => setUser(d.user));
+    fetch(`/api/courses/${id}`).then((r) => r.json()).then((d) => { if (d?.course) setCourse(d.course); }).catch(() => {});
+    fetch("/api/auth/me").then((r) => r.json()).then((d) => { if (d?.user) setUser(d.user); }).catch(() => {});
   }, [id]);
 
   const handleEnroll = async () => {

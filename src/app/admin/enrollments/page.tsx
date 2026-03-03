@@ -18,7 +18,7 @@ export default function AdminEnrollmentsPage() {
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    fetch("/api/courses").then((r) => r.json()).then((d) => setCourses(d.courses));
+    fetch("/api/courses").then((r) => r.json()).then((d) => { if (d?.courses) setCourses(d.courses); }).catch(() => {});
   }, []);
 
   const formatDate = (d: string) => d?.replace(/-/g, ".");

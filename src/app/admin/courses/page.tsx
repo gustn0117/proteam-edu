@@ -28,7 +28,7 @@ export default function AdminCoursesPage() {
   });
   const [saving, setSaving] = useState(false);
 
-  const load = () => fetch("/api/courses").then((r) => r.json()).then((d) => setCourses(d.courses));
+  const load = () => fetch("/api/courses").then((r) => r.json()).then((d) => { if (d?.courses) setCourses(d.courses); }).catch(() => {});
 
   useEffect(() => { load(); }, []);
 

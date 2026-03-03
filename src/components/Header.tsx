@@ -21,7 +21,8 @@ export default function Header() {
   useEffect(() => {
     fetch("/api/auth/me")
       .then((r) => r.json())
-      .then((d) => setUser(d.user));
+      .then((d) => { if (d?.user) setUser(d.user); })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {

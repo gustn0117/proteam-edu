@@ -17,7 +17,7 @@ export default function AdminMembersPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/members").then((r) => r.json()).then((d) => setMembers(d.members));
+    fetch("/api/admin/members").then((r) => r.json()).then((d) => { if (d?.members) setMembers(d.members); }).catch(() => {});
   }, []);
 
   const filtered = members.filter(

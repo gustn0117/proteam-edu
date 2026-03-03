@@ -25,9 +25,12 @@ export default function AdminCourseEnrollmentsPage() {
     fetch(`/api/admin/enrollments?course_id=${courseId}`)
       .then((r) => r.json())
       .then((d) => {
-        setEnrollments(d.enrollments);
-        if (d.enrollments.length > 0) setCourseName(d.enrollments[0].course_name);
-      });
+        if (d?.enrollments) {
+          setEnrollments(d.enrollments);
+          if (d.enrollments.length > 0) setCourseName(d.enrollments[0].course_name);
+        }
+      })
+      .catch(() => {});
   };
 
   useEffect(() => { load(); }, [courseId]);

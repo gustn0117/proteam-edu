@@ -9,7 +9,7 @@ export async function GET() {
   const courses = db
     .prepare(
       `SELECT c.*,
-        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.id AND e.enrollment_status = 'confirmed') as enrolled_count
+        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.id AND e.enrollment_status NOT IN ('cancelled')) as enrolled_count
        FROM courses c ORDER BY c.start_date DESC`
     )
     .all();

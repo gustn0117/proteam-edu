@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const course = db
     .prepare(
       `SELECT c.*,
-        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.id AND e.enrollment_status = 'confirmed') as enrolled_count
+        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.id AND e.enrollment_status NOT IN ('cancelled')) as enrolled_count
        FROM courses c WHERE c.id = ?`
     )
     .get(id);

@@ -28,11 +28,12 @@ export default function MyEnrollmentsPage() {
     fetch("/api/auth/me")
       .then((r) => r.json())
       .then((d) => {
-        if (!d.user) { router.push("/login"); return; }
+        if (!d?.user) { router.push("/login"); return; }
         setUser(d.user);
         return fetch("/api/enrollments").then((r) => r.json());
       })
-      .then((d) => { if (d) setEnrollments(d.enrollments); })
+      .then((d) => { if (d?.enrollments) setEnrollments(d.enrollments); })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [router]);
 
