@@ -119,8 +119,14 @@ export default function MyEnrollmentsPage() {
                     "border-l-amber-400"
                   }`}>
                     <div className="p-5">
-                      <h3 className="font-bold text-gray-900 mb-2">{e.course_name}</h3>
-                      <p className="text-sm text-gray-400 mb-3">{formatDate(e.start_date)} ~ {formatDate(e.end_date)}</p>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-gray-900">{e.course_name}</h3>
+                        {e.fee > 0 && <span className="text-sm font-bold text-primary">{e.fee.toLocaleString()}원</span>}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                        <span>{formatDate(e.start_date)} ~ {formatDate(e.end_date)}</span>
+                        <span>신청일: {formatDate((e.created_at?.split("T")[0] || e.created_at?.split(" ")[0]) ?? "")}</span>
+                      </div>
                       <div className="flex items-center gap-2 mb-3">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${pay.cls}`}>{pay.text}</span>
                         <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${st.cls}`}>{st.text}</span>
@@ -154,12 +160,14 @@ export default function MyEnrollmentsPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-slate-50 border-b border-gray-100">
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
-                      <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">취소/환불</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
+                      <th className="px-4 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">수강료</th>
+                      <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
+                      <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">신청일</th>
+                      <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
+                      <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">취소/환불</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -173,17 +181,23 @@ export default function MyEnrollmentsPage() {
                           e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
                           "border-l-amber-400"
                         }`}>
-                          <td className="px-5 py-4 font-semibold text-gray-900">{e.course_name}</td>
-                          <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
+                          <td className="px-4 py-4 font-semibold text-gray-900">{e.course_name}</td>
+                          <td className="px-4 py-4 text-gray-500 whitespace-nowrap">
                             {formatDate(e.start_date)} ~ {formatDate(e.end_date)}
                           </td>
-                          <td className="px-5 py-4 text-center">
+                          <td className="px-4 py-4 text-right text-gray-700 font-medium whitespace-nowrap">
+                            {e.fee > 0 ? `${e.fee.toLocaleString()}원` : <span className="text-gray-300">무료</span>}
+                          </td>
+                          <td className="px-4 py-4 text-center">
                             <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${pay.cls}`}>{pay.text}</span>
                           </td>
-                          <td className="px-5 py-4 text-center">
+                          <td className="px-4 py-4 text-center">
                             <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${st.cls}`}>{st.text}</span>
                           </td>
-                          <td className="px-5 py-4 text-center">
+                          <td className="px-4 py-4 text-gray-400 text-xs whitespace-nowrap">
+                            {formatDate((e.created_at?.split("T")[0] || e.created_at?.split(" ")[0]) ?? "")}
+                          </td>
+                          <td className="px-4 py-4 text-center">
                             {e.certificate_url ? (
                               <a href={e.certificate_url} download className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors">
                                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
@@ -193,7 +207,7 @@ export default function MyEnrollmentsPage() {
                               <span className="text-gray-300 text-xs">미발급</span>
                             )}
                           </td>
-                          <td className="px-5 py-4 text-center">
+                          <td className="px-4 py-4 text-center">
                             {e.enrollment_status !== "cancelled" && e.enrollment_status !== "refund_requested" && (
                               <button onClick={() => handleCancel(e.id)} className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">
                                 {e.payment_status === "paid" ? "환불신청" : "취소"}

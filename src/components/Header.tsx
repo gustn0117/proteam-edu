@@ -135,15 +135,6 @@ function NavLinks({
         </Link>
       ))}
 
-      {user?.role === "admin" && (
-        <Link
-          href="/admin/courses"
-          className={`${base} text-gold-light hover:bg-white/10 font-medium`}
-        >
-          관리자
-        </Link>
-      )}
-
       <div className={mobile ? "border-t border-white/10 mt-2 pt-2 flex flex-col gap-1" : "flex items-center gap-1 ml-2 pl-2 border-l border-white/15"}>
         {user ? (
           <>

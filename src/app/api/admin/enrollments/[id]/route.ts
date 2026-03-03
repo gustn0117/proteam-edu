@@ -40,3 +40,15 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "admin") {
+    return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
+  }
+
+  const { id } = await params;
+  db.prepare("DELETE FROM enrollments WHERE id = ?").run(id);
+
+  return NextResponse.json({ success: true });
+}

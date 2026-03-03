@@ -27,6 +27,8 @@ export default function AdminCoursesPage() {
     category: "offline", fee: 0, description: "",
   });
   const [saving, setSaving] = useState(false);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const load = () => fetch("/api/courses").then((r) => r.json()).then((d) => { if (d?.courses) setCourses(d.courses); }).catch(() => {});
 
@@ -67,16 +69,49 @@ export default function AdminCoursesPage() {
   const formatDate = (d: string) => d?.replace(/-/g, ".");
   const inputCls = "w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50";
 
+  const filtered = courses.filter((c) => {
+    const matchSearch = !search || c.name.includes(search);
+    const matchStatus = statusFilter === "all" || c.status === statusFilter;
+    return matchSearch && matchStatus;
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-900">교육과정 목록</h2>
+        <h2 className="text-lg font-bold text-gray-900">
+          교육과정 목록 <span className="text-sm font-medium text-gray-400">({courses.length}개)</span>
+        </h2>
         <button
           onClick={() => setShowForm(!showForm)}
           className="bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-light transition-colors"
         >
           {showForm ? "취소" : "+ 신규 과정 추가"}
         </button>
+      </div>
+
+      {/* Search & Filter */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="relative flex-1">
+          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="과정명 검색"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50 cursor-pointer"
+        >
+          <option value="all">전체 상태</option>
+          <option value="accepting">접수중</option>
+          <option value="closed">마감</option>
+        </select>
       </div>
 
       {showForm && (
@@ -137,7 +172,7 @@ export default function AdminCoursesPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {courses.map((c) => (
+              {filtered.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50/50 transition-colors">
                   <td className="px-5 py-4 font-semibold text-gray-900">{c.name}</td>
                   <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{formatDate(c.start_date)} ~ {formatDate(c.end_date)}</td>
