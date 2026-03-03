@@ -26,6 +26,29 @@ export default function AdminEnrollmentsPage() {
   return (
     <div>
       <h2 className="text-lg font-bold text-gray-900 mb-6">수강 신청 현황</h2>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">전체 과정</p>
+          <p className="text-2xl font-bold text-primary">{courses.length}</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">접수중</p>
+          <p className="text-2xl font-bold text-emerald-600">{courses.filter(c => c.status === "accepting").length}</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">총 신청자</p>
+          <p className="text-2xl font-bold text-primary">{courses.reduce((a, c) => a + c.enrolled_count, 0)}명</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">평균 모집률</p>
+          <p className="text-2xl font-bold text-gold">
+            {courses.length ? Math.round(courses.reduce((a, c) => a + (c.enrolled_count / c.capacity * 100), 0) / courses.length) : 0}%
+          </p>
+        </div>
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

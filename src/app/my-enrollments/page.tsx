@@ -79,10 +79,12 @@ export default function MyEnrollmentsPage() {
     <div>
       <section className="bg-primary py-16 md:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.1)_0%,transparent_60%)]" />
+        <div className="absolute inset-0 pattern-dots opacity-20" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">My Courses</p>
           <h1 className="text-3xl md:text-4xl font-bold text-white">교육신청 확인 / 취소</h1>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-8 pb-20">
@@ -112,7 +114,12 @@ export default function MyEnrollmentsPage() {
                     const pay = paymentLabel(e.payment_status);
                     const st = statusLabel(e.enrollment_status);
                     return (
-                      <tr key={e.id} className="hover:bg-slate-50/50 transition-colors">
+                      <tr key={e.id} className={`hover:bg-slate-50/50 transition-colors border-l-3 ${
+                        e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
+                        e.enrollment_status === "cancelled" ? "border-l-gray-300" :
+                        e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
+                        "border-l-amber-400"
+                      }`}>
                         <td className="px-5 py-4 font-semibold text-gray-900">{e.course_name}</td>
                         <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
                           {formatDate(e.start_date)} ~ {formatDate(e.end_date)}
@@ -130,7 +137,7 @@ export default function MyEnrollmentsPage() {
                             <a
                               href={e.certificate_url}
                               download
-                              className="inline-flex items-center gap-1 text-primary hover:text-accent text-xs font-semibold transition-colors"
+                              className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -138,7 +145,7 @@ export default function MyEnrollmentsPage() {
                               다운로드
                             </a>
                           ) : (
-                            <span className="text-gray-300 text-xs">-</span>
+                            <span className="text-gray-300 text-xs">미발급</span>
                           )}
                         </td>
                         <td className="px-5 py-4 text-center">

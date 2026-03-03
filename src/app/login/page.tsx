@@ -34,11 +34,13 @@ export default function LoginPage() {
     router.refresh();
   };
 
-  const inputCls = "w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50 placeholder:text-gray-300";
+  const inputCls = "w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all duration-200 bg-slate-50/50 placeholder:text-gray-300 hover:border-gray-300";
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md animate-fade-in-up">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 relative">
+      <div className="absolute inset-0 pattern-dots opacity-30" />
+      <div className="absolute top-0 left-0 right-0 h-64 bg-linear-to-b from-primary/2 to-transparent" />
+      <div className="relative w-full max-w-md animate-fade-in-up">
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-xl bg-gold/90 flex items-center justify-center text-primary-dark font-black text-lg mx-auto mb-4">
             P
@@ -75,7 +77,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-light transition-colors disabled:opacity-50"
+            className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-light transition-all disabled:opacity-50 shadow-sm hover:shadow-md hover:shadow-primary/10 active:scale-[0.98]"
           >
             {loading ? "로그인 중..." : "로그인"}
           </button>

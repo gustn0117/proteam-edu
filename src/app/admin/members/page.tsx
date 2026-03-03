@@ -47,6 +47,22 @@ export default function AdminMembersPage() {
         </div>
       </div>
 
+      {/* Stats Overview */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">전체 회원</p>
+          <p className="text-2xl font-bold text-primary">{members.length}명</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">소식지 수신</p>
+          <p className="text-2xl font-bold text-emerald-600">{members.filter(m => m.newsletter).length}명</p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">소속 기관</p>
+          <p className="text-2xl font-bold text-gold">{new Set(members.filter(m => m.organization).map(m => m.organization)).size}개</p>
+        </div>
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
