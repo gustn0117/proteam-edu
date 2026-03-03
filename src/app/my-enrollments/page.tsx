@@ -77,7 +77,7 @@ export default function MyEnrollmentsPage() {
 
   return (
     <div>
-      <section className="bg-primary py-16 md:py-20 relative overflow-hidden">
+      <section className="bg-primary pt-16 pb-24 md:pt-20 md:pb-28 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.1)_0%,transparent_60%)]" />
         <div className="absolute inset-0 pattern-dots opacity-20" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
@@ -87,7 +87,7 @@ export default function MyEnrollmentsPage() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-8 pb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-14 relative z-10 pb-20">
         {enrollments.length === 0 ? (
           <div className="bg-white rounded-2xl p-16 text-center text-gray-400 border border-gray-100 shadow-sm">
             <svg className="w-12 h-12 mx-auto mb-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>

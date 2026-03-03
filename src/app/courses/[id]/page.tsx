@@ -62,7 +62,7 @@ export default function CourseDetailPage() {
   return (
     <div>
       {/* Hero header */}
-      <section className="bg-primary py-12 md:py-16 relative overflow-hidden">
+      <section className="bg-primary pt-12 pb-20 md:pt-16 md:pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.1)_0%,transparent_60%)]" />
         <div className="absolute inset-0 pattern-dots opacity-20" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
@@ -80,7 +80,7 @@ export default function CourseDetailPage() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 -mt-6 pb-14">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 -mt-14 relative z-10 pb-14">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up">
           <div className="p-8 md:p-10">
             {/* Enroll button */}

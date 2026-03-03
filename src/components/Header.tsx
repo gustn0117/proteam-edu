@@ -52,9 +52,6 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gold/90 flex items-center justify-center text-primary-dark font-black text-sm group-hover:bg-gold transition-colors">
-              P
-            </div>
             <span className="text-lg font-bold tracking-tight text-white">
               프로앤팀 <span className="font-normal text-white/70 hidden sm:inline">교육센터</span>
             </span>
