@@ -27,6 +27,7 @@ export default function AdminCoursesPage() {
     category: "offline", fee: 0, description: "",
   });
   const [saving, setSaving] = useState(false);
+  const [posterFile, setPosterFile] = useState<File | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -39,13 +40,20 @@ export default function AdminCoursesPage() {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await fetch("/api/courses", {
+    const res = await fetch("/api/courses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    const data = await res.json();
+    if (posterFile && data?.id) {
+      const fd = new FormData();
+      fd.append("poster", posterFile);
+      await fetch(`/api/courses/${data.id}/poster`, { method: "POST", body: fd });
+    }
     setSaving(false);
     setShowForm(false);
+    setPosterFile(null);
     setForm({ name: "", start_date: "", end_date: "", duration: "", capacity: 30, location: "", status: "accepting", category: "offline", fee: 0, description: "" });
     load();
   };
@@ -143,6 +151,57 @@ export default function AdminCoursesPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">교육비용 (원)</label>
             <input type="number" value={form.fee} onChange={(e) => set("fee", +e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">카테고리</label>
+            <div className="flex rounded-xl border border-gray-200 overflow-hidden">
+              <button type="button" onClick={() => set("category", "offline")}
+                className={`flex-1 py-2.5 text-sm font-medium transition-all ${form.category === "offline" ? "bg-primary text-white" : "bg-slate-50/50 text-gray-500 hover:bg-gray-100"}`}>
+                <span className="flex items-center justify-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+                  오프라인
+                </span>
+              </button>
+              <button type="button" onClick={() => set("category", "online")}
+                className={`flex-1 py-2.5 text-sm font-medium transition-all border-l border-gray-200 ${form.category === "online" ? "bg-primary text-white" : "bg-slate-50/50 text-gray-500 hover:bg-gray-100"}`}>
+                <span className="flex items-center justify-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                  온라인
+                </span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">접수상태</label>
+            <div className="flex rounded-xl border border-gray-200 overflow-hidden">
+              <button type="button" onClick={() => set("status", "accepting")}
+                className={`flex-1 py-2.5 text-sm font-medium transition-all ${form.status === "accepting" ? "bg-emerald-600 text-white" : "bg-slate-50/50 text-gray-500 hover:bg-gray-100"}`}>
+                접수중
+              </button>
+              <button type="button" onClick={() => set("status", "closed")}
+                className={`flex-1 py-2.5 text-sm font-medium transition-all border-l border-gray-200 ${form.status === "closed" ? "bg-gray-600 text-white" : "bg-slate-50/50 text-gray-500 hover:bg-gray-100"}`}>
+                접수마감
+              </button>
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">교육 안내 포스터</label>
+            <label className="block cursor-pointer">
+              <div className={`flex items-center gap-3 px-4 py-3 border border-dashed rounded-xl transition-colors ${posterFile ? "border-primary/40 bg-primary/5" : "border-gray-300 hover:border-primary/40"}`}>
+                <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                <span className="text-sm text-gray-500">
+                  {posterFile ? posterFile.name : "파일 선택 (PDF, JPG, PNG) — 과정 생성 후 자동 업로드됩니다"}
+                </span>
+                {posterFile && (
+                  <span className="ml-auto text-xs text-primary font-medium">선택됨</span>
+                )}
+              </div>
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png"
+                onChange={(e) => setPosterFile(e.target.files?.[0] || null)}
+                className="hidden" />
+            </label>
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1.5">과정 설명</label>
