@@ -62,9 +62,6 @@ export default function RegisterPage() {
       <div className="absolute top-0 left-0 right-0 h-64 bg-linear-to-b from-primary/2 to-transparent" />
       <div className="relative w-full max-w-md animate-fade-in-up">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gold/90 flex items-center justify-center text-primary-dark font-black text-lg mx-auto mb-4">
-            P
-          </div>
           <h1 className="text-2xl font-bold text-primary">회원가입</h1>
           <p className="text-sm text-gray-400 mt-2">교육 신청을 위해 회원가입해주세요</p>
         </div>

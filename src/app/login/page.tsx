@@ -42,9 +42,6 @@ export default function LoginPage() {
       <div className="absolute top-0 left-0 right-0 h-64 bg-linear-to-b from-primary/2 to-transparent" />
       <div className="relative w-full max-w-md animate-fade-in-up">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gold/90 flex items-center justify-center text-primary-dark font-black text-lg mx-auto mb-4">
-            P
-          </div>
           <h1 className="text-2xl font-bold text-primary">로그인</h1>
           <p className="text-sm text-gray-400 mt-2">프로앤팀 교육센터에 오신 것을 환영합니다</p>
         </div>

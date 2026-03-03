@@ -11,9 +11,6 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gold/80 flex items-center justify-center text-primary-dark font-black text-xs">
-                P
-              </div>
               <span className="text-white font-bold text-lg">프로앤팀 교육센터</span>
             </div>
             <p className="text-sm leading-relaxed mb-5">
