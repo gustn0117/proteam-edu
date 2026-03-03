@@ -74,11 +74,14 @@ export default function CoursesPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-14 relative z-10 pb-20">
         {courses.length === 0 ? (
-          <div className="bg-white rounded-2xl p-16 text-center text-gray-400 border border-gray-100 shadow-sm">
-            <svg className="w-12 h-12 mx-auto mb-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-            </svg>
-            현재 등록된 교육과정이 없습니다.
+          <div className="bg-white rounded-2xl p-16 text-center border border-gray-100 shadow-sm animate-fade-in-up">
+            <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-5">
+              <svg className="w-10 h-10 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+              </svg>
+            </div>
+            <p className="text-gray-400 mb-2">현재 등록된 교육과정이 없습니다.</p>
+            <p className="text-gray-300 text-sm">새로운 교육과정이 곧 등록될 예정입니다.</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -97,7 +100,12 @@ export default function CoursesPage() {
                   <div className="p-6">
                     {/* Category + Status */}
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-primary/5 text-primary">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-primary/5 text-primary">
+                        {c.category === "offline" ? (
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+                        ) : (
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                        )}
                         {c.category === "offline" ? "오프라인" : "온라인"}
                       </span>
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${st.cls}`}>
@@ -133,6 +141,12 @@ export default function CoursesPage() {
                         </svg>
                         {c.location}
                       </div>
+                    </div>
+
+                    {/* Fee */}
+                    <div className="flex items-center justify-between py-3 mb-4 border-t border-gray-50">
+                      <span className="text-xs text-gray-400">교육비용</span>
+                      <span className="text-sm font-bold text-primary">{c.fee ? c.fee.toLocaleString() + "원" : "무료"}</span>
                     </div>
 
                     {/* Progress bar */}

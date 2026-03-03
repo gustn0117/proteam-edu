@@ -89,82 +89,124 @@ export default function MyEnrollmentsPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-14 relative z-10 pb-20">
         {enrollments.length === 0 ? (
-          <div className="bg-white rounded-2xl p-16 text-center text-gray-400 border border-gray-100 shadow-sm">
-            <svg className="w-12 h-12 mx-auto mb-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
-            </svg>
-            신청한 교육과정이 없습니다.
+          <div className="bg-white rounded-2xl p-16 text-center border border-gray-100 shadow-sm animate-fade-in-up">
+            <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-5">
+              <svg className="w-10 h-10 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
+              </svg>
+            </div>
+            <p className="text-gray-400 mb-4">신청한 교육과정이 없습니다.</p>
+            <a href="/courses" className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary-light transition-all">
+              교육과정 둘러보기
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-slate-50 border-b border-gray-100">
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
-                    <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
-                    <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
-                    <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
-                    <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
-                    <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">취소/환불</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {enrollments.map((e) => {
-                    const pay = paymentLabel(e.payment_status);
-                    const st = statusLabel(e.enrollment_status);
-                    return (
-                      <tr key={e.id} className={`hover:bg-slate-50/50 transition-colors border-l-3 ${
-                        e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
-                        e.enrollment_status === "cancelled" ? "border-l-gray-300" :
-                        e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
-                        "border-l-amber-400"
-                      }`}>
-                        <td className="px-5 py-4 font-semibold text-gray-900">{e.course_name}</td>
-                        <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
-                          {formatDate(e.start_date)} ~ {formatDate(e.end_date)}
-                        </td>
-                        <td className="px-5 py-4 text-center">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${pay.cls}`}>{pay.text}</span>
-                        </td>
-                        <td className="px-5 py-4 text-center">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${st.cls}`}>
-                            {st.text}
-                          </span>
-                        </td>
-                        <td className="px-5 py-4 text-center">
+          <>
+            {/* Mobile Card Layout */}
+            <div className="md:hidden space-y-4 animate-fade-in-up">
+              {enrollments.map((e) => {
+                const pay = paymentLabel(e.payment_status);
+                const st = statusLabel(e.enrollment_status);
+                return (
+                  <div key={e.id} className={`bg-white rounded-2xl border border-gray-100 overflow-hidden border-l-4 ${
+                    e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
+                    e.enrollment_status === "cancelled" ? "border-l-gray-300" :
+                    e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
+                    "border-l-amber-400"
+                  }`}>
+                    <div className="p-5">
+                      <h3 className="font-bold text-gray-900 mb-2">{e.course_name}</h3>
+                      <p className="text-sm text-gray-400 mb-3">{formatDate(e.start_date)} ~ {formatDate(e.end_date)}</p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${pay.cls}`}>{pay.text}</span>
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${st.cls}`}>{st.text}</span>
+                      </div>
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-50">
+                        <div>
                           {e.certificate_url ? (
-                            <a
-                              href={e.certificate_url}
-                              download
-                              className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-                            >
-                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                              </svg>
-                              다운로드
+                            <a href={e.certificate_url} download className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors">
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                              수료증
                             </a>
                           ) : (
-                            <span className="text-gray-300 text-xs">미발급</span>
+                            <span className="text-gray-300 text-xs">수료증 미발급</span>
                           )}
-                        </td>
-                        <td className="px-5 py-4 text-center">
-                          {e.enrollment_status !== "cancelled" && e.enrollment_status !== "refund_requested" && (
-                            <button
-                              onClick={() => handleCancel(e.id)}
-                              className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors"
-                            >
-                              {e.payment_status === "paid" ? "환불신청" : "취소"}
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                        </div>
+                        {e.enrollment_status !== "cancelled" && e.enrollment_status !== "refund_requested" && (
+                          <button onClick={() => handleCancel(e.id)} className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">
+                            {e.payment_status === "paid" ? "환불신청" : "취소"}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+
+            {/* Desktop Table Layout */}
+            <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-gray-100">
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
+                      <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">취소/환불</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {enrollments.map((e) => {
+                      const pay = paymentLabel(e.payment_status);
+                      const st = statusLabel(e.enrollment_status);
+                      return (
+                        <tr key={e.id} className={`hover:bg-slate-50/50 transition-colors border-l-3 ${
+                          e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
+                          e.enrollment_status === "cancelled" ? "border-l-gray-300" :
+                          e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
+                          "border-l-amber-400"
+                        }`}>
+                          <td className="px-5 py-4 font-semibold text-gray-900">{e.course_name}</td>
+                          <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
+                            {formatDate(e.start_date)} ~ {formatDate(e.end_date)}
+                          </td>
+                          <td className="px-5 py-4 text-center">
+                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${pay.cls}`}>{pay.text}</span>
+                          </td>
+                          <td className="px-5 py-4 text-center">
+                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${st.cls}`}>{st.text}</span>
+                          </td>
+                          <td className="px-5 py-4 text-center">
+                            {e.certificate_url ? (
+                              <a href={e.certificate_url} download className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors">
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                                다운로드
+                              </a>
+                            ) : (
+                              <span className="text-gray-300 text-xs">미발급</span>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 text-center">
+                            {e.enrollment_status !== "cancelled" && e.enrollment_status !== "refund_requested" && (
+                              <button onClick={() => handleCancel(e.id)} className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">
+                                {e.payment_status === "paid" ? "환불신청" : "취소"}
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

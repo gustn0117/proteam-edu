@@ -49,6 +49,10 @@ export default function Header() {
           : "bg-primary"
       }`}
     >
+      {/* Bottom gold line on scroll */}
+      {scrolled && (
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
+      )}
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
@@ -107,7 +111,7 @@ function NavLinks({
 
   const base = mobile
     ? "block px-3 py-2.5 rounded-lg text-sm transition-colors"
-    : "px-3 py-2 rounded-lg text-sm transition-colors";
+    : "relative px-3 py-2 rounded-lg text-sm transition-colors";
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
@@ -124,6 +128,9 @@ function NavLinks({
           }`}
         >
           {l.label}
+          {!mobile && isActive(l.href) && (
+            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold" />
+          )}
         </Link>
       ))}
 
