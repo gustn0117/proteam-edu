@@ -223,8 +223,11 @@ export default function AdminCourseEditPage() {
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">과정 설명</label>
+              <p className="text-xs text-gray-400 mb-1.5">교육 목표, 대상, 커리큘럼 등 상세 내용을 입력하세요. 줄바꿈이 그대로 반영됩니다.</p>
               <textarea value={form.description} onChange={(e) => set("description", e.target.value)}
-                rows={4} className={inputCls} />
+                rows={10}
+                placeholder={"[교육 목표]\n실무에서 바로 활용 가능한 핵심 역량 강화\n\n[교육 대상]\n실무 담당자 및 관리자\n\n[교육 내용]\n1. 핵심 이론 및 사례 분석\n2. 실습 및 워크숍\n3. Q&A 및 네트워킹"}
+                className={inputCls} />
             </div>
             <div className="md:col-span-2 flex justify-end">
               <button type="submit" disabled={saving}

@@ -140,7 +140,7 @@ export default function CourseDetailPage() {
               <div className="mb-2">
                 <h2 className="text-base font-bold text-gray-900 mb-3">과정 소개</h2>
                 <div className="border-l-4 border-gold/20 pl-5">
-                  <p className="text-gray-500 leading-relaxed">{course.description}</p>
+                  <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">{course.description}</p>
                 </div>
               </div>
             )}

@@ -15,6 +15,7 @@ interface Course {
   status: string;
   category: string;
   fee: number;
+  description: string;
   enrolled_count: number;
 }
 
@@ -115,10 +116,15 @@ export default function CoursesPage() {
 
                     {/* Course name */}
                     <Link href={`/courses/${c.id}`} className="block">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {c.name}
                       </h3>
                     </Link>
+
+                    {/* Description preview */}
+                    {c.description && (
+                      <p className="text-sm text-gray-400 line-clamp-2 mb-4">{c.description}</p>
+                    )}
 
                     {/* Info rows */}
                     <div className="space-y-2.5 mb-5">
@@ -170,20 +176,28 @@ export default function CoursesPage() {
                       </div>
                     </div>
 
-                    {/* Action */}
-                    {c.status === "accepting" ? (
-                      <button
-                        onClick={() => handleEnroll(c.id)}
-                        disabled={enrolling === c.id}
-                        className="w-full bg-gold text-primary-dark py-3 rounded-xl font-semibold hover:bg-gold-light transition-all disabled:opacity-50 shadow-sm hover:shadow text-sm"
+                    {/* Actions */}
+                    <div className="flex gap-3">
+                      <Link
+                        href={`/courses/${c.id}`}
+                        className="flex-1 bg-primary/5 text-primary py-3 rounded-xl font-semibold hover:bg-primary/10 transition-all text-sm text-center"
                       >
-                        {enrolling === c.id ? "신청중..." : "교육 신청하기"}
-                      </button>
-                    ) : (
-                      <div className="w-full bg-gray-50 text-gray-400 py-3 rounded-xl font-semibold text-center text-sm">
-                        접수 마감
-                      </div>
-                    )}
+                        상세보기
+                      </Link>
+                      {c.status === "accepting" ? (
+                        <button
+                          onClick={() => handleEnroll(c.id)}
+                          disabled={enrolling === c.id}
+                          className="flex-1 bg-gold text-primary-dark py-3 rounded-xl font-semibold hover:bg-gold-light transition-all disabled:opacity-50 shadow-sm hover:shadow text-sm"
+                        >
+                          {enrolling === c.id ? "신청중..." : "신청하기"}
+                        </button>
+                      ) : (
+                        <div className="flex-1 bg-gray-50 text-gray-400 py-3 rounded-xl font-semibold text-center text-sm">
+                          접수 마감
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
