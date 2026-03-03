@@ -65,113 +65,105 @@ export default function AdminCoursesPage() {
   };
 
   const formatDate = (d: string) => d?.replace(/-/g, ".");
+  const inputCls = "w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50";
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-bold text-gray-800">교육과정 목록</h2>
+        <h2 className="text-lg font-bold text-gray-900">교육과정 목록</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#1a365d] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#2a4a7f] transition"
+          className="bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-light transition-colors"
         >
           {showForm ? "취소" : "+ 신규 과정 추가"}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleAdd} className="bg-white rounded-xl p-6 shadow-sm border mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleAdd} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-down">
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">교육 과정명</label>
-            <input type="text" required value={form.name} onChange={(e) => set("name", e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">교육 과정명</label>
+            <input type="text" required value={form.name} onChange={(e) => set("name", e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">시작일</label>
-            <input type="date" required value={form.start_date} onChange={(e) => set("start_date", e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">시작일</label>
+            <input type="date" required value={form.start_date} onChange={(e) => set("start_date", e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">종료일</label>
-            <input type="date" required value={form.end_date} onChange={(e) => set("end_date", e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">종료일</label>
+            <input type="date" required value={form.end_date} onChange={(e) => set("end_date", e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">교육시간</label>
-            <input type="text" required value={form.duration} onChange={(e) => set("duration", e.target.value)}
-              placeholder="예: 1일, 6시간"
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">교육시간</label>
+            <input type="text" required value={form.duration} onChange={(e) => set("duration", e.target.value)} placeholder="예: 1일, 6시간" className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">모집정원</label>
-            <input type="number" required value={form.capacity} onChange={(e) => set("capacity", +e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">모집정원</label>
+            <input type="number" required value={form.capacity} onChange={(e) => set("capacity", +e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">교육장소</label>
-            <input type="text" required value={form.location} onChange={(e) => set("location", e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">교육장소</label>
+            <input type="text" required value={form.location} onChange={(e) => set("location", e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">교육비용 (원)</label>
-            <input type="number" value={form.fee} onChange={(e) => set("fee", +e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">교육비용 (원)</label>
+            <input type="number" value={form.fee} onChange={(e) => set("fee", +e.target.value)} className={inputCls} />
           </div>
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">과정 설명</label>
-            <textarea value={form.description} onChange={(e) => set("description", e.target.value)}
-              rows={3} className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">과정 설명</label>
+            <textarea value={form.description} onChange={(e) => set("description", e.target.value)} rows={3} className={inputCls} />
           </div>
           <div className="md:col-span-2 flex justify-end">
             <button type="submit" disabled={saving}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition disabled:opacity-50">
+              className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50">
               {saving ? "저장 중..." : "저장"}
             </button>
           </div>
         </form>
       )}
 
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">교육 과정명</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">교육기간</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">정원</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">신청</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">상태</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">포스터</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">관리</th>
+            <thead>
+              <tr className="bg-slate-50 border-b border-gray-100">
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">정원</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">상태</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">포스터</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">관리</th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-gray-50">
               {courses.map((c) => (
-                <tr key={c.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{formatDate(c.start_date)}~{formatDate(c.end_date)}</td>
-                  <td className="px-4 py-3 text-center">{c.capacity}명</td>
-                  <td className="px-4 py-3 text-center">{c.enrolled_count}명</td>
-                  <td className="px-4 py-3 text-center">
+                <tr key={c.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-5 py-4 font-semibold text-gray-900">{c.name}</td>
+                  <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{formatDate(c.start_date)} ~ {formatDate(c.end_date)}</td>
+                  <td className="px-5 py-4 text-center text-gray-500">{c.capacity}명</td>
+                  <td className="px-5 py-4 text-center text-gray-500">{c.enrolled_count}명</td>
+                  <td className="px-5 py-4 text-center">
                     <button onClick={() => handleStatusToggle(c)}
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        c.status === "accepting" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                        c.status === "accepting" ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20 hover:bg-emerald-100" : "bg-gray-50 text-gray-500 ring-1 ring-gray-500/10 hover:bg-gray-100"
                       }`}>
                       {c.status === "accepting" ? "접수중" : "마감"}
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-5 py-4 text-center">
                     {c.poster_url ? (
-                      <span className="text-green-600 text-xs">등록됨</span>
+                      <span className="text-emerald-600 text-xs font-medium">등록됨</span>
                     ) : (
-                      <span className="text-gray-400 text-xs">없음</span>
+                      <span className="text-gray-300 text-xs">없음</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-center">
-                    <div className="flex gap-2 justify-center">
+                  <td className="px-5 py-4 text-center">
+                    <div className="flex gap-3 justify-center">
                       <Link href={`/admin/courses/${c.id}`}
-                        className="text-blue-600 hover:underline text-xs">수정</Link>
+                        className="text-primary hover:text-accent text-xs font-semibold transition-colors">수정</Link>
                       <button onClick={() => handleDelete(c.id)}
-                        className="text-red-500 hover:underline text-xs">삭제</button>
+                        className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">삭제</button>
                     </div>
                   </td>
                 </tr>

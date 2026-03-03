@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface User {
   id: string;
@@ -14,13 +14,25 @@ interface User {
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     fetch("/api/auth/me")
       .then((r) => r.json())
       .then((d) => setUser(d.user));
   }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -30,34 +42,47 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-[#1a365d] text-white shadow-lg">
-      <div className="max-w-6xl mx-auto px-4">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-primary-dark/95 backdrop-blur-md shadow-lg shadow-black/10"
+          : "bg-primary"
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            ㈜프로앤팀 교육센터
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg bg-gold/90 flex items-center justify-center text-primary-dark font-black text-sm group-hover:bg-gold transition-colors">
+              P
+            </div>
+            <span className="text-lg font-bold tracking-tight text-white">
+              프로앤팀 <span className="font-normal text-white/70 hidden sm:inline">교육센터</span>
+            </span>
           </Link>
 
-          {/* Mobile menu button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="메뉴"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
             </svg>
           </button>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLinks user={user} logout={logout} />
+            <NavLinks user={user} logout={logout} pathname={pathname} />
           </nav>
         </div>
 
-        {/* Mobile nav */}
         {menuOpen && (
-          <nav className="md:hidden pb-4 flex flex-col gap-1">
-            <NavLinks user={user} logout={logout} mobile />
+          <nav className="md:hidden pb-4 flex flex-col gap-1 animate-slide-down border-t border-white/10 pt-3">
+            <NavLinks user={user} logout={logout} pathname={pathname} mobile />
           </nav>
         )}
       </div>
@@ -65,33 +90,82 @@ export default function Header() {
   );
 }
 
-function NavLinks({ user, logout, mobile }: { user: User | null; logout: () => void; mobile?: boolean }) {
+function NavLinks({
+  user,
+  logout,
+  pathname,
+  mobile,
+}: {
+  user: User | null;
+  logout: () => void;
+  pathname: string;
+  mobile?: boolean;
+}) {
+  const links = [
+    { href: "/greeting", label: "인사말" },
+    { href: "/courses", label: "교육 신청" },
+    { href: "/my-enrollments", label: "교육신청확인" },
+    { href: "/contact", label: "연락처" },
+  ];
+
   const base = mobile
-    ? "block px-3 py-2 rounded text-sm hover:bg-[#2a4a7f] transition"
-    : "px-3 py-2 rounded text-sm hover:bg-[#2a4a7f] transition";
+    ? "block px-3 py-2.5 rounded-lg text-sm transition-colors"
+    : "px-3 py-2 rounded-lg text-sm transition-colors";
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
     <>
-      <Link href="/greeting" className={base}>인사말</Link>
-      <Link href="/courses" className={base}>교육 신청</Link>
-      <Link href="/my-enrollments" className={base}>교육신청확인</Link>
-      <Link href="/contact" className={base}>연락처</Link>
+      {links.map((l) => (
+        <Link
+          key={l.href}
+          href={l.href}
+          className={`${base} ${
+            isActive(l.href)
+              ? "bg-white/15 text-white font-medium"
+              : "text-white/80 hover:bg-white/10 hover:text-white"
+          }`}
+        >
+          {l.label}
+        </Link>
+      ))}
 
       {user?.role === "admin" && (
-        <Link href="/admin/courses" className={`${base} text-yellow-300`}>관리자</Link>
+        <Link
+          href="/admin/courses"
+          className={`${base} text-gold-light hover:bg-white/10 font-medium`}
+        >
+          관리자
+        </Link>
       )}
 
-      {user ? (
-        <>
-          <span className={`${base} text-blue-200 cursor-default`}>{user.name}님</span>
-          <button onClick={logout} className={`${base} bg-[#2a4a7f]`}>로그아웃</button>
-        </>
-      ) : (
-        <>
-          <Link href="/login" className={`${base} bg-[#2a4a7f]`}>로그인</Link>
-          <Link href="/register" className={`${base} bg-blue-600 hover:bg-blue-700`}>회원가입</Link>
-        </>
-      )}
+      <div className={mobile ? "border-t border-white/10 mt-2 pt-2 flex flex-col gap-1" : "flex items-center gap-1 ml-2 pl-2 border-l border-white/15"}>
+        {user ? (
+          <>
+            <span className={`${base} text-white/60 cursor-default text-xs`}>
+              {user.name}님
+            </span>
+            <button
+              onClick={logout}
+              className={`${base} text-white/70 hover:bg-white/10 hover:text-white`}
+            >
+              로그아웃
+            </button>
+          </>
+        ) : (
+          <>
+            <Link href="/login" className={`${base} text-white/80 hover:bg-white/10 hover:text-white`}>
+              로그인
+            </Link>
+            <Link
+              href="/register"
+              className={`${base} bg-gold/90 text-primary-dark font-semibold hover:bg-gold`}
+            >
+              회원가입
+            </Link>
+          </>
+        )}
+      </div>
     </>
   );
 }

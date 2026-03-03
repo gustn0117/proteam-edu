@@ -25,37 +25,42 @@ export default function AdminEnrollmentsPage() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-gray-800 mb-6">수강 신청 현황</h2>
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+      <h2 className="text-lg font-bold text-gray-900 mb-6">수강 신청 현황</h2>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">교육 과정명</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">교육기간</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-600">교육시간</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">접수현황</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">상태</th>
-                <th className="px-4 py-3 text-center font-semibold text-gray-600">상세</th>
+            <thead>
+              <tr className="bg-slate-50 border-b border-gray-100">
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육시간</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">접수현황</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">상태</th>
+                <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">상세</th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-gray-50">
               {courses.map((c) => (
-                <tr key={c.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{formatDate(c.start_date)}~{formatDate(c.end_date)}</td>
-                  <td className="px-4 py-3 text-gray-600">{c.duration}</td>
-                  <td className="px-4 py-3 text-center">{c.enrolled_count}/{c.capacity}명</td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      c.status === "accepting" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                <tr key={c.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-5 py-4 font-semibold text-gray-900">{c.name}</td>
+                  <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{formatDate(c.start_date)} ~ {formatDate(c.end_date)}</td>
+                  <td className="px-5 py-4 text-gray-500">{c.duration}</td>
+                  <td className="px-5 py-4 text-center">
+                    <span className="text-gray-700 font-medium">{c.enrolled_count}</span>
+                    <span className="text-gray-400">/{c.capacity}명</span>
+                  </td>
+                  <td className="px-5 py-4 text-center">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      c.status === "accepting"
+                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
+                        : "bg-gray-50 text-gray-500 ring-1 ring-gray-500/10"
                     }`}>
                       {c.status === "accepting" ? "접수중" : "마감"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-5 py-4 text-center">
                     <Link href={`/admin/enrollments/${c.id}`}
-                      className="text-blue-600 hover:underline text-xs font-medium">신청자 보기</Link>
+                      className="text-primary hover:text-accent text-xs font-semibold transition-colors">신청자 보기</Link>
                   </td>
                 </tr>
               ))}

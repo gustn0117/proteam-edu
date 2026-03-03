@@ -11,7 +11,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-slate-50 text-gray-900 antialiased">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
