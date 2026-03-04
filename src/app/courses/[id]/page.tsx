@@ -84,8 +84,8 @@ export default function CourseDetailPage() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up">
           <div className="p-8 md:p-10">
             {/* Enroll button */}
-            {course.status === "accepting" && (
-              <div className="mb-6">
+            <div className="mb-6">
+              {course.status === "accepting" ? (
                 <button
                   onClick={handleEnroll}
                   disabled={enrolling}
@@ -100,8 +100,12 @@ export default function CourseDetailPage() {
                     </>
                   )}
                 </button>
-              </div>
-            )}
+              ) : (
+                <div className="w-full bg-gray-100 text-gray-400 py-3.5 rounded-xl font-semibold text-base text-center cursor-not-allowed">
+                  접수 마감
+                </div>
+              )}
+            </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               <InfoItem label="교육기간" value={`${formatDate(course.start_date)} ~ ${formatDate(course.end_date)}`} icon="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
@@ -138,8 +142,13 @@ export default function CourseDetailPage() {
 
             {course.description && (
               <div className="mb-2">
-                <h2 className="text-base font-bold text-gray-900 mb-3">과정 소개</h2>
-                <div className="border-l-4 border-gold/20 pl-5">
+                <h2 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                  과정 소개
+                </h2>
+                <div className="border-l-4 border-gold/30 pl-5">
                   <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">{course.description}</p>
                 </div>
               </div>
@@ -170,9 +179,18 @@ export default function CourseDetailPage() {
               결제 안내
             </h2>
             <div className="space-y-3 text-sm text-gray-500">
-              <p><span className="font-medium text-gray-700">계좌이체:</span> 국민 829-01-0308-009, ㈜프로앤팀</p>
-              <p><span className="font-medium text-gray-700">계산서 발급:</span> 사업자등록증 사본, 담당자 메일, 연락처를 edu@proteambiz.com으로 송부</p>
-              <p><span className="font-medium text-gray-700">현금영수증:</span> 국세청에 등록된 핸드폰 번호 송부</p>
+              <div className="flex items-start gap-2.5">
+                <svg className="w-4 h-4 text-gold/60 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" /></svg>
+                <p><span className="font-medium text-gray-700">계좌이체:</span> 국민 829-01-0308-009, ㈜프로앤팀</p>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <svg className="w-4 h-4 text-gold/60 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                <p><span className="font-medium text-gray-700">계산서 발급:</span> 사업자등록증 사본, 담당자 메일, 연락처를 edu@proteambiz.com으로 송부</p>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <svg className="w-4 h-4 text-gold/60 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                <p><span className="font-medium text-gray-700">현금영수증:</span> 국세청에 등록된 핸드폰 번호 송부</p>
+              </div>
             </div>
           </div>
         </div>

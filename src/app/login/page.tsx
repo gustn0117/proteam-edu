@@ -83,36 +83,33 @@ export default function LoginPage() {
             <h1 className="text-2xl font-bold text-primary">로그인</h1>
             <p className="text-sm text-gray-400 mt-2">교육 신청을 위해 로그인해주세요</p>
           </div>
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-5">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-primary via-gold to-primary-light" />
+            <div className="p-8 space-y-5">
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm border border-red-100">{error}</div>
+              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm border border-red-100 flex items-center gap-2">
+                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+                {error}
+              </div>
             )}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={inputCls}
-                placeholder="example@email.com"
-              />
+              <div className="relative">
+                <svg className="w-4 h-4 text-gray-300 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={inputCls + " pl-10"} placeholder="example@email.com" />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">비밀번호</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className={inputCls}
-                placeholder="비밀번호 입력"
-              />
+              <div className="relative">
+                <svg className="w-4 h-4 text-gray-300 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={inputCls + " pl-10"} placeholder="비밀번호 입력" />
+              </div>
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-light transition-all disabled:opacity-50 shadow-sm hover:shadow-md hover:shadow-primary/10 active:scale-[0.98]"
+              className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-light transition-all disabled:opacity-50 shadow-sm hover:shadow-lg hover:shadow-primary/10 active:scale-[0.98]"
             >
               {loading ? "로그인 중..." : "로그인"}
             </button>
@@ -120,6 +117,7 @@ export default function LoginPage() {
               계정이 없으신가요?{" "}
               <Link href="/register" className="text-primary font-medium hover:underline underline-offset-2">회원가입</Link>
             </p>
+            </div>
           </form>
         </div>
       </div>

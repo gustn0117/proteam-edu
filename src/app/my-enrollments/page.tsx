@@ -84,6 +84,7 @@ export default function MyEnrollmentsPage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">My Courses</p>
           <h1 className="text-3xl md:text-4xl font-bold text-white">교육신청 확인 / 취소</h1>
+          <p className="text-white/50 mt-3 text-sm">신청하신 교육과정의 현황을 확인하고 관리하세요</p>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>
@@ -159,7 +160,7 @@ export default function MyEnrollmentsPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-50 border-b border-gray-100">
+                    <tr className="bg-linear-to-r from-slate-50 to-slate-100/50 border-b border-gray-100">
                       <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육 과정명</th>
                       <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">교육기간</th>
                       <th className="px-4 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">수강료</th>
@@ -199,9 +200,9 @@ export default function MyEnrollmentsPage() {
                           </td>
                           <td className="px-4 py-4 text-center">
                             {e.certificate_url ? (
-                              <a href={e.certificate_url} download className="inline-flex items-center gap-1.5 bg-primary/5 text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors">
+                              <a href={e.certificate_url} download className="inline-flex items-center gap-1.5 bg-gold/10 text-gold hover:bg-gold/20 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:shadow-sm">
                                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-                                다운로드
+                                수료증
                               </a>
                             ) : (
                               <span className="text-gray-300 text-xs">미발급</span>

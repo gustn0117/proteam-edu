@@ -12,6 +12,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <span className="text-white font-bold text-lg">프로앤팀 교육센터</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse-dot" />
             </div>
             <p className="text-sm leading-relaxed mb-5">
               기업 업무 실무자들의 역량을 강화하여,<br />
@@ -19,12 +20,12 @@ export default function Footer() {
             </p>
             {/* Contact icons */}
             <div className="flex items-center gap-3">
-              <a href="mailto:edu@proteambiz.com" className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold hover:bg-white/10 transition-colors">
+              <a href="mailto:edu@proteambiz.com" className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold hover:bg-gold/10 hover:scale-110 transition-all duration-300">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </a>
-              <a href="tel:02-0000-0000" className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold hover:bg-white/10 transition-colors">
+              <a href="tel:02-0000-0000" className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-white/40 hover:text-gold hover:bg-gold/10 hover:scale-110 transition-all duration-300">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
@@ -33,7 +34,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white/80 font-semibold text-sm mb-4 uppercase tracking-wider">메뉴</h3>
+            <h3 className="text-white/80 font-semibold text-sm mb-4 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-5 h-0.5 bg-gold/60 rounded-full" />
+              메뉴
+            </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/greeting" className="hover:text-white transition-colors group inline-flex items-center gap-1.5">
@@ -79,32 +83,37 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white/80 font-semibold text-sm mb-4 uppercase tracking-wider">연락처</h3>
+            <h3 className="text-white/80 font-semibold text-sm mb-4 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-5 h-0.5 bg-gold/60 rounded-full" />
+              연락처
+            </h3>
             <ul className="space-y-2.5 text-sm">
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-gold/60 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <li className="flex items-center gap-2.5 group">
+                <svg className="w-4 h-4 text-gold/50 shrink-0 group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
-                edu@proteambiz.com
+                <span className="group-hover:text-white/70 transition-colors">edu@proteambiz.com</span>
               </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-gold/60 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <li className="flex items-center gap-2.5 group">
+                <svg className="w-4 h-4 text-gold/50 shrink-0 group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
-                02-0000-0000
+                <span className="group-hover:text-white/70 transition-colors">02-0000-0000</span>
               </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-gold/60 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <li className="flex items-center gap-2.5 group">
+                <svg className="w-4 h-4 text-gold/50 shrink-0 group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                 </svg>
-                서울특별시
+                <span className="group-hover:text-white/70 transition-colors">서울특별시</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-10 pt-6 text-xs text-center">
+        {/* Gold gradient divider instead of plain border */}
+        <div className="divider-gold mt-10 mb-6" />
+        <div className="text-xs text-center text-white/30">
           &copy; {new Date().getFullYear()} ㈜프로앤팀. All rights reserved.
         </div>
       </div>

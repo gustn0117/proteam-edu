@@ -55,9 +55,9 @@ export default function AdminDashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center">
               <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
               </svg>
@@ -67,9 +67,9 @@ export default function AdminDashboardPage() {
           <p className="text-3xl font-bold text-primary">{stats.totalMembers}<span className="text-sm font-normal text-gray-400 ml-1">명</span></p>
         </div>
 
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-100 to-emerald-50 flex items-center justify-center">
               <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
               </svg>
@@ -79,9 +79,9 @@ export default function AdminDashboardPage() {
           <p className="text-3xl font-bold text-emerald-600">{stats.totalCourses}<span className="text-sm font-normal text-gray-400 ml-1">개</span></p>
         </div>
 
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center">
               <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
               </svg>
@@ -91,9 +91,9 @@ export default function AdminDashboardPage() {
           <p className="text-3xl font-bold text-blue-600">{stats.totalEnrollments}<span className="text-sm font-normal text-gray-400 ml-1">건</span></p>
         </div>
 
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-gold/20 to-gold/5 flex items-center justify-center">
               <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
               </svg>
@@ -106,8 +106,9 @@ export default function AdminDashboardPage() {
 
       {/* Quick Links */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Link href="/admin/courses" className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group">
-          <div className="flex items-center justify-between">
+        <Link href="/admin/courses" className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group flex">
+          <div className="w-1 bg-emerald-400 shrink-0" />
+          <div className="flex items-center justify-between flex-1 p-5">
             <div>
               <h3 className="font-bold text-gray-900 mb-1">교육과정 관리</h3>
               <p className="text-xs text-gray-400">과정 추가, 수정, 삭제</p>
@@ -117,8 +118,9 @@ export default function AdminDashboardPage() {
             </svg>
           </div>
         </Link>
-        <Link href="/admin/enrollments" className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group">
-          <div className="flex items-center justify-between">
+        <Link href="/admin/enrollments" className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group flex">
+          <div className="w-1 bg-blue-400 shrink-0" />
+          <div className="flex items-center justify-between flex-1 p-5">
             <div>
               <h3 className="font-bold text-gray-900 mb-1">수강신청 현황</h3>
               <p className="text-xs text-gray-400">신청자 관리, CSV 내보내기</p>
@@ -128,8 +130,9 @@ export default function AdminDashboardPage() {
             </svg>
           </div>
         </Link>
-        <Link href="/admin/members" className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group">
-          <div className="flex items-center justify-between">
+        <Link href="/admin/members" className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-md transition-all group flex">
+          <div className="w-1 bg-gold shrink-0" />
+          <div className="flex items-center justify-between flex-1 p-5">
             <div>
               <h3 className="font-bold text-gray-900 mb-1">회원 관리</h3>
               <p className="text-xs text-gray-400">회원 조회, 수강 이력</p>
@@ -168,7 +171,7 @@ export default function AdminDashboardPage() {
                   {recent.map((e) => {
                     const st = statusLabel(e.enrollment_status);
                     return (
-                      <tr key={e.id} className="hover:bg-slate-50/50 transition-colors">
+                      <tr key={e.id} className="even:bg-slate-50/30 hover:bg-slate-50 transition-colors">
                         <td className="px-5 py-3 font-medium text-gray-900">{e.user_name}</td>
                         <td className="px-5 py-3 text-gray-500">{e.course_name}</td>
                         <td className="px-5 py-3 text-center">

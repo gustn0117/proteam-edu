@@ -57,15 +57,24 @@ export default function ContactPage() {
             </h2>
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">계좌이체</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">1</span>
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">계좌이체</p>
+                </div>
                 <p className="text-sm text-gray-600 leading-relaxed">국민 829-01-0308-009<br />㈜프로앤팀</p>
               </div>
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">계산서 발급</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">2</span>
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">계산서 발급</p>
+                </div>
                 <p className="text-sm text-gray-600 leading-relaxed">사업자등록증 사본, 담당자 메일, 연락처를 edu@proteambiz.com으로 송부</p>
               </div>
               <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">현금영수증</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">3</span>
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">현금영수증</p>
+                </div>
                 <p className="text-sm text-gray-600 leading-relaxed">국세청에 등록된 핸드폰 번호 송부</p>
               </div>
             </div>

@@ -45,8 +45,8 @@ export default function GreetingPage() {
           {/* Signature */}
           <div className="mt-10 pt-8 border-t border-gray-100">
             <div className="bg-linear-to-r from-primary/5 via-gold/5 to-transparent rounded-xl p-6 flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-primary/10 to-gold/10 flex items-center justify-center shrink-0">
-                <div className="w-8 h-8 rounded-full bg-linear-to-br from-gold to-gold-light" />
+              <div className="w-16 h-16 rounded-full bg-linear-to-br from-primary to-primary-light flex items-center justify-center shrink-0 shadow-sm">
+                <span className="text-gold font-bold text-lg">P&T</span>
               </div>
               <div>
                 <p className="text-primary font-bold text-lg">공동대표 이승헌, 권오진</p>
@@ -60,7 +60,7 @@ export default function GreetingPage() {
         <div className="mt-8 text-center animate-fade-in-up" style={{ animationDelay: "200ms" }}>
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-light transition-all shadow-sm hover:shadow-md group text-sm"
+            className="inline-flex items-center gap-2 bg-gold text-primary-dark px-6 py-3 rounded-xl font-semibold hover:bg-gold-light transition-all shadow-sm hover:shadow-md shadow-gold/20 group text-sm"
           >
             교육과정 보러가기
             <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

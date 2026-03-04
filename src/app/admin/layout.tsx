@@ -60,8 +60,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="max-w-sm mx-auto px-4 py-24">
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center mx-auto mb-5">
-            <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center mx-auto mb-5 group hover:bg-gold/10 transition-colors">
+            <svg className="w-7 h-7 text-primary group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
           </div>
@@ -113,20 +113,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
 
       <nav className="flex gap-1 mb-8 bg-slate-100/80 p-1 rounded-xl">
-        {links.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
-              ((l as any).exact ? pathname === l.href : pathname.startsWith(l.href))
-                ? "bg-white text-primary shadow-sm"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            {l.icon}
-            {l.label}
-          </Link>
-        ))}
+        {links.map((l) => {
+          const isActive = (l as any).exact ? pathname === l.href : pathname.startsWith(l.href);
+          return (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`relative flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${
+                isActive
+                  ? "bg-white text-primary shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {l.icon}
+              {l.label}
+              {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-gold rounded-full" />}
+            </Link>
+          );
+        })}
       </nav>
       {children}
     </div>

@@ -95,8 +95,8 @@ export default function CoursesPage() {
                   className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
                   style={{ animationDelay: `${idx * 80}ms` }}
                 >
-                  {/* Top accent bar */}
-                  <div className="h-1 bg-linear-to-r from-primary via-gold to-accent" />
+                  {/* Top accent bar - color by category */}
+                  <div className={`h-1 ${c.category === "online" ? "bg-linear-to-r from-accent via-accent-light to-accent" : "bg-linear-to-r from-primary via-gold to-primary-light"}`} />
 
                   <div className="p-6">
                     {/* Category + Status */}
@@ -152,7 +152,11 @@ export default function CoursesPage() {
                     {/* Fee */}
                     <div className="flex items-center justify-between py-3 mb-4 border-t border-gray-50">
                       <span className="text-xs text-gray-400">교육비용</span>
-                      <span className="text-sm font-bold text-primary">{c.fee ? c.fee.toLocaleString() + "원" : "무료"}</span>
+                      {c.fee ? (
+                        <span className="text-sm font-bold text-gold">{c.fee.toLocaleString()}원</span>
+                      ) : (
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full ring-1 ring-emerald-600/20">무료</span>
+                      )}
                     </div>
 
                     {/* Progress bar */}
