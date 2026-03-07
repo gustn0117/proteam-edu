@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface Enrollment {
@@ -139,7 +140,9 @@ export default function MyEnrollmentsPage() {
                   }`}>
                     <div className="p-5">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-gray-900">{e.course_name}</h3>
+                        <Link href={`/courses/${e.course_id}`} className="font-bold text-gray-900 hover:text-primary transition-colors">
+                          {e.course_name}
+                        </Link>
                         {e.fee > 0 && <span className="text-sm font-bold text-primary">{e.fee.toLocaleString()}원</span>}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
@@ -200,7 +203,11 @@ export default function MyEnrollmentsPage() {
                           e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
                           "border-l-amber-400"
                         }`}>
-                          <td className="px-4 py-4 font-semibold text-gray-900">{e.course_name}</td>
+                          <td className="px-4 py-4 font-semibold text-gray-900">
+                            <Link href={`/courses/${e.course_id}`} className="hover:text-primary transition-colors">
+                              {e.course_name}
+                            </Link>
+                          </td>
                           <td className="px-4 py-4 text-gray-500 whitespace-nowrap">
                             {formatDate(e.start_date)} ~ {formatDate(e.end_date)}
                           </td>
