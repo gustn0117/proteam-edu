@@ -40,13 +40,18 @@ export default function MyEnrollmentsPage() {
 
   const handleCancel = async (id: string) => {
     if (!confirm("정말 취소하시겠습니까?")) return;
-    const res = await fetch(`/api/enrollments/${id}`, { method: "DELETE" });
-    const data = await res.json();
-    alert(data.message);
-    setEnrollments((prev) => prev.map((e) => e.id === id
-      ? { ...e, enrollment_status: data.message.includes("환불") ? "refund_requested" : "cancelled" }
-      : e
-    ));
+    try {
+      const res = await fetch(`/api/enrollments/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || "오류가 발생했습니다."); return; }
+      alert(data.message);
+      setEnrollments((prev) => prev.map((e) => e.id === id
+        ? { ...e, enrollment_status: data.message.includes("환불") ? "refund_requested" : "cancelled" }
+        : e
+      ));
+    } catch {
+      alert("요청 중 오류가 발생했습니다.");
+    }
   };
 
   const paymentLabel = (s: string) => {

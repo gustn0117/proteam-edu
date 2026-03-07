@@ -21,9 +21,9 @@ export default function Header() {
   useEffect(() => {
     fetch("/api/auth/me")
       .then((r) => r.json())
-      .then((d) => { if (d?.user) setUser(d.user); })
+      .then((d) => setUser(d?.user || null))
       .catch(() => {});
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);

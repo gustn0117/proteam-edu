@@ -32,12 +32,16 @@ export async function POST(req: NextRequest) {
 
   const { course_id } = await req.json();
 
-  // Check if already enrolled
+  // Check if already enrolled (allow re-enrollment if previously cancelled)
   const existing = db
-    .prepare("SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?")
-    .get(user.id, course_id);
+    .prepare("SELECT id, enrollment_status FROM enrollments WHERE user_id = ? AND course_id = ?")
+    .get(user.id, course_id) as any;
   if (existing) {
-    return NextResponse.json({ error: "이미 신청한 교육과정입니다." }, { status: 409 });
+    if (existing.enrollment_status === "cancelled") {
+      db.prepare("DELETE FROM enrollments WHERE id = ?").run(existing.id);
+    } else {
+      return NextResponse.json({ error: "이미 신청한 교육과정입니다." }, { status: 409 });
+    }
   }
 
   // Check capacity
