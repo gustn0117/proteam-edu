@@ -36,16 +36,21 @@ export default function CourseDetailPage() {
   const handleEnroll = async () => {
     if (!user) { router.push("/login"); return; }
     setEnrolling(true);
-    const res = await fetch("/api/enrollments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ course_id: id }),
-    });
-    const data = await res.json();
-    setEnrolling(false);
-    if (!res.ok) { alert(data.error); return; }
-    alert("교육 신청이 완료되었습니다.");
-    router.push("/my-enrollments");
+    try {
+      const res = await fetch("/api/enrollments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ course_id: id }),
+      });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error); return; }
+      alert("교육 신청이 완료되었습니다.\n결제 안내는 '교육신청확인' 메뉴에서 확인해주세요.");
+      router.push("/my-enrollments");
+    } catch (err) {
+      alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setEnrolling(false);
+    }
   };
 
   if (!course) {
