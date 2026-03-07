@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,12 +39,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex">
-      {/* Branding Panel - Desktop */}
-      <div className="hidden md:flex md:w-5/12 bg-primary relative overflow-hidden items-center justify-center">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.15)_0%,transparent_60%)]" />
-        <div className="absolute inset-0 pattern-dots opacity-20" />
-        <div className="absolute top-16 right-12 w-20 h-20 rounded-full bg-gold/10 animate-float blur-sm" />
-        <div className="absolute bottom-24 left-16 w-14 h-14 rounded-full bg-accent/10 animate-float" style={{ animationDelay: "1s" }} />
+      {/* Branding Panel with Unsplash image */}
+      <div className="hidden md:flex md:w-5/12 relative overflow-hidden items-center justify-center">
+        <Image
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80"
+          alt=""
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-primary/85" />
+        <div className="absolute inset-0 bg-linear-to-b from-primary/20 via-transparent to-primary/40" />
         <div className="relative text-center px-10 animate-fade-in-left">
           <div className="w-16 h-16 rounded-2xl bg-gold/20 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-gold/20">
             <svg className="w-8 h-8 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

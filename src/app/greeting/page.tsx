@@ -1,14 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function GreetingPage() {
   return (
     <div>
-      <section className="bg-primary pt-16 pb-24 md:pt-20 md:pb-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.1)_0%,transparent_60%)]" />
-        <div className="absolute inset-0 pattern-dots opacity-20" />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Greeting</p>
-          <h1 className="text-3xl md:text-4xl font-bold text-white">인사말</h1>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-primary/85" />
+          <div className="absolute inset-0 bg-linear-to-b from-primary/30 via-transparent to-primary/50" />
+        </div>
+        <div className="absolute inset-0 pattern-dots opacity-15" />
+        <div className="relative pt-16 pb-24 md:pt-20 md:pb-28">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+            <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Greeting</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-white">인사말</h1>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>

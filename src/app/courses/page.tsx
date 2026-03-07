@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Course {
@@ -62,13 +63,25 @@ export default function CoursesPage() {
 
   return (
     <div>
-      <section className="bg-primary pt-16 pb-24 md:pt-20 md:pb-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.1)_0%,transparent_60%)]" />
-        <div className="absolute inset-0 pattern-dots opacity-20" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Courses</p>
-          <h1 className="text-3xl md:text-4xl font-bold text-white">교육 신청</h1>
-          <p className="text-white/50 mt-3 text-sm max-w-lg mx-auto">현장에서 바로 활용할 수 있는 실무 중심의 교육 프로그램</p>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-primary/85" />
+          <div className="absolute inset-0 bg-linear-to-b from-primary/30 via-transparent to-primary/50" />
+        </div>
+        <div className="absolute inset-0 pattern-dots opacity-15" />
+        <div className="relative pt-16 pb-24 md:pt-20 md:pb-28">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+            <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Courses</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-white">교육 신청</h1>
+            <p className="text-white/50 mt-3 text-sm max-w-lg mx-auto">현장에서 바로 활용할 수 있는 실무 중심의 교육 프로그램</p>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
       </section>

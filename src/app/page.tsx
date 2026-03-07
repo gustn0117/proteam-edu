@@ -1,17 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative bg-primary overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(200,168,78,0.15)_0%,transparent_60%),radial-gradient(ellipse_at_bottom_left,rgba(37,99,235,0.1)_0%,transparent_60%)] animate-gradient-shift" />
-        <div className="absolute inset-0 pattern-dots opacity-30" />
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-primary/80" />
+          <div className="absolute inset-0 bg-linear-to-b from-primary/30 via-transparent to-primary/50" />
+        </div>
+        <div className="absolute inset-0 pattern-dots opacity-15" />
         {/* Floating decorations */}
         <div className="absolute top-20 right-[15%] w-24 h-24 rounded-full bg-gold/10 animate-float blur-sm" />
         <div className="absolute bottom-32 left-[10%] w-16 h-16 rounded-full bg-accent/10 animate-float blur-sm" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 right-[8%] w-10 h-10 rounded-full bg-gold/5 animate-float" style={{ animationDelay: "1.5s" }} />
-        <div className="absolute bottom-20 right-[25%] w-6 h-6 rounded-full bg-white/5 animate-float" style={{ animationDelay: "2s" }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-28 md:py-40">
           <div className="text-center animate-fade-in">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 mb-8 border border-white/10">
@@ -109,8 +118,9 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
               num="01"
+              img="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80"
               icon={
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                 </svg>
               }
@@ -119,8 +129,9 @@ export default function Home() {
             />
             <FeatureCard
               num="02"
+              img="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80"
               icon={
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                 </svg>
               }
@@ -129,8 +140,9 @@ export default function Home() {
             />
             <FeatureCard
               num="03"
+              img="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80"
               icon={
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
                 </svg>
               }
@@ -144,20 +156,20 @@ export default function Home() {
       {/* CTA */}
       <section className="py-20 md:py-24 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="bg-primary rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,168,78,0.1)_0%,transparent_70%)]" />
-            <div className="absolute inset-0 pattern-dots opacity-40" />
-            {/* Decorative side lines */}
-            <div className="absolute top-8 bottom-8 left-0 w-px bg-linear-to-b from-transparent via-gold/30 to-transparent" />
-            <div className="absolute top-8 bottom-8 right-0 w-px bg-linear-to-b from-transparent via-gold/30 to-transparent" />
+          <div className="rounded-3xl relative overflow-hidden">
+            <div className="absolute inset-0">
+              <Image
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1920&q=80"
+                alt=""
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-primary/90" />
+            </div>
+            <div className="absolute inset-0 pattern-dots opacity-20" />
             <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-gold/40 to-transparent" />
             <div className="absolute bottom-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
-            {/* Corner dots */}
-            <div className="absolute top-5 left-5 w-2 h-2 rounded-full bg-gold/30" />
-            <div className="absolute top-5 right-5 w-2 h-2 rounded-full bg-gold/30" />
-            <div className="absolute bottom-5 left-5 w-2 h-2 rounded-full bg-gold/20" />
-            <div className="absolute bottom-5 right-5 w-2 h-2 rounded-full bg-gold/20" />
-            <div className="relative">
+            <div className="relative p-12 md:p-16 text-center">
               <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-4">Get Started</p>
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">교육 과정에 참여해보세요</h2>
               <p className="text-white/60 mb-10 max-w-lg mx-auto leading-relaxed">
@@ -180,18 +192,21 @@ export default function Home() {
   );
 }
 
-function FeatureCard({ num, icon, title, desc }: { num: string; icon: React.ReactNode; title: string; desc: string }) {
+function FeatureCard({ num, img, icon, title, desc }: { num: string; img: string; icon: React.ReactNode; title: string; desc: string }) {
   return (
-    <div className="group bg-white rounded-2xl p-8 border border-gray-100 hover:border-gold/30 hover:shadow-xl hover:shadow-gold/5 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
-      {/* Large background number */}
-      <span className="absolute -top-2 -right-2 text-7xl font-black text-gray-50 group-hover:text-gold/5 transition-colors duration-500 select-none pointer-events-none leading-none">{num}</span>
-      <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-gold/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative">
-        <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/5 to-primary/10 text-primary flex items-center justify-center mb-5 group-hover:from-gold/10 group-hover:to-gold/20 group-hover:text-gold transition-all duration-300 group-hover:scale-110">
+    <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
+      {/* Image */}
+      <div className="relative h-44 overflow-hidden">
+        <Image src={img} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+        <span className="absolute top-4 left-4 text-4xl font-black text-white/20 leading-none">{num}</span>
+        <div className="absolute bottom-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center text-primary shadow-sm">
           {icon}
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-3">{title}</h3>
-        <p className="text-gray-500 text-sm leading-relaxed mb-4">{desc}</p>
+      </div>
+      <div className="p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+        <p className="text-gray-500 text-sm leading-relaxed mb-3">{desc}</p>
         <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary/40 group-hover:text-gold transition-colors duration-300">
           자세히 보기
           <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
