@@ -36,24 +36,6 @@ export default function Home() {
               한국의 국가 경쟁력을 높이고자 합니다.
             </p>
 
-            {/* Trust badges */}
-            <div className="flex items-center justify-center gap-6 mb-12 flex-wrap">
-              <div className="flex items-center gap-2 text-white/40 text-sm">
-                <svg className="w-4 h-4 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-                <span>공인 교육기관</span>
-              </div>
-              <div className="w-px h-4 bg-white/10" />
-              <div className="flex items-center gap-2 text-white/40 text-sm">
-                <svg className="w-4 h-4 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
-                <span>500+ 수료생</span>
-              </div>
-              <div className="w-px h-4 bg-white/10" />
-              <div className="flex items-center gap-2 text-white/40 text-sm">
-                <svg className="w-4 h-4 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-                <span>만족도 98%</span>
-              </div>
-            </div>
-
             <div className="flex gap-4 justify-center flex-wrap">
               <Link
                 href="/courses"
@@ -84,27 +66,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="relative -mt-2 z-10 pb-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { number: "500+", label: "교육 수료생", delay: "0ms", icon: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" },
-              { number: "50+", label: "교육 과정", delay: "100ms", icon: "M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" },
-              { number: "30+", label: "전문 강사진", delay: "200ms", icon: "M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" },
-              { number: "98%", label: "만족도", delay: "300ms", icon: "M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" },
-            ].map((stat, i) => (
-              <div key={i} className="group bg-white rounded-2xl p-6 text-center animate-count-up shadow-lg shadow-black/5 border border-gray-100 border-t-2 border-t-gold/40 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300" style={{ animationDelay: stat.delay }}>
-                <svg className="w-5 h-5 text-gold/50 mx-auto mb-2 group-hover:text-primary group-hover:scale-110 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d={stat.icon} />
-                </svg>
-                <p className="text-2xl md:text-3xl font-black text-gradient-gold mb-1">{stat.number}</p>
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Spacer */}
+      <div className="h-6" />
 
       {/* Features */}
       <section className="py-20 md:py-28 relative overflow-hidden bg-white">

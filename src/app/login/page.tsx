@@ -60,13 +60,6 @@ export default function LoginPage() {
             기업 업무 실무자들의 역량을 강화하여,<br />
             한국의 국가 경쟁력을 높이고자 합니다.
           </p>
-          <div className="flex items-center justify-center gap-4 text-white/30 text-xs">
-            <span>500+ 수료생</span>
-            <div className="w-1 h-1 rounded-full bg-gold/40" />
-            <span>50+ 교육과정</span>
-            <div className="w-1 h-1 rounded-full bg-gold/40" />
-            <span>98% 만족도</span>
-          </div>
         </div>
       </div>
 
