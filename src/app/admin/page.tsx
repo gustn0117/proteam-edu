@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-gray-900 mb-6">대시보드</h2>
+      <h2 className="text-lg font-bold text-gray-900 mb-6 lg:hidden">대시보드</h2>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
