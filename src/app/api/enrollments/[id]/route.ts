@@ -19,6 +19,14 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     return NextResponse.json({ error: "신청 내역을 찾을 수 없습니다." }, { status: 404 });
   }
 
+  if (enrollment.enrollment_status === "completed") {
+    return NextResponse.json({ error: "수료 처리된 교육은 취소할 수 없습니다." }, { status: 400 });
+  }
+
+  if (enrollment.enrollment_status === "cancelled" || enrollment.enrollment_status === "refund_requested") {
+    return NextResponse.json({ error: "이미 취소/환불 처리된 신청입니다." }, { status: 400 });
+  }
+
   if (enrollment.payment_status === "paid") {
     // Paid enrollment → refund request regardless of enrollment_status
     db.prepare("UPDATE enrollments SET enrollment_status = 'refund_requested' WHERE id = ?").run(id);

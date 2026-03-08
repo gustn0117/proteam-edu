@@ -42,7 +42,8 @@ export default function AdminDashboardPage() {
   const statusLabel = (s: string) => {
     switch (s) {
       case "pending": return { text: "대기중", cls: "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20" };
-      case "confirmed": return { text: "완료", cls: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20" };
+      case "confirmed": return { text: "확인완료", cls: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20" };
+      case "completed": return { text: "수료", cls: "bg-blue-50 text-blue-700 ring-1 ring-blue-600/20" };
       case "cancelled": return { text: "취소됨", cls: "bg-gray-50 text-gray-500 ring-1 ring-gray-500/10" };
       case "refund_requested": return { text: "환불신청", cls: "bg-orange-50 text-orange-600 ring-1 ring-orange-500/20" };
       default: return { text: s, cls: "bg-gray-50 text-gray-500" };

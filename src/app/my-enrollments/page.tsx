@@ -66,12 +66,18 @@ export default function MyEnrollmentsPage() {
   const statusLabel = (s: string) => {
     switch (s) {
       case "pending": return { text: "대기중", cls: "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20" };
-      case "confirmed": return { text: "완료", cls: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20" };
+      case "confirmed": return { text: "확인완료", cls: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20" };
+      case "completed": return { text: "수료", cls: "bg-blue-50 text-blue-700 ring-1 ring-blue-600/20" };
       case "cancelled": return { text: "취소됨", cls: "bg-gray-50 text-gray-500 ring-1 ring-gray-500/10" };
       case "refund_requested": return { text: "환불신청", cls: "bg-orange-50 text-orange-600 ring-1 ring-orange-500/20" };
       default: return { text: s, cls: "bg-gray-50 text-gray-500" };
     }
   };
+
+  const canCancel = (e: Enrollment) =>
+    e.enrollment_status !== "cancelled" &&
+    e.enrollment_status !== "refund_requested" &&
+    e.enrollment_status !== "completed";
 
   const formatDate = (d: string) => d?.replace(/-/g, ".");
 
@@ -133,6 +139,7 @@ export default function MyEnrollmentsPage() {
                 const st = statusLabel(e.enrollment_status);
                 return (
                   <div key={e.id} className={`bg-white rounded-2xl border border-gray-100 overflow-hidden border-l-4 ${
+                    e.enrollment_status === "completed" ? "border-l-blue-400" :
                     e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
                     e.enrollment_status === "cancelled" ? "border-l-gray-300" :
                     e.enrollment_status === "refund_requested" ? "border-l-orange-400" :
@@ -164,7 +171,7 @@ export default function MyEnrollmentsPage() {
                             <span className="text-gray-300 text-xs">수료증 미발급</span>
                           )}
                         </div>
-                        {e.enrollment_status !== "cancelled" && e.enrollment_status !== "refund_requested" && (
+                        {canCancel(e) && (
                           <button onClick={() => handleCancel(e.id)} className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">
                             {e.payment_status === "paid" ? "환불신청" : "취소"}
                           </button>
@@ -198,6 +205,7 @@ export default function MyEnrollmentsPage() {
                       const st = statusLabel(e.enrollment_status);
                       return (
                         <tr key={e.id} className={`hover:bg-slate-50/50 transition-colors border-l-3 ${
+                          e.enrollment_status === "completed" ? "border-l-blue-400" :
                           e.enrollment_status === "confirmed" ? "border-l-emerald-400" :
                           e.enrollment_status === "cancelled" ? "border-l-gray-300" :
                           e.enrollment_status === "refund_requested" ? "border-l-orange-400" :

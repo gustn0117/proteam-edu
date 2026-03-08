@@ -91,6 +91,7 @@ export default function AdminCourseEnrollmentsPage() {
     total: enrollments.length,
     paid: enrollments.filter((e) => e.payment_status === "paid").length,
     confirmed: enrollments.filter((e) => e.enrollment_status === "confirmed").length,
+    completed: enrollments.filter((e) => e.enrollment_status === "completed").length,
     cancelled: enrollments.filter((e) => e.enrollment_status === "cancelled").length,
     refund: enrollments.filter((e) => e.enrollment_status === "refund_requested").length,
   };
@@ -103,7 +104,7 @@ export default function AdminCourseEnrollmentsPage() {
       e.user_email,
       e.user_phone || "",
       e.payment_status === "paid" ? "납부완료" : "미납",
-      e.enrollment_status === "confirmed" ? "완료" : e.enrollment_status === "pending" ? "대기중" : e.enrollment_status === "cancelled" ? "취소됨" : "환불신청",
+      e.enrollment_status === "completed" ? "수료" : e.enrollment_status === "confirmed" ? "확인완료" : e.enrollment_status === "pending" ? "대기중" : e.enrollment_status === "cancelled" ? "취소됨" : "환불신청",
       formatDateTime(e.created_at),
     ]);
     const bom = "\uFEFF";
@@ -140,7 +141,7 @@ export default function AdminCourseEnrollmentsPage() {
       </h2>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <div className="bg-white rounded-xl p-4 border border-gray-100">
           <p className="text-xs text-gray-400 font-medium mb-1">총 신청자</p>
           <p className="text-2xl font-bold text-primary">{stats.total}<span className="text-sm font-normal text-gray-400">명</span></p>
@@ -152,6 +153,10 @@ export default function AdminCourseEnrollmentsPage() {
         <div className="bg-white rounded-xl p-4 border border-gray-100">
           <p className="text-xs text-gray-400 font-medium mb-1">확인완료</p>
           <p className="text-2xl font-bold text-blue-600">{stats.confirmed}<span className="text-sm font-normal text-gray-400">명</span></p>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-gray-100">
+          <p className="text-xs text-gray-400 font-medium mb-1">수료</p>
+          <p className="text-2xl font-bold text-gold">{stats.completed}<span className="text-sm font-normal text-gray-400">명</span></p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-100">
           <p className="text-xs text-gray-400 font-medium mb-1">취소</p>
@@ -184,7 +189,8 @@ export default function AdminCourseEnrollmentsPage() {
         >
           <option value="all">전체 상태</option>
           <option value="pending">대기중</option>
-          <option value="confirmed">완료</option>
+          <option value="confirmed">확인완료</option>
+          <option value="completed">수료</option>
           <option value="cancelled">취소됨</option>
           <option value="refund_requested">환불신청</option>
         </select>
@@ -250,13 +256,15 @@ export default function AdminCourseEnrollmentsPage() {
                         onChange={(ev) => updateEnrollment(e.id, { enrollment_status: ev.target.value })}
                         className={`${selectCls} ${
                           e.enrollment_status === "confirmed" ? "text-emerald-700 bg-emerald-50 border-emerald-200" :
+                          e.enrollment_status === "completed" ? "text-gold bg-amber-50 border-amber-200" :
                           e.enrollment_status === "cancelled" ? "text-gray-500 bg-gray-50 border-gray-200" :
                           e.enrollment_status === "refund_requested" ? "text-orange-600 bg-orange-50 border-orange-200" :
                           "text-amber-700 bg-amber-50 border-amber-200"
                         }`}
                       >
                         <option value="pending">대기중</option>
-                        <option value="confirmed">완료</option>
+                        <option value="confirmed">확인완료</option>
+                        <option value="completed">수료</option>
                         <option value="cancelled">취소됨</option>
                         <option value="refund_requested">환불신청</option>
                       </select>

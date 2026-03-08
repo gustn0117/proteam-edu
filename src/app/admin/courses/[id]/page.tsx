@@ -343,13 +343,15 @@ export default function AdminCourseEditPage() {
                             onChange={(ev) => updateEnrollment(e.id, { enrollment_status: ev.target.value })}
                             className={`${selectCls} ${
                               e.enrollment_status === "confirmed" ? "text-emerald-700 bg-emerald-50 border-emerald-200" :
+                              e.enrollment_status === "completed" ? "text-gold bg-amber-50 border-amber-200" :
                               e.enrollment_status === "cancelled" ? "text-gray-500 bg-gray-50 border-gray-200" :
                               e.enrollment_status === "refund_requested" ? "text-orange-600 bg-orange-50 border-orange-200" :
                               "text-amber-700 bg-amber-50 border-amber-200"
                             }`}
                           >
                             <option value="pending">대기중</option>
-                            <option value="confirmed">완료</option>
+                            <option value="confirmed">확인완료</option>
+                            <option value="completed">수료</option>
                             <option value="cancelled">취소됨</option>
                             <option value="refund_requested">환불신청</option>
                           </select>
