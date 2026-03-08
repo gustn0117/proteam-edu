@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   });
+  // Clear any leftover main site session cookie to prevent admin showing on main site
+  response.cookies.set("session_id", "", { httpOnly: true, path: "/", maxAge: 0 });
 
   return response;
 }

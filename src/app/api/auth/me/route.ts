@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 
 export async function GET() {
   const user = await getCurrentUser();
-  if (!user) {
+  if (!user || user.role === "admin") {
     return NextResponse.json({ user: null });
   }
   return NextResponse.json({ user });
