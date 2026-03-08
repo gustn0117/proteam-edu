@@ -2,11 +2,11 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
-import { getCurrentUser } from "@/lib/auth";
+import { getAdminUser } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
-  const user = await getCurrentUser();
-  if (!user || user.role !== "admin") {
+  const user = await getAdminUser();
+  if (!user) {
     return NextResponse.json({ error: "권한이 없습니다." }, { status: 403 });
   }
 

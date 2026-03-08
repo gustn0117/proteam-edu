@@ -15,10 +15,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/auth/me")
+    fetch("/api/admin/auth")
       .then((r) => r.json())
       .then((d) => {
-        if (d?.user?.role === "admin") setAuthed(true);
+        if (d?.authenticated) setAuthed(true);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch("/api/admin/auth", { method: "DELETE" });
     setAuthed(false);
     router.push("/admin");
   };

@@ -24,3 +24,17 @@ export async function getCurrentUser(): Promise<User | null> {
 
   return user || null;
 }
+
+export async function getAdminUser(): Promise<User | null> {
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get("admin_session_id")?.value;
+  if (!sessionId) return null;
+
+  const user = db
+    .prepare(
+      "SELECT id, email, name, organization, phone, role, newsletter FROM users WHERE id = ? AND role = 'admin'"
+    )
+    .get(sessionId) as User | undefined;
+
+  return user || null;
+}
