@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface Course {
@@ -15,6 +14,7 @@ interface Course {
   location: string;
   status: string;
   category: string;
+  course_type: string;
   fee: number;
   description: string;
   enrolled_count: number;
@@ -25,6 +25,13 @@ export default function CoursesPage() {
   const [user, setUser] = useState<any>(null);
   const [enrolling, setEnrolling] = useState<string | null>(null);
   const router = useRouter();
+
+  // Filters
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [filterType, setFilterType] = useState("all");
+  const [filterName, setFilterName] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
     fetch("/api/courses").then((r) => r.json()).then((d) => { if (d?.courses) setCourses(d.courses); }).catch(() => {});
@@ -59,172 +66,228 @@ export default function CoursesPage() {
     }
   };
 
-  const statusLabel = (s: string) => {
-    if (s === "accepting") return { text: "접수중", cls: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20" };
-    return { text: "접수마감", cls: "bg-gray-50 text-gray-500 ring-1 ring-gray-500/10" };
+  const formatDate = (d: string) => d?.replace(/-/g, ".");
+
+  const formatDateRange = (start: string, end: string) => {
+    if (start === end) return formatDate(start) + ".";
+    return formatDate(start) + "~" + formatDate(end) + ".";
   };
 
-  const formatDate = (d: string) => d?.replace(/-/g, ".");
+  // Get unique course types for filter dropdown
+  const courseTypes = Array.from(new Set(courses.map((c) => c.course_type).filter(Boolean)));
+
+  // Filter courses
+  const filtered = courses.filter((c) => {
+    if (filterCategory !== "all" && c.category !== filterCategory) return false;
+    if (filterType !== "all" && c.course_type !== filterType) return false;
+    if (filterName && !c.name.includes(filterName)) return false;
+    if (filterDate) {
+      const fd = filterDate.replace(/-/g, "");
+      const sd = c.start_date.replace(/-/g, "");
+      if (sd < fd) return false;
+    }
+    if (filterStatus !== "all" && c.status !== filterStatus) return false;
+    return true;
+  });
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
 
   return (
     <div>
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-primary/85" />
-          <div className="absolute inset-0 bg-linear-to-b from-primary/30 via-transparent to-primary/50" />
-        </div>
-        <div className="absolute inset-0 pattern-dots opacity-15" />
-        <div className="relative pt-16 pb-24 md:pt-20 md:pb-28">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-            <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Courses</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">교육 신청</h1>
-            <p className="text-white/50 mt-3 text-sm max-w-lg mx-auto">현장에서 바로 활용할 수 있는 실무 중심의 교육 프로그램</p>
+      {/* Page Title */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">교육 신청</h1>
+            <nav className="hidden sm:flex items-center gap-1.5 text-sm text-gray-400">
+              <Link href="/" className="hover:text-primary transition-colors">홈</Link>
+              <span>&gt;</span>
+              <span className="text-gray-500">교육/시험신청</span>
+              <span>&gt;</span>
+              <span className="text-gray-900 font-medium">교육신청</span>
+            </nav>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
-      </section>
+      </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-14 relative z-10 pb-20">
-        {courses.length === 0 ? (
-          <div className="bg-white rounded-2xl p-16 text-center border border-gray-100 shadow-sm animate-fade-in-up">
-            <div className="w-20 h-20 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-5">
-              <svg className="w-10 h-10 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-              </svg>
-            </div>
-            <p className="text-gray-400 mb-2">현재 등록된 교육과정이 없습니다.</p>
-            <p className="text-gray-300 text-sm">새로운 교육과정이 곧 등록될 예정입니다.</p>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {courses.map((c, idx) => {
-              const st = statusLabel(c.status);
-              const fillPercent = Math.round((c.enrolled_count / c.capacity) * 100);
-              return (
-                <div
-                  key={c.id}
-                  className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                  style={{ animationDelay: `${idx * 80}ms` }}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+        {/* Search Filter Section */}
+        <div className="mb-6">
+          <h2 className="text-base font-bold text-primary mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary" />
+            교육 신청 일정 검색
+          </h2>
+          <form onSubmit={handleSearch} className="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-5">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4">
+              {/* 교육구분 */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">교육구분</label>
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[100px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 >
-                  {/* Top accent bar - color by category */}
-                  <div className={`h-1 ${c.category === "online" ? "bg-linear-to-r from-accent via-accent-light to-accent" : "bg-linear-to-r from-primary via-gold to-primary-light"}`} />
+                  <option value="all">전체</option>
+                  <option value="offline">오프라인</option>
+                  <option value="online">온라인</option>
+                </select>
+              </div>
 
-                  <div className="p-6">
-                    {/* Category + Status */}
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg bg-primary/5 text-primary">
-                        {c.category === "offline" ? (
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
-                        ) : (
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
-                        )}
+              {/* 구분 */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">구분</label>
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[100px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="all">전체</option>
+                  {courseTypes.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 교육과정명 */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">교육과정명</label>
+                <input
+                  type="text"
+                  value={filterName}
+                  onChange={(e) => setFilterName(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[160px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                  placeholder=""
+                />
+              </div>
+
+              {/* 교육기간 */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">교육기간</label>
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                />
+              </div>
+
+              {/* 접수현황 */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">접수현황</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[100px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="all">전체</option>
+                  <option value="accepting">접수중</option>
+                  <option value="closed">접수마감</option>
+                </select>
+              </div>
+
+              {/* 검색 버튼 */}
+              <button
+                type="submit"
+                className="bg-primary text-white px-6 py-2 rounded text-sm font-medium hover:bg-primary-light transition-colors"
+              >
+                검색
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Course Type Legend */}
+        {courseTypes.length > 0 && (
+          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+            {courseTypes.map((t, i) => (
+              <span key={t}>
+                <span className="font-semibold text-gray-700">{t}</span>
+                {i < courseTypes.length - 1 && ", "}
+              </span>
+            ))}
+          </p>
+        )}
+
+        {/* Table */}
+        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-primary text-white">
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">교육구분</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">구분</th>
+                  <th className="px-4 py-3.5 text-center font-semibold">교육과정</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">교육기간</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수현황</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수상태</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수신청</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="px-4 py-16 text-center text-gray-400">
+                      등록된 교육과정이 없습니다.
+                    </td>
+                  </tr>
+                ) : (
+                  filtered.map((c) => (
+                    <tr key={c.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-4 py-3.5 text-center text-gray-700 whitespace-nowrap">
                         {c.category === "offline" ? "오프라인" : "온라인"}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${st.cls}`}>
-                        {st.text}
-                      </span>
-                    </div>
-
-                    {/* Course name */}
-                    <Link href={`/courses/${c.id}`} className="block">
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {c.name}
-                      </h3>
-                    </Link>
-
-                    {/* Description preview */}
-                    {c.description && (
-                      <p className="text-sm text-gray-400 line-clamp-2 mb-4">{c.description}</p>
-                    )}
-
-                    {/* Info rows */}
-                    <div className="space-y-2.5 mb-5">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                        </svg>
-                        {formatDate(c.start_date)} ~ {formatDate(c.end_date)}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {c.duration}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
-                        {c.location}
-                      </div>
-                    </div>
-
-                    {/* Fee */}
-                    <div className="flex items-center justify-between py-3 mb-4 border-t border-gray-50">
-                      <span className="text-xs text-gray-400">교육비용</span>
-                      {c.fee ? (
-                        <span className="text-sm font-bold text-gold">{c.fee.toLocaleString()}원</span>
-                      ) : (
-                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full ring-1 ring-emerald-600/20">무료</span>
-                      )}
-                    </div>
-
-                    {/* Progress bar */}
-                    <div className="mb-5">
-                      <div className="flex items-center justify-between text-xs mb-1.5">
-                        <span className="text-gray-400">모집 현황</span>
-                        <span className="font-semibold text-gray-600">{c.enrolled_count}/{c.capacity}명</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full animate-progress-fill transition-all"
-                          style={{
-                            width: `${fillPercent}%`,
-                            background: fillPercent >= 90
-                              ? "linear-gradient(90deg, #ef4444, #f87171)"
-                              : fillPercent >= 60
-                              ? "linear-gradient(90deg, #c8a84e, #d4b96a)"
-                              : "linear-gradient(90deg, #10b981, #34d399)",
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/courses/${c.id}`}
-                        className="flex-1 bg-primary/5 text-primary py-3 rounded-xl font-semibold hover:bg-primary/10 transition-all text-sm text-center"
-                      >
-                        상세보기
-                      </Link>
-                      {c.status === "accepting" ? (
-                        <button
-                          onClick={() => handleEnroll(c.id)}
-                          disabled={enrolling === c.id}
-                          className="flex-1 bg-gold text-primary-dark py-3 rounded-xl font-semibold hover:bg-gold-light transition-all disabled:opacity-50 shadow-sm hover:shadow text-sm"
+                      </td>
+                      <td className="px-4 py-3.5 text-center text-gray-700 whitespace-nowrap">
+                        {c.course_type || "-"}
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        <Link
+                          href={`/courses/${c.id}`}
+                          className="text-gray-900 hover:text-primary hover:underline transition-colors"
                         >
-                          {enrolling === c.id ? "신청중..." : "신청하기"}
-                        </button>
-                      ) : (
-                        <div className="flex-1 bg-gray-50 text-gray-400 py-3 rounded-xl font-semibold text-center text-sm">
-                          접수 마감
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                          {c.name}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3.5 text-center text-gray-600 whitespace-nowrap">
+                        {formatDateRange(c.start_date, c.end_date)}
+                      </td>
+                      <td className="px-4 py-3.5 text-center text-gray-600 whitespace-nowrap">
+                        {c.enrolled_count}/{c.capacity}
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        {c.status === "accepting" ? (
+                          <span className="text-primary font-semibold">접수중</span>
+                        ) : (
+                          <span className="text-gray-400 font-semibold">접수마감</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        {c.status === "accepting" ? (
+                          <button
+                            onClick={() => handleEnroll(c.id)}
+                            disabled={enrolling === c.id}
+                            className="bg-gray-600 text-white px-4 py-1.5 rounded text-xs font-medium hover:bg-gray-700 transition-colors disabled:opacity-50"
+                          >
+                            {enrolling === c.id ? "처리중..." : "신청"}
+                          </button>
+                        ) : (
+                          <span className="text-gray-300 text-xs">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
+        </div>
+
+        {/* Result count */}
+        {filtered.length > 0 && (
+          <p className="mt-3 text-xs text-gray-400">
+            총 {filtered.length}개의 교육과정
+          </p>
         )}
       </div>
     </div>

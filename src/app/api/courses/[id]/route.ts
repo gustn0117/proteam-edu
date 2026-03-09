@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const body = await req.json();
 
   db.prepare(
-    `UPDATE courses SET name=?, start_date=?, end_date=?, duration=?, capacity=?, location=?, status=?, category=?, fee=?, description=?
+    `UPDATE courses SET name=?, start_date=?, end_date=?, duration=?, capacity=?, location=?, status=?, category=?, course_type=?, fee=?, description=?
      WHERE id=?`
   ).run(
     body.name,
@@ -41,6 +41,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     body.location,
     body.status,
     body.category,
+    body.course_type || "",
     body.fee,
     body.description,
     id

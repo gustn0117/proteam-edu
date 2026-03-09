@@ -37,6 +37,7 @@ function getDb() {
       status TEXT DEFAULT 'accepting',
       poster_url TEXT DEFAULT '',
       category TEXT DEFAULT 'offline',
+      course_type TEXT DEFAULT '',
       fee INTEGER DEFAULT 0,
       description TEXT DEFAULT '',
       created_at TEXT DEFAULT (datetime('now'))
@@ -55,6 +56,16 @@ function getDb() {
     );
   `);
 
+  // Migration: add course_type column if missing
+  try {
+    const cols = db.prepare("PRAGMA table_info(courses)").all() as { name: string }[];
+    if (!cols.find((c) => c.name === "course_type")) {
+      db.exec("ALTER TABLE courses ADD COLUMN course_type TEXT DEFAULT ''");
+    }
+  } catch {
+    // column may already exist
+  }
+
   // Seed admin user if not exists
   const adminExists = db.prepare("SELECT id FROM users WHERE role = 'admin'").get();
   if (!adminExists) {
@@ -72,11 +83,11 @@ function getDb() {
   if (!courseExists) {
     const { v4: uuidv4 } = require("uuid");
     db.prepare(
-      `INSERT OR IGNORE INTO courses (id, name, start_date, end_date, duration, capacity, location, status, category, fee, description)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT OR IGNORE INTO courses (id, name, start_date, end_date, duration, capacity, location, status, category, course_type, fee, description)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).run(
       uuidv4(), "글로벌 특허분쟁 대응 전략", "2026-04-15", "2026-04-15",
-      "1일, 6시간", 35, "역삼동 과학기술회관", "accepting", "offline", 200000,
+      "1일, 6시간", 35, "역삼동 과학기술회관", "accepting", "offline", "1DAY", 200000,
       "글로벌 특허분쟁에 효과적으로 대응하기 위한 전략과 실무를 학습하는 교육과정입니다."
     );
   }

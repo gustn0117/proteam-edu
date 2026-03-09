@@ -24,7 +24,7 @@ export default function AdminCoursesPage() {
   const [form, setForm] = useState({
     name: "", start_date: "", end_date: "", duration: "",
     capacity: 30, location: "", status: "accepting",
-    category: "offline", fee: 0, description: "",
+    category: "offline", course_type: "", fee: 0, description: "",
   });
   const [saving, setSaving] = useState(false);
   const [posterFile, setPosterFile] = useState<File | null>(null);
@@ -54,7 +54,7 @@ export default function AdminCoursesPage() {
     setSaving(false);
     setShowForm(false);
     setPosterFile(null);
-    setForm({ name: "", start_date: "", end_date: "", duration: "", capacity: 30, location: "", status: "accepting", category: "offline", fee: 0, description: "" });
+    setForm({ name: "", start_date: "", end_date: "", duration: "", capacity: 30, location: "", status: "accepting", category: "offline", course_type: "", fee: 0, description: "" });
     load();
   };
 
@@ -170,6 +170,11 @@ export default function AdminCoursesPage() {
                 </span>
               </button>
             </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">구분 (과정유형)</label>
+            <input type="text" value={form.course_type} onChange={(e) => set("course_type", e.target.value)}
+              placeholder="예: 1DAY, KCVA, TSC, BMC" className={inputCls} />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">접수상태</label>

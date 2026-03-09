@@ -227,6 +227,11 @@ export default function AdminCourseEditPage() {
               </div>
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">구분 (과정유형)</label>
+              <input type="text" value={form.course_type || ""} onChange={(e) => set("course_type", e.target.value)}
+                placeholder="예: 1DAY, KCVA, TSC, BMC" className={inputCls} />
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">접수상태</label>
               <div className="flex rounded-xl border border-gray-200 overflow-hidden">
                 <button type="button" onClick={() => set("status", "accepting")}
