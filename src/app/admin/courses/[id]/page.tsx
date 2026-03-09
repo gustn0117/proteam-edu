@@ -11,6 +11,7 @@ interface Enrollment {
   user_phone: string;
   payment_status: string;
   enrollment_status: string;
+  certificate_name: string;
   certificate_url: string;
 }
 
@@ -318,7 +319,7 @@ export default function AdminCourseEditPage() {
                       <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">연락처</th>
                       <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">납부</th>
                       <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">상태</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증 이름</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -362,22 +363,18 @@ export default function AdminCourseEditPage() {
                           </select>
                         </td>
                         <td className="px-5 py-4 text-center">
-                          {e.certificate_url ? (
-                            <div className="flex items-center justify-center gap-2">
-                              <span className="text-emerald-600 text-xs font-medium">등록됨</span>
-                              <button onClick={() => handleCertDelete(e.id)}
-                                className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">삭제</button>
-                            </div>
-                          ) : (
-                            <label className="cursor-pointer text-primary hover:text-accent text-xs font-semibold transition-colors">
-                              업로드
-                              <input type="file" accept=".pdf" className="hidden"
-                                onChange={(ev) => {
-                                  const f = ev.target.files?.[0];
-                                  if (f) handleCertUpload(e.id, f);
-                                }} />
-                            </label>
-                          )}
+                          <input
+                            type="text"
+                            defaultValue={e.certificate_name || ""}
+                            placeholder={e.user_name}
+                            onBlur={(ev) => {
+                              const val = ev.target.value.trim();
+                              if (val !== (e.certificate_name || "")) {
+                                updateEnrollment(e.id, { certificate_name: val });
+                              }
+                            }}
+                            className="px-2 py-1.5 border border-gray-200 rounded-lg text-xs text-center w-24 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-slate-50/50"
+                          />
                         </td>
                       </tr>
                     ))}

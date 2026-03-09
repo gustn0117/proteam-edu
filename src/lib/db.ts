@@ -48,6 +48,7 @@ function getDb() {
       course_id TEXT NOT NULL,
       payment_status TEXT DEFAULT 'unpaid',
       enrollment_status TEXT DEFAULT 'pending',
+      certificate_name TEXT DEFAULT '',
       certificate_url TEXT DEFAULT '',
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id),
@@ -56,14 +57,18 @@ function getDb() {
     );
   `);
 
-  // Migration: add course_type column if missing
+  // Migrations
   try {
-    const cols = db.prepare("PRAGMA table_info(courses)").all() as { name: string }[];
-    if (!cols.find((c) => c.name === "course_type")) {
+    const courseCols = db.prepare("PRAGMA table_info(courses)").all() as { name: string }[];
+    if (!courseCols.find((c) => c.name === "course_type")) {
       db.exec("ALTER TABLE courses ADD COLUMN course_type TEXT DEFAULT ''");
     }
+    const enrollCols = db.prepare("PRAGMA table_info(enrollments)").all() as { name: string }[];
+    if (!enrollCols.find((c) => c.name === "certificate_name")) {
+      db.exec("ALTER TABLE enrollments ADD COLUMN certificate_name TEXT DEFAULT ''");
+    }
   } catch {
-    // column may already exist
+    // columns may already exist
   }
 
   // Seed admin user if not exists

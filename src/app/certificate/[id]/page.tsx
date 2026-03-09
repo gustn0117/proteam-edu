@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 interface CertificateData {
   enrollment_id: string;
   user_name: string;
+  display_name: string;
   organization: string;
   course_name: string;
   course_type: string;
@@ -136,7 +137,7 @@ export default function CertificatePage() {
               {/* Name */}
               <div className="text-center">
                 <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-wider border-b-2 border-gray-900 pb-2 inline-block px-8">
-                  {data.user_name}
+                  {data.display_name}
                 </p>
                 {data.organization && (
                   <p className="text-xs md:text-sm text-gray-500 mt-2">({data.organization})</p>

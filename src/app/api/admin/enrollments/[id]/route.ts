@@ -24,6 +24,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     updates.push("enrollment_status = ?");
     values.push(body.enrollment_status);
   }
+  if (body.certificate_name !== undefined) {
+    updates.push("certificate_name = ?");
+    values.push(body.certificate_name);
+  }
 
   if (updates.length === 0) {
     return NextResponse.json({ error: "변경할 내용이 없습니다." }, { status: 400 });

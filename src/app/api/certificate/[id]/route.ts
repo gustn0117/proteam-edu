@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 interface CertificateData {
   enrollment_id: string;
   user_name: string;
+  certificate_name: string;
   organization: string;
   course_name: string;
   course_type: string;
@@ -30,6 +31,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     SELECT
       e.id as enrollment_id,
       u.name as user_name,
+      e.certificate_name,
       u.organization,
       c.name as course_name,
       c.course_type,
@@ -53,5 +55,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "수료 상태가 아닙니다." }, { status: 403 });
   }
 
-  return NextResponse.json({ certificate: data });
+  // Use certificate_name if set by admin, otherwise user_name
+  const displayName = data.certificate_name || data.user_name;
+  return NextResponse.json({ certificate: { ...data, display_name: displayName } });
 }
