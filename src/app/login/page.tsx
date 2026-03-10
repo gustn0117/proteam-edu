@@ -116,10 +116,13 @@ export default function LoginPage() {
             >
               {loading ? "로그인 중..." : "로그인"}
             </button>
-            <p className="text-center text-sm text-gray-400">
-              계정이 없으신가요?{" "}
+            <div className="flex items-center justify-center gap-3 text-sm text-gray-400">
+              <Link href="/find-account" className="hover:text-primary transition-colors">아이디 찾기</Link>
+              <span className="text-gray-200">|</span>
+              <Link href="/find-account" className="hover:text-primary transition-colors" onClick={() => {}}>비밀번호 찾기</Link>
+              <span className="text-gray-200">|</span>
               <Link href="/register" className="text-primary font-medium hover:underline underline-offset-2">회원가입</Link>
-            </p>
+            </div>
             </div>
           </form>
         </div>
