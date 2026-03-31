@@ -60,40 +60,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Payment Info - Separate Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in-up" style={{ animationDelay: "100ms" }}>
-          <div className="p-8 md:p-10">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-              </svg>
-              결제 안내
-            </h2>
-            <div className="grid sm:grid-cols-3 gap-4">
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">1</span>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">계좌이체</p>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed">국민 829-01-0308-009<br />㈜프로앤팀</p>
-              </div>
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">2</span>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">계산서 발급</p>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed">사업자등록증 사본, 담당자 메일, 연락처를 edu@proteambiz.com으로 송부</p>
-              </div>
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-100 hover:border-gold/20 transition-colors">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">3</span>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider">현금영수증</p>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed">국세청에 등록된 핸드폰 번호 송부</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

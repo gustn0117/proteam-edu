@@ -56,7 +56,17 @@ export default function Footer() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </span>
-                  교육 신청
+                  교육과정 및 신청
+                </Link>
+              </li>
+              <li>
+                <Link href="/payment" className="hover:text-white transition-colors group inline-flex items-center gap-1.5">
+                  <span className="w-0 group-hover:w-3 transition-all overflow-hidden">
+                    <svg className="w-3 h-3 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </span>
+                  교육비용 납부
                 </Link>
               </li>
               <li>
@@ -66,7 +76,17 @@ export default function Footer() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </span>
-                  교육신청확인
+                  교육신청 확인
+                </Link>
+              </li>
+              <li>
+                <Link href="/refund" className="hover:text-white transition-colors group inline-flex items-center gap-1.5">
+                  <span className="w-0 group-hover:w-3 transition-all overflow-hidden">
+                    <svg className="w-3 h-3 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </span>
+                  교육신청 취소 및 환불
                 </Link>
               </li>
               <li>

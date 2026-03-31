@@ -100,7 +100,7 @@ export default function CoursesPage() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">교육 신청</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">교육과정 및 신청</h1>
             <nav className="hidden sm:flex items-center gap-1.5 text-sm text-gray-400">
               <Link href="/" className="hover:text-primary transition-colors">홈</Link>
               <span>&gt;</span>
@@ -173,9 +173,9 @@ export default function CoursesPage() {
                 />
               </div>
 
-              {/* 접수현황 */}
+              {/* 접수상태 */}
               <div className="flex items-center gap-2">
-                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">접수현황</label>
+                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">접수상태</label>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
@@ -220,7 +220,7 @@ export default function CoursesPage() {
                   <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">구분</th>
                   <th className="px-4 py-3.5 text-center font-semibold">교육과정</th>
                   <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">교육기간</th>
-                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수현황</th>
+                  <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">모집정원</th>
                   <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수상태</th>
                   <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">접수신청</th>
                 </tr>
@@ -253,7 +253,7 @@ export default function CoursesPage() {
                         {formatDateRange(c.start_date, c.end_date)}
                       </td>
                       <td className="px-4 py-3.5 text-center text-gray-600 whitespace-nowrap">
-                        {c.enrolled_count}/{c.capacity}
+                        {c.capacity}명
                       </td>
                       <td className="px-4 py-3.5 text-center">
                         {c.status === "accepting" ? (
