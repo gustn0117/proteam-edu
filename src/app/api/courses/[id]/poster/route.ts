@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const buffer = Buffer.from(await file.arrayBuffer());
   writeFileSync(filePath, buffer);
 
-  const posterUrl = `/uploads/posters/${filename}`;
+  const posterUrl = `/api/uploads/posters/${filename}`;
   db.prepare("UPDATE courses SET poster_url = ? WHERE id = ?").run(posterUrl, id);
 
   return NextResponse.json({ success: true, poster_url: posterUrl });

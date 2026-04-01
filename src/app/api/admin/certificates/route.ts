@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const buffer = Buffer.from(await file.arrayBuffer());
   writeFileSync(filePath, buffer);
 
-  const certUrl = `/uploads/certificates/${filename}`;
+  const certUrl = `/api/uploads/certificates/${filename}`;
   db.prepare("UPDATE enrollments SET certificate_url = ? WHERE id = ?").run(certUrl, enrollmentId);
 
   return NextResponse.json({ success: true, certificate_url: certUrl });

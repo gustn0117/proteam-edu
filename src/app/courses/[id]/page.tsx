@@ -67,6 +67,7 @@ export default function CourseDetailPage() {
 
   const formatDate = (d: string) => d?.replace(/-/g, ".");
   const formatFee = (f: number) => f ? f.toLocaleString() + "원" : "무료";
+  const fileUrl = (url: string) => url?.startsWith("/uploads/") ? url.replace("/uploads/", "/api/uploads/") : url;
   const isClosed = course.status !== "accepting";
   const isOnline = course.category === "online";
 
@@ -230,9 +231,9 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="p-7">
                   {course.poster_url.endsWith(".pdf") ? (
-                    <iframe src={course.poster_url} className="w-full h-200 border border-gray-200 rounded-xl" />
+                    <iframe src={fileUrl(course.poster_url)} className="w-full h-200 border border-gray-200 rounded-xl" />
                   ) : (
-                    <img src={course.poster_url} alt="교육 안내 포스터" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
+                    <img src={fileUrl(course.poster_url)} alt="교육 안내 포스터" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
                   )}
                 </div>
               </div>
@@ -253,9 +254,9 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="p-7">
                   {course.location_map_url.endsWith(".pdf") ? (
-                    <iframe src={course.location_map_url} className="w-full h-200 border border-gray-200 rounded-xl" />
+                    <iframe src={fileUrl(course.location_map_url)} className="w-full h-200 border border-gray-200 rounded-xl" />
                   ) : (
-                    <img src={course.location_map_url} alt="교육장소 약도" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
+                    <img src={fileUrl(course.location_map_url)} alt="교육장소 약도" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
                   )}
                 </div>
               </div>
