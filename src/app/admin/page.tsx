@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                               ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
                               : "bg-red-50 text-red-500 ring-1 ring-red-500/10"
                           }`}>
-                            {e.payment_status === "paid" ? "납부" : "미납"}
+                            {e.payment_status === "paid" ? "결제완료" : "미완료"}
                           </span>
                         </td>
                         <td className="px-5 py-3 text-center">

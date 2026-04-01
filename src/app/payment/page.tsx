@@ -18,7 +18,7 @@ export default function PaymentPage() {
         <div className="relative pt-16 pb-24 md:pt-20 md:pb-28">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <p className="text-sm font-semibold text-gold uppercase tracking-widest mb-3">Payment</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">교육비용 납부</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-white">교육비용 결제</h1>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
@@ -41,9 +41,10 @@ export default function PaymentPage() {
                   <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">1</span>
                   <h3 className="text-base font-bold text-primary">계좌이체</h3>
                 </div>
-                <p className="text-gray-600 leading-relaxed">
-                  계좌번호는 추후 안내 예정입니다. (IBK 기업은행)
-                </p>
+                <div className="bg-white px-4 py-3 rounded-lg border border-gray-200 inline-block">
+                  <p className="text-gray-800 font-medium">IBK기업은행 065-166799-04-016</p>
+                  <p className="text-gray-500 text-sm mt-1">프로앤팀 주식회사</p>
+                </div>
               </div>
 
               {/* 세금계산서 발급 */}

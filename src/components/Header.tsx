@@ -115,7 +115,7 @@ function NavLinks({
   const links = [
     { href: "/greeting", label: "인사말" },
     { href: "/courses", label: "교육과정 및 신청" },
-    { href: "/payment", label: "교육비용 납부" },
+    { href: "/payment", label: "교육비용 결제" },
     { href: "/my-enrollments", label: "교육신청 확인" },
     { href: "/refund", label: "교육신청 취소 및 환불" },
     { href: "/contact", label: "연락처" },

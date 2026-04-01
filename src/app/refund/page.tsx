@@ -216,7 +216,19 @@ export default function RefundPage() {
                 </h4>
                 <div className="text-gray-600 text-sm leading-relaxed space-y-2">
                   <p>아래의 교육비 환불 신청서 작성 후, 이메일(<span className="font-medium text-gray-800">edu@proteamip.com</span>)로 발송해 주시기 바랍니다.</p>
-                  <p className="text-gray-500">이메일 접수 후, 3일 내 은행계좌로 송금해 드립니다.</p>
+                  <div className="mt-3">
+                    <a
+                      href="/교육비_환불_신청서.docx"
+                      download="교육비 환불 신청서(프로앤팀).docx"
+                      className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-light transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                      </svg>
+                      교육비 환불 신청서 다운로드
+                    </a>
+                  </div>
+                  <p className="text-gray-500 mt-3">이메일 접수 후, 3일 내 은행계좌로 송금해 드립니다.</p>
                 </div>
               </div>
 

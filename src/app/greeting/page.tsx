@@ -42,14 +42,14 @@ export default function GreetingPage() {
             <div className="border-l-4 border-gold/30 pl-6 py-1">
               <p className="text-gray-600 leading-relaxed text-lg md:text-xl first-letter:text-2xl first-letter:font-bold first-letter:text-primary">
                 기업의 경쟁력은 현장에서 발휘되는 실무자들의 전문성에서 시작됩니다.
-                ㈜프로앤팀 교육센터는 각 분야 최고 전문가들과 함께 현업에 즉시 적용 가능한
-                실전사례 중심의 세미나 프로그램을 제공합니다.
+                ㈜프로앤팀 교육센터는 각 분야 최고 전문가들과 함께 현업에 즉시 적용 가능한{" "}
+                <span className="font-bold text-gray-800">실전사례 중심</span>의 세미나 프로그램을 제공합니다.
               </p>
             </div>
 
             <div className="border-l-4 border-gold/20 pl-6 py-1">
               <p className="text-gray-600 leading-relaxed text-lg md:text-xl">
-                실무자의 성장이 곧 기업의 발전이라는 믿음으로, 현장 밀착형 실무 커리큘럼을 통해
+                실무자의 성장이 곧 기업의 발전이라는 믿음으로, <span className="font-bold text-gray-800">현장 밀착형 실무 커리큘럼</span>을 통해
                 기업의 핵심 인재들의 성공적인 여정에 함께하겠습니다.
               </p>
             </div>

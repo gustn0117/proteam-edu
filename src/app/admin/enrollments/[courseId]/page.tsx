@@ -103,7 +103,7 @@ export default function AdminCourseEnrollmentsPage() {
       e.organization || "",
       e.user_email,
       e.user_phone || "",
-      e.payment_status === "paid" ? "납부완료" : "미납",
+      e.payment_status === "paid" ? "결제완료" : "결제 미완료",
       e.enrollment_status === "completed" ? "수료" : e.enrollment_status === "confirmed" ? "확인완료" : e.enrollment_status === "pending" ? "대기중" : e.enrollment_status === "cancelled" ? "취소됨" : "환불신청",
       formatDateTime(e.created_at),
     ]);
@@ -246,8 +246,8 @@ export default function AdminCourseEnrollmentsPage() {
                             : "text-red-600 bg-red-50 border-red-200"
                         }`}
                       >
-                        <option value="unpaid">미납</option>
-                        <option value="paid">납부완료</option>
+                        <option value="unpaid">결제 미완료</option>
+                        <option value="paid">결제완료</option>
                       </select>
                     </td>
                     <td className="px-4 py-4 text-center">

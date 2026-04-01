@@ -22,6 +22,8 @@ export default function AdminCourseEditPage() {
   const [saving, setSaving] = useState(false);
   const [posterFile, setPosterFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [mapFile, setMapFile] = useState<File | null>(null);
+  const [mapUploading, setMapUploading] = useState(false);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [activeTab, setActiveTab] = useState<"info" | "enrollments">("info");
 
@@ -70,6 +72,27 @@ export default function AdminCourseEditPage() {
     if (!confirm("포스터를 삭제하시겠습니까?")) return;
     await fetch(`/api/courses/${id}/poster`, { method: "DELETE" });
     setForm((p: any) => ({ ...p, poster_url: "" }));
+  };
+
+  const handleMapUpload = async () => {
+    if (!mapFile) return;
+    setMapUploading(true);
+    const fd = new FormData();
+    fd.append("location_map", mapFile);
+    const res = await fetch(`/api/courses/${id}/location-map`, { method: "POST", body: fd });
+    const data = await res.json();
+    if (data.success) {
+      setForm((p: any) => ({ ...p, location_map_url: data.location_map_url }));
+      setMapFile(null);
+      alert("교육장소 약도가 업로드되었습니다.");
+    }
+    setMapUploading(false);
+  };
+
+  const handleMapDelete = async () => {
+    if (!confirm("교육장소 약도를 삭제하시겠습니까?")) return;
+    await fetch(`/api/courses/${id}/location-map`, { method: "DELETE" });
+    setForm((p: any) => ({ ...p, location_map_url: "" }));
   };
 
   const updateEnrollment = async (eid: string, data: Record<string, string>) => {
@@ -141,7 +164,7 @@ export default function AdminCourseEditPage() {
           <p className="text-2xl font-bold text-primary">{activeCount}<span className="text-sm text-gray-400 font-normal">/{form.capacity}명</span></p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-100">
-          <p className="text-xs text-gray-400 font-medium mb-1">납부 완료</p>
+          <p className="text-xs text-gray-400 font-medium mb-1">결제완료</p>
           <p className="text-2xl font-bold text-emerald-600">{paidCount}<span className="text-sm text-gray-400 font-normal">명</span></p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-100">
@@ -296,6 +319,42 @@ export default function AdminCourseEditPage() {
               </button>
             </div>
           </div>
+
+          {/* Location map section */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-fade-in-up">
+            <h3 className="text-base font-bold text-gray-900 mb-4">교육장소 약도</h3>
+            {form.location_map_url && (
+              <div className="mb-4 flex items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 text-sm text-emerald-600 font-medium">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  약도 등록됨
+                </span>
+                <button onClick={handleMapDelete}
+                  className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">삭제</button>
+              </div>
+            )}
+            <div className="flex items-center gap-4">
+              <label className="flex-1 cursor-pointer">
+                <div className="flex items-center gap-3 px-4 py-3 border border-dashed border-gray-300 rounded-xl hover:border-primary/40 transition-colors">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                  </svg>
+                  <span className="text-sm text-gray-500">
+                    {mapFile ? mapFile.name : "파일 선택 (PDF, JPG, PNG)"}
+                  </span>
+                </div>
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => setMapFile(e.target.files?.[0] || null)}
+                  className="hidden" />
+              </label>
+              <button onClick={handleMapUpload} disabled={!mapFile || mapUploading}
+                className="bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-light transition-colors disabled:opacity-50">
+                {mapUploading ? "업로드 중..." : "업로드"}
+              </button>
+            </div>
+          </div>
         </>
       ) : (
         /* Enrollments tab */
@@ -317,7 +376,7 @@ export default function AdminCourseEditPage() {
                       <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">소속</th>
                       <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">이메일</th>
                       <th className="px-5 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">연락처</th>
-                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">납부</th>
+                      <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">결제</th>
                       <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">상태</th>
                       <th className="px-5 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증 이름</th>
                     </tr>
@@ -339,8 +398,8 @@ export default function AdminCourseEditPage() {
                                 : "text-red-600 bg-red-50 border-red-200"
                             }`}
                           >
-                            <option value="unpaid">미납</option>
-                            <option value="paid">납부완료</option>
+                            <option value="unpaid">결제 미완료</option>
+                            <option value="paid">결제완료</option>
                           </select>
                         </td>
                         <td className="px-5 py-4 text-center">

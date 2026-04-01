@@ -16,6 +16,7 @@ interface Course {
   status: string;
   fee: number;
   poster_url: string;
+  location_map_url: string;
   description: string;
   enrolled_count: number;
   category: string;
@@ -44,7 +45,7 @@ export default function CourseDetailPage() {
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error); return; }
-      alert("교육 신청이 완료되었습니다.\n결제 안내는 '교육신청확인' 메뉴에서 확인해주세요.");
+      alert("교육 신청이 완료되었습니다.\n결제 안내는 '교육비용 결제' 메뉴에서 확인해주세요.");
       router.push("/my-enrollments");
     } catch (err) {
       alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -66,10 +67,7 @@ export default function CourseDetailPage() {
 
   const formatDate = (d: string) => d?.replace(/-/g, ".");
   const formatFee = (f: number) => f ? f.toLocaleString() + "원" : "무료";
-  const fillPercent = Math.round((course.enrolled_count / course.capacity) * 100);
-  const remaining = course.capacity - course.enrolled_count;
   const isClosed = course.status !== "accepting";
-  const isAlmostFull = fillPercent >= 80;
   const isOnline = course.category === "online";
 
   return (
@@ -120,11 +118,6 @@ export default function CourseDetailPage() {
               {isClosed ? (
                 <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 backdrop-blur-sm">
                   접수 마감
-                </span>
-              ) : isAlmostFull ? (
-                <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/30 backdrop-blur-sm flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />
-                  마감 임박
                 </span>
               ) : (
                 <span className="text-xs font-bold px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-sm flex items-center gap-1.5">
@@ -222,44 +215,6 @@ export default function CourseDetailPage() {
               </div>
             )}
 
-            {/* Course benefits / what you'll learn */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="px-7 py-5 border-b border-gray-100">
-                <h2 className="text-lg font-bold text-gray-900 flex items-center gap-3">
-                  <span className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                    <svg className="w-[18px] h-[18px] text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-                    </svg>
-                  </span>
-                  교육 특장점
-                </h2>
-              </div>
-              <div className="p-7">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <BenefitItem
-                    icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>}
-                    title="전문 강사진"
-                    desc="현업 경력 10년 이상의 전문가 직강"
-                  />
-                  <BenefitItem
-                    icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" /></svg>}
-                    title="실무 중심 커리큘럼"
-                    desc="현장 적용 가능한 실습 위주 교육"
-                  />
-                  <BenefitItem
-                    icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>}
-                    title="수료증 발급"
-                    desc="교육 이수 후 공식 수료증 제공"
-                  />
-                  <BenefitItem
-                    icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>}
-                    title="소규모 그룹"
-                    desc="밀착 지도가 가능한 소규모 클래스"
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* Poster */}
             {course.poster_url && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -283,6 +238,29 @@ export default function CourseDetailPage() {
               </div>
             )}
 
+            {/* Location map */}
+            {course.location_map_url && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="px-7 py-5 border-b border-gray-100">
+                  <h2 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+                    <span className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
+                      <svg className="w-[18px] h-[18px] text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                      </svg>
+                    </span>
+                    교육장소
+                  </h2>
+                </div>
+                <div className="p-7">
+                  {course.location_map_url.endsWith(".pdf") ? (
+                    <iframe src={course.location_map_url} className="w-full h-200 border border-gray-200 rounded-xl" />
+                  ) : (
+                    <img src={course.location_map_url} alt="교육장소 약도" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Payment info */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-7 py-5 border-b border-gray-100">
@@ -300,14 +278,14 @@ export default function CourseDetailPage() {
                   <span className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">1</span>
                   <div>
                     <p className="text-sm font-bold text-gray-800 mb-1">계좌이체</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">국민은행 829-01-0308-009 (㈜프로앤팀)</p>
+                    <p className="text-sm text-gray-500 leading-relaxed">IBK기업은행 065-166799-04-016 (프로앤팀 주식회사)</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start bg-slate-50 rounded-xl p-5 border border-slate-100">
                   <span className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">2</span>
                   <div>
                     <p className="text-sm font-bold text-gray-800 mb-1">계산서 발급</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">사업자등록증 사본, 담당자 메일, 연락처를<br className="hidden sm:block" /> edu@proteambiz.com으로 송부</p>
+                    <p className="text-sm text-gray-500 leading-relaxed">사업자등록증 사본, 담당자 메일, 연락처를<br className="hidden sm:block" /> edu@proteamip.com으로 송부해 주세요</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start bg-slate-50 rounded-xl p-5 border border-slate-100">
@@ -355,36 +333,6 @@ export default function CourseDetailPage() {
                 </div>
 
                 <div className="p-6 space-y-5">
-                  {/* Enrollment progress */}
-                  <div>
-                    <div className="flex items-center justify-between mb-2.5">
-                      <p className="text-xs font-semibold text-gray-500">모집 현황</p>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-lg font-extrabold text-primary">{course.enrolled_count}</span>
-                        <span className="text-xs text-gray-400">/ {course.capacity}명</span>
-                      </div>
-                    </div>
-                    <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full animate-progress-fill transition-all relative"
-                        style={{
-                          width: `${fillPercent}%`,
-                          background: fillPercent >= 90
-                            ? "linear-gradient(90deg, #ef4444, #f87171)"
-                            : fillPercent >= 70
-                              ? "linear-gradient(90deg, #f59e0b, #fbbf24)"
-                              : "linear-gradient(90deg, #c8a84e, #d4b96a)",
-                        }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <p className="text-xs text-gray-400">{fillPercent}% 모집 완료</p>
-                      <p className={`text-xs font-bold ${remaining <= 3 ? "text-red-500" : "text-gray-500"}`}>
-                        잔여 {remaining}석
-                      </p>
-                    </div>
-                  </div>
-
                   {/* Course info summary */}
                   <div className="space-y-0 divide-y divide-gray-100">
                     <SidebarInfo label="교육기간" value={`${formatDate(course.start_date)} ~ ${formatDate(course.end_date)}`} />
@@ -443,25 +391,25 @@ export default function CourseDetailPage() {
                     교육 문의
                   </h3>
                   <div className="space-y-3">
-                    <a href="tel:02-0000-0000" className="flex items-center gap-3 text-sm text-gray-600 hover:text-primary transition-colors group p-2.5 -mx-2.5 rounded-lg hover:bg-primary/3">
+                    <a href="tel:02-6677-3868" className="flex items-center gap-3 text-sm text-gray-600 hover:text-primary transition-colors group p-2.5 -mx-2.5 rounded-lg hover:bg-primary/3">
                       <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
                         <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                         </svg>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-700">02-0000-0000</p>
+                        <p className="font-semibold text-gray-700">02-6677-3868</p>
                         <p className="text-xs text-gray-400">평일 09:00 ~ 18:00</p>
                       </div>
                     </a>
-                    <a href="mailto:edu@proteambiz.com" className="flex items-center gap-3 text-sm text-gray-600 hover:text-primary transition-colors group p-2.5 -mx-2.5 rounded-lg hover:bg-primary/3">
+                    <a href="mailto:edu@proteamip.com" className="flex items-center gap-3 text-sm text-gray-600 hover:text-primary transition-colors group p-2.5 -mx-2.5 rounded-lg hover:bg-primary/3">
                       <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 group-hover:bg-emerald-100 transition-colors">
                         <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                         </svg>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-700">edu@proteambiz.com</p>
+                        <p className="font-semibold text-gray-700">edu@proteamip.com</p>
                         <p className="text-xs text-gray-400">이메일 문의</p>
                       </div>
                     </a>
@@ -503,7 +451,7 @@ export default function CourseDetailPage() {
               ) : (
                 <p className="text-lg font-extrabold text-emerald-600">무료</p>
               )}
-              <p className="text-xs text-gray-400 truncate">잔여 {remaining}석 | {course.duration}</p>
+              <p className="text-xs text-gray-400 truncate">정원 {course.capacity}명 | {course.duration}</p>
             </div>
             {isClosed ? (
               <div className="bg-gray-100 text-gray-400 px-8 py-3.5 rounded-xl font-bold text-sm cursor-not-allowed">
@@ -536,20 +484,6 @@ function HighlightCard({ icon, label, value, bg, iconColor }: {
       </div>
       <p className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mb-1">{label}</p>
       <p className="text-sm font-bold text-gray-800 leading-snug">{value}</p>
-    </div>
-  );
-}
-
-function BenefitItem({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
-  return (
-    <div className="flex gap-3.5 p-4 rounded-xl bg-gray-50/70 border border-gray-100 hover:border-gold/20 hover:bg-gold/3 transition-all group">
-      <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center shrink-0 text-gold group-hover:shadow-md transition-shadow">
-        {icon}
-      </div>
-      <div>
-        <p className="text-sm font-bold text-gray-800 mb-0.5">{title}</p>
-        <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
-      </div>
     </div>
   );
 }

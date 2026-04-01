@@ -188,7 +188,7 @@ export default function AdminMembersPage() {
                                     <span className="text-xs text-gray-400 whitespace-nowrap">{formatDate(e.start_date)} ~ {formatDate(e.end_date)}</span>
                                     <span className="text-xs text-gray-500 whitespace-nowrap">{e.fee > 0 ? `${e.fee.toLocaleString()}원` : "무료"}</span>
                                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${e.payment_status === "paid" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-500"}`}>
-                                      {e.payment_status === "paid" ? "납부" : "미납"}
+                                      {e.payment_status === "paid" ? "결제완료" : "미완료"}
                                     </span>
                                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${st.cls}`}>{st.text}</span>
                                     <span className="text-xs text-gray-400">{formatDate(e.created_at)}</span>

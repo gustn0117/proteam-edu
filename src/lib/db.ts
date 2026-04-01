@@ -63,6 +63,9 @@ function getDb() {
     if (!courseCols.find((c) => c.name === "course_type")) {
       db.exec("ALTER TABLE courses ADD COLUMN course_type TEXT DEFAULT ''");
     }
+    if (!courseCols.find((c) => c.name === "location_map_url")) {
+      db.exec("ALTER TABLE courses ADD COLUMN location_map_url TEXT DEFAULT ''");
+    }
     const enrollCols = db.prepare("PRAGMA table_info(enrollments)").all() as { name: string }[];
     if (!enrollCols.find((c) => c.name === "certificate_name")) {
       db.exec("ALTER TABLE enrollments ADD COLUMN certificate_name TEXT DEFAULT ''");

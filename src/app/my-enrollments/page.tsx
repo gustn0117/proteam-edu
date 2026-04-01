@@ -56,8 +56,8 @@ export default function MyEnrollmentsPage() {
 
   const paymentLabel = (s: string) => {
     switch (s) {
-      case "paid": return "납부완료";
-      case "unpaid": return "미납";
+      case "paid": return "결제완료";
+      case "unpaid": return "결제 미완료";
       default: return s;
     }
   };
@@ -168,7 +168,7 @@ export default function MyEnrollmentsPage() {
                         <span className="text-gray-700 font-medium">{e.fee > 0 ? `${e.fee.toLocaleString()}원` : "무료"}</span>
                       </div>
                       <div>
-                        <span className="text-gray-400 block mb-0.5">납부</span>
+                        <span className="text-gray-400 block mb-0.5">결제</span>
                         <span className={paymentColor(e.payment_status)}>{paymentLabel(e.payment_status)}</span>
                       </div>
                       <div>
@@ -206,7 +206,7 @@ export default function MyEnrollmentsPage() {
                       <th className="px-4 py-3.5 text-center font-semibold">교육과정</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">교육기간</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">수강료</th>
-                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">납부상태</th>
+                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">결제상황</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">신청상태</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">신청일</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">수료증</th>
