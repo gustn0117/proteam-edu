@@ -115,9 +115,9 @@ function NavLinks({
   const links = [
     { href: "/greeting", label: "인사말" },
     { href: "/courses", label: "교육과정 및 신청" },
-    { href: "/payment", label: "교육비용 결제" },
+    { href: "/payment", label: "결제" },
     { href: "/my-enrollments", label: "교육신청 확인" },
-    { href: "/refund", label: "교육신청 취소 및 환불" },
+    { href: "/refund", label: "취소 및 환불" },
     { href: "/contact", label: "연락처" },
   ];
 
@@ -130,7 +130,7 @@ function NavLinks({
           <Link
             key={l.href}
             href={l.href}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-base transition-colors ${
               isActive(l.href)
                 ? "bg-white/15 text-white font-medium"
                 : "text-white/70 hover:bg-white/10 hover:text-white"
@@ -167,7 +167,7 @@ function NavLinks({
         <Link
           key={l.href}
           href={l.href}
-          className={`relative px-3 py-2 rounded-lg text-[15px] transition-all duration-200 ${
+          className={`relative px-3 py-2 rounded-lg text-base transition-all duration-200 ${
             isActive(l.href)
               ? "text-white font-medium"
               : "text-white/70 hover:text-white"

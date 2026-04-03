@@ -57,7 +57,7 @@ export default function CoursesPage() {
         return;
       }
 
-      alert("교육 신청이 완료되었습니다.\n결제 안내는 '교육비용 결제' 메뉴에서 확인해주세요.");
+      alert("교육신청이 접수되었습니다.\n신청 후 24시간 이내에 결제가 완료되어야 교육신청이 확정됩니다.\n24시간 이내에 결제가 완료되지 않으면 신청이 취소됩니다.");
       router.push("/my-enrollments");
     } catch (err) {
       alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -135,21 +135,6 @@ export default function CoursesPage() {
                 </select>
               </div>
 
-              {/* 구분 */}
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">구분</label>
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[100px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                >
-                  <option value="all">전체</option>
-                  {courseTypes.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-
               {/* 교육과정명 */}
               <div className="flex items-center gap-2">
                 <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">교육과정명</label>
@@ -159,17 +144,6 @@ export default function CoursesPage() {
                   onChange={(e) => setFilterName(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded text-sm bg-white min-w-[160px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   placeholder=""
-                />
-              </div>
-
-              {/* 교육기간 */}
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">교육기간</label>
-                <input
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 />
               </div>
 

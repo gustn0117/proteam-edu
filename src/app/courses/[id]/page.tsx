@@ -45,7 +45,7 @@ export default function CourseDetailPage() {
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error); return; }
-      alert("교육 신청이 완료되었습니다.\n결제 안내는 '교육비용 결제' 메뉴에서 확인해주세요.");
+      alert("교육신청이 접수되었습니다.\n신청 후 24시간 이내에 결제가 완료되어야 교육신청이 확정됩니다.\n24시간 이내에 결제가 완료되지 않으면 신청이 취소됩니다.");
       router.push("/my-enrollments");
     } catch (err) {
       alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -133,27 +133,6 @@ export default function CourseDetailPage() {
               {course.name}
             </h1>
 
-            {/* Quick meta in hero */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6">
-              <span className="flex items-center gap-2 text-white/50 text-sm">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-                {formatDate(course.start_date)} ~ {formatDate(course.end_date)}
-              </span>
-              <span className="flex items-center gap-2 text-white/50 text-sm">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {course.duration}
-              </span>
-              <span className="flex items-center gap-2 text-white/50 text-sm">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-                {course.location}
-              </span>
-            </div>
           </div>
         </div>
       </section>
@@ -334,14 +313,6 @@ export default function CourseDetailPage() {
                 </div>
 
                 <div className="p-6 space-y-5">
-                  {/* Course info summary */}
-                  <div className="space-y-0 divide-y divide-gray-100">
-                    <SidebarInfo label="교육기간" value={`${formatDate(course.start_date)} ~ ${formatDate(course.end_date)}`} />
-                    <SidebarInfo label="교육시간" value={course.duration} />
-                    <SidebarInfo label="교육장소" value={course.location} />
-                    <SidebarInfo label="모집정원" value={`${course.capacity}명`} />
-                    <SidebarInfo label="교육비용" value={formatFee(course.fee)} highlight />
-                  </div>
 
                   {/* CTA */}
                   <div className="pt-1">
