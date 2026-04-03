@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80"
@@ -20,7 +20,7 @@ export default function Home() {
         <div className="absolute inset-0 pattern-dots opacity-15" />
         <div className="absolute top-20 right-[15%] w-24 h-24 rounded-full bg-gold/10 animate-float blur-sm" />
         <div className="absolute bottom-32 left-[10%] w-16 h-16 rounded-full bg-accent/10 animate-float blur-sm" style={{ animationDelay: "1s" }} />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-28 md:py-40">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-20 md:py-28 w-full">
           <div className="text-center animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
               이론을 넘어 실전으로,<br />
