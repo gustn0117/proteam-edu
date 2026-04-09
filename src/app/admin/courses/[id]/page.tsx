@@ -289,7 +289,7 @@ export default function AdminCourseEditPage() {
             <h3 className="text-base font-bold text-gray-900 mb-4">교육 안내 포스터</h3>
             {form.poster_url && (
               <div className="mb-4">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-between mb-3">
                   <span className="inline-flex items-center gap-1.5 text-sm text-emerald-600 font-medium">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -299,11 +299,11 @@ export default function AdminCourseEditPage() {
                   <button onClick={handlePosterDelete}
                     className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">삭제</button>
                 </div>
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+                <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50 p-2">
                   {form.poster_url.endsWith(".pdf") ? (
-                    <iframe src={form.poster_url.replace("/uploads/", "/api/uploads/")} className="w-full h-80" />
+                    <iframe src={form.poster_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
                   ) : (
-                    <img src={form.poster_url.replace("/uploads/", "/api/uploads/")} alt="포스터 미리보기" className="max-w-full max-h-80 mx-auto" />
+                    <img src={form.poster_url.replace("/uploads/", "/api/uploads/")} alt="포스터" className="w-full rounded-lg" />
                   )}
                 </div>
               </div>
@@ -334,7 +334,7 @@ export default function AdminCourseEditPage() {
             <h3 className="text-base font-bold text-gray-900 mb-4">교육장소 약도</h3>
             {form.location_map_url && (
               <div className="mb-4">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center justify-between mb-3">
                   <span className="inline-flex items-center gap-1.5 text-sm text-emerald-600 font-medium">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -344,11 +344,11 @@ export default function AdminCourseEditPage() {
                   <button onClick={handleMapDelete}
                     className="text-red-400 hover:text-red-600 text-xs font-semibold transition-colors">삭제</button>
                 </div>
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+                <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50 p-2">
                   {form.location_map_url.endsWith(".pdf") ? (
-                    <iframe src={form.location_map_url.replace("/uploads/", "/api/uploads/")} className="w-full h-80" />
+                    <iframe src={form.location_map_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
                   ) : (
-                    <img src={form.location_map_url.replace("/uploads/", "/api/uploads/")} alt="약도 미리보기" className="max-w-full max-h-80 mx-auto" />
+                    <img src={form.location_map_url.replace("/uploads/", "/api/uploads/")} alt="약도" className="w-full rounded-lg" />
                   )}
                 </div>
               </div>
