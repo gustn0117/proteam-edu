@@ -49,7 +49,8 @@ export async function DELETE(req: NextRequest) {
     .get(enrollment_id) as any;
 
   if (enrollment?.certificate_url) {
-    const filePath = path.join(process.cwd(), "public", enrollment.certificate_url);
+    const relativePath = enrollment.certificate_url.replace("/api/uploads/", "/uploads/");
+    const filePath = path.join(process.cwd(), "public", relativePath);
     if (existsSync(filePath)) unlinkSync(filePath);
   }
 

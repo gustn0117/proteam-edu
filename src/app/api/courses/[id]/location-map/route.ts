@@ -46,7 +46,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   const course = db.prepare("SELECT location_map_url FROM courses WHERE id = ?").get(id) as any;
 
   if (course?.location_map_url) {
-    const filePath = path.join(process.cwd(), "public", course.location_map_url);
+    const relativePath = course.location_map_url.replace("/api/uploads/", "/uploads/");
+    const filePath = path.join(process.cwd(), "public", relativePath);
     if (existsSync(filePath)) unlinkSync(filePath);
   }
 
