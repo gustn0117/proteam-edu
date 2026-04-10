@@ -301,9 +301,9 @@ export default function AdminCourseEditPage() {
                 </div>
                 <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50 p-2">
                   {form.poster_url.endsWith(".pdf") ? (
-                    <iframe src={form.poster_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
+                    <iframe src={form.poster_url.startsWith("/api/") ? form.poster_url : form.poster_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
                   ) : (
-                    <img src={form.poster_url.replace("/uploads/", "/api/uploads/")} alt="포스터" className="w-full rounded-lg" />
+                    <img src={form.poster_url.startsWith("/api/") ? form.poster_url : form.poster_url.replace("/uploads/", "/api/uploads/")} alt="포스터" className="w-full rounded-lg" />
                   )}
                 </div>
               </div>
@@ -346,9 +346,9 @@ export default function AdminCourseEditPage() {
                 </div>
                 <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50 p-2">
                   {form.location_map_url.endsWith(".pdf") ? (
-                    <iframe src={form.location_map_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
+                    <iframe src={form.location_map_url.startsWith("/api/") ? form.location_map_url : form.location_map_url.replace("/uploads/", "/api/uploads/")} className="w-full h-150 rounded-lg" />
                   ) : (
-                    <img src={form.location_map_url.replace("/uploads/", "/api/uploads/")} alt="약도" className="w-full rounded-lg" />
+                    <img src={form.location_map_url.startsWith("/api/") ? form.location_map_url : form.location_map_url.replace("/uploads/", "/api/uploads/")} alt="약도" className="w-full rounded-lg" />
                   )}
                 </div>
               </div>
