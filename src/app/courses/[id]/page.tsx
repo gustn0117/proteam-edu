@@ -210,7 +210,7 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="p-7">
                   {course.poster_url.endsWith(".pdf") ? (
-                    <iframe src={fileUrl(course.poster_url)} className="w-full h-200 border border-gray-200 rounded-xl" />
+                    <iframe src={`${fileUrl(course.poster_url)}#navpanes=0&scrollbar=0`} className="w-full h-200 border border-gray-200 rounded-xl" />
                   ) : (
                     <img src={fileUrl(course.poster_url)} alt="교육 안내 포스터" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
                   )}
@@ -233,7 +233,7 @@ export default function CourseDetailPage() {
                 </div>
                 <div className="p-7">
                   {course.location_map_url.endsWith(".pdf") ? (
-                    <iframe src={fileUrl(course.location_map_url)} className="w-full h-200 border border-gray-200 rounded-xl" />
+                    <iframe src={`${fileUrl(course.location_map_url)}#navpanes=0&scrollbar=0`} className="w-full h-200 border border-gray-200 rounded-xl" />
                   ) : (
                     <img src={fileUrl(course.location_map_url)} alt="교육장소 약도" className="max-w-full rounded-xl shadow-sm border border-gray-100" />
                   )}
