@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   const ext = file.name.split(".").pop();
-  const filename = `${enrollmentId}.${ext}`;
+  const filename = `${enrollmentId}-${Date.now()}.${ext}`;
   const filePath = path.join(dir, filename);
 
   const buffer = Buffer.from(await file.arrayBuffer());

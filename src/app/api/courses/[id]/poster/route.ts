@@ -20,11 +20,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "파일을 선택해주세요." }, { status: 400 });
   }
 
+  // Delete old poster file if exists
+  const oldCourse = db.prepare("SELECT poster_url FROM courses WHERE id = ?").get(id) as any;
+  if (oldCourse?.poster_url) {
+    const oldPath = path.join(process.cwd(), "public", oldCourse.poster_url.replace("/api/uploads/", "/uploads/"));
+    if (existsSync(oldPath)) unlinkSync(oldPath);
+  }
+
   const dir = path.join(process.cwd(), "public", "uploads", "posters");
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   const ext = file.name.split(".").pop();
-  const filename = `${id}.${ext}`;
+  const filename = `${id}-${Date.now()}.${ext}`;
   const filePath = path.join(dir, filename);
 
   const buffer = Buffer.from(await file.arrayBuffer());
