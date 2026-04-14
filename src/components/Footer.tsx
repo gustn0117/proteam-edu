@@ -5,9 +5,14 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         <div className="text-center text-sm text-white/40 space-y-1.5">
           <p>
-            <span className="text-white/60 font-medium">프로앤팀</span>
+            <span className="text-white/60 font-medium">㈜프로앤팀</span>
+            <span className="mx-2 text-white/20">|</span>
+            대표 이승헌, 권오진
             <span className="mx-2 text-white/20">|</span>
             사업자등록번호 892-88-03893
+          </p>
+          <p>
+            통신판매업신고 제2026-서울강남-XXXXX호
             <span className="mx-2 text-white/20">|</span>
             주소 서울시 강남구 선릉로 529, 5층 5302호
           </p>

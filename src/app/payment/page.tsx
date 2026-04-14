@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PaymentPage() {
   return (
@@ -35,10 +36,30 @@ export default function PaymentPage() {
             </h2>
 
             <div className="space-y-5">
+              {/* 신용카드 결제 */}
+              <div className="bg-linear-to-br from-primary/5 to-gold/5 rounded-xl p-6 border border-gold/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="w-8 h-8 rounded-full bg-gold text-primary-dark text-sm font-bold flex items-center justify-center">1</span>
+                  <h3 className="text-base font-bold text-primary">신용카드 결제 (온라인)</h3>
+                </div>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  교육과정 페이지에서 원하는 강좌를 선택 후 신용카드로 즉시 결제하실 수 있습니다.
+                </p>
+                <Link
+                  href="/courses"
+                  className="inline-flex items-center gap-2 bg-gold text-primary-dark px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gold-light transition-colors"
+                >
+                  교육과정 보러가기
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+              </div>
+
               {/* 계좌이체 */}
               <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">1</span>
+                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">2</span>
                   <h3 className="text-base font-bold text-primary">계좌이체</h3>
                 </div>
                 <div className="bg-white px-4 py-3 rounded-lg border border-gray-200 inline-block">
@@ -50,7 +71,7 @@ export default function PaymentPage() {
               {/* 세금계산서 발급 */}
               <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">2</span>
+                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">3</span>
                   <h3 className="text-base font-bold text-primary">세금계산서 발급</h3>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
@@ -67,12 +88,32 @@ export default function PaymentPage() {
               {/* 현금영수증 */}
               <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">3</span>
+                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">4</span>
                   <h3 className="text-base font-bold text-primary">현금영수증</h3>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
                   국세청에 등록된 핸드폰 번호를 송부해 주시기 바랍니다.
                 </p>
+              </div>
+            </div>
+
+            {/* 서비스 제공 및 환불 정책 */}
+            <div className="mt-10 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">서비스 제공 및 환불 안내</h3>
+              <div className="bg-amber-50 border border-amber-100 rounded-xl p-5 space-y-3">
+                <div>
+                  <p className="text-sm font-bold text-amber-900 mb-1">서비스 제공 방식</p>
+                  <p className="text-sm text-amber-800 leading-relaxed">
+                    본 교육 서비스는 비실물(서비스) 상품으로, 결제 완료 후 신청하신 교육과정의 일정에 따라 오프라인/온라인으로 제공됩니다.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-amber-900 mb-1">환불 정책</p>
+                  <p className="text-sm text-amber-800 leading-relaxed">
+                    교육시작 7일 전까지 100% 환불, 2~7일 전 80% 환불, 1~2일 전 50% 환불, 교육시작 후 환불 불가.
+                    자세한 내용은 <Link href="/refund" className="underline font-semibold">취소 및 환불</Link> 페이지를 참고해 주세요.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

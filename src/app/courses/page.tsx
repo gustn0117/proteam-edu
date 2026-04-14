@@ -39,6 +39,13 @@ export default function CoursesPage() {
   }, []);
 
   const handleEnroll = async (courseId: string) => {
+    const target = courses.find((c) => c.id === courseId);
+    // Paid course → checkout (Toss Payments) - guest allowed
+    if (target && target.fee > 0) {
+      router.push(`/checkout?courseId=${courseId}`);
+      return;
+    }
+    // Free course → existing flow (login required)
     if (!user) {
       router.push("/login");
       return;
@@ -57,7 +64,7 @@ export default function CoursesPage() {
         return;
       }
 
-      alert("교육신청이 접수되었습니다.\n신청 후 24시간 이내에 결제가 완료되어야 교육신청이 확정됩니다.\n24시간 이내에 결제가 완료되지 않으면 신청이 취소됩니다.");
+      alert("교육신청이 완료되었습니다.");
       router.push("/my-enrollments");
     } catch (err) {
       alert("신청 중 오류가 발생했습니다. 다시 시도해주세요.");
