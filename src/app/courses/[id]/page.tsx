@@ -248,6 +248,43 @@ export default function CourseDetailPage() {
               </div>
             )}
 
+            {/* Service info & refund policy */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="px-7 py-5 border-b border-gray-100">
+                <h2 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+                  <span className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                    <svg className="w-[18px] h-[18px] text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                  </span>
+                  서비스 제공 안내
+                </h2>
+              </div>
+              <div className="p-7 space-y-4 text-sm">
+                <div className="flex gap-3 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-2 shrink-0" />
+                  <div>
+                    <p className="font-bold text-gray-800 mb-0.5">서비스 유형</p>
+                    <p className="text-gray-500">무형 서비스 (오프라인/온라인 교육)</p>
+                  </div>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-2 shrink-0" />
+                  <div>
+                    <p className="font-bold text-gray-800 mb-0.5">서비스 제공 기간</p>
+                    <p className="text-gray-500">결제 완료 후 해당 교육 일정에 따라 제공 (최대 5주 이내)</p>
+                  </div>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-2 shrink-0" />
+                  <div>
+                    <p className="font-bold text-gray-800 mb-0.5">환불 정책</p>
+                    <p className="text-gray-500">교육시작 7일 전 100% / 2~7일 전 80% / 1~2일 전 50% / 교육시작 후 환불 불가</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Payment info */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-7 py-5 border-b border-gray-100">
