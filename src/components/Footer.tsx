@@ -7,7 +7,7 @@ export default function Footer() {
           <p>
             <span className="text-white/60 font-medium">프로앤팀 주식회사</span>
             <span className="mx-2 text-white/20">|</span>
-            대표 이승헌(공동대표), 권오진(공동대표)
+            대표 이승헌, 권오진
             <span className="mx-2 text-white/20">|</span>
             사업자등록번호 892-88-03893
           </p>

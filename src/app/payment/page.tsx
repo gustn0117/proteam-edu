@@ -35,66 +35,59 @@ export default function PaymentPage() {
               결제 안내
             </h2>
 
+            <p className="text-gray-500 text-sm mb-6">
+              교육비용 결제는 아래 두 가지 방법으로 가능합니다. 교육과정 페이지에서 원하는 과정을 선택하신 후,
+              결제창에서 신용카드 또는 가상계좌를 선택하실 수 있습니다.
+            </p>
+
             <div className="space-y-5">
               {/* 신용카드 결제 */}
               <div className="bg-linear-to-br from-primary/5 to-gold/5 rounded-xl p-6 border border-gold/20">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="w-8 h-8 rounded-full bg-gold text-primary-dark text-sm font-bold flex items-center justify-center">1</span>
-                  <h3 className="text-base font-bold text-primary">신용카드 결제 (온라인)</h3>
+                  <h3 className="text-base font-bold text-primary">신용카드 결제</h3>
                 </div>
-                <p className="text-gray-600 leading-relaxed mb-4">
-                  교육과정 페이지에서 원하는 강좌를 선택 후 신용카드로 즉시 결제하실 수 있습니다.
+                <p className="text-gray-600 leading-relaxed mb-2">
+                  PG사(토스페이먼츠)를 통해 결제됩니다. 결제 완료와 동시에 교육신청이 확정됩니다.
                 </p>
-                <Link
-                  href="/courses"
-                  className="inline-flex items-center gap-2 bg-gold text-primary-dark px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gold-light transition-colors"
-                >
-                  교육과정 보러가기
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </Link>
+                <p className="text-sm text-red-500 font-medium">
+                  ※ 신용카드 결제 시 현금영수증 및 세금계산서의 발행이 불가합니다.
+                </p>
               </div>
 
-              {/* 계좌이체 */}
+              {/* 가상계좌 */}
               <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">2</span>
-                  <h3 className="text-base font-bold text-primary">계좌이체</h3>
+                  <h3 className="text-base font-bold text-primary">가상계좌 입금</h3>
                 </div>
-                <div className="bg-white px-4 py-3 rounded-lg border border-gray-200 inline-block">
-                  <p className="text-gray-800 font-medium">IBK기업은행 065-166799-04-016</p>
-                  <p className="text-gray-500 text-sm mt-1">프로앤팀 주식회사</p>
-                </div>
-              </div>
-
-              {/* 세금계산서 발급 */}
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">3</span>
-                  <h3 className="text-base font-bold text-primary">세금계산서 발급</h3>
-                </div>
-                <p className="text-gray-600 leading-relaxed">
-                  사업자등록증 사본, 담당자 메일, 연락처를 아래 이메일로 송부해 주시기 바랍니다.
+                <p className="text-gray-600 leading-relaxed mb-3">
+                  PG사(토스페이먼츠)를 통해 발급된 가상계좌로 입금하시면, 입금 확인 후 교육신청이 확정됩니다.
                 </p>
-                <div className="mt-3 inline-flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200">
-                  <svg className="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                  </svg>
-                  <span className="text-gray-800 font-medium">edu@proteamip.com</span>
-                </div>
+                <ul className="space-y-1.5 text-sm text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-1.5 shrink-0" />
+                    <span><span className="font-semibold text-gray-700">현금영수증:</span> 결제창에서 선택 시, 입금 확인 후 국세청에 자동 발행됩니다.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-1.5 shrink-0" />
+                    <span><span className="font-semibold text-gray-700">세금계산서:</span> 결제창에서 사업자 정보 입력 시, 전자세금계산서가 자동 발행됩니다.</span>
+                  </li>
+                </ul>
               </div>
+            </div>
 
-              {/* 현금영수증 */}
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-100">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">4</span>
-                  <h3 className="text-base font-bold text-primary">현금영수증</h3>
-                </div>
-                <p className="text-gray-600 leading-relaxed">
-                  국세청에 등록된 핸드폰 번호를 송부해 주시기 바랍니다.
-                </p>
-              </div>
+            {/* 결제하러 가기 */}
+            <div className="mt-8 text-center">
+              <Link
+                href="/courses"
+                className="inline-flex items-center gap-2 bg-gold text-primary-dark px-6 py-3 rounded-xl font-semibold hover:bg-gold-light transition-all shadow-sm hover:shadow-md shadow-gold/20"
+              >
+                교육과정 보러가기
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
 
             {/* 서비스 제공 및 환불 정책 */}

@@ -42,7 +42,7 @@ export default function GreetingPage() {
             <div className="border-l-4 border-gold/30 pl-6 py-1">
               <p className="text-gray-600 leading-relaxed text-lg md:text-xl first-letter:text-2xl first-letter:font-bold first-letter:text-primary">
                 기업의 경쟁력은 현장에서 발휘되는 실무자들의 전문성에서 시작됩니다.
-                ㈜프로앤팀 교육센터는 각 분야 최고 전문가들과 함께 현업에 즉시 적용 가능한{" "}
+                프로앤팀(주) 교육센터는 각 분야 최고 전문가들과 함께 현업에 즉시 적용 가능한{" "}
                 <span className="font-bold text-gray-800">실전사례 중심</span>의 세미나 프로그램을 제공합니다.
               </p>
             </div>
@@ -83,7 +83,7 @@ export default function GreetingPage() {
                 <p className="text-primary font-bold text-sm md:text-base mt-4">공동대표 권오진</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm text-center mt-4">㈜프로앤팀</p>
+            <p className="text-gray-400 text-sm text-center mt-4">프로앤팀 주식회사</p>
           </div>
         </div>
 

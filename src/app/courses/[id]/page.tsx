@@ -301,22 +301,17 @@ export default function CourseDetailPage() {
                 <div className="flex gap-4 items-start bg-slate-50 rounded-xl p-5 border border-slate-100">
                   <span className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">1</span>
                   <div>
-                    <p className="text-sm font-bold text-gray-800 mb-1">계좌이체</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">IBK기업은행 065-166799-04-016 (프로앤팀 주식회사)</p>
+                    <p className="text-sm font-bold text-gray-800 mb-1">신용카드 결제</p>
+                    <p className="text-sm text-gray-500 leading-relaxed">PG사(토스페이먼츠)를 통해 결제됩니다.</p>
+                    <p className="text-xs text-red-500 font-medium mt-1">※ 신용카드 결제 시 현금영수증 및 세금계산서의 발행이 불가합니다.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start bg-slate-50 rounded-xl p-5 border border-slate-100">
                   <span className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">2</span>
                   <div>
-                    <p className="text-sm font-bold text-gray-800 mb-1">계산서 발급</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">사업자등록증 사본, 담당자 메일, 연락처를<br className="hidden sm:block" /> edu@proteamip.com으로 송부해 주세요</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 items-start bg-slate-50 rounded-xl p-5 border border-slate-100">
-                  <span className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center shrink-0">3</span>
-                  <div>
-                    <p className="text-sm font-bold text-gray-800 mb-1">현금영수증</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">국세청에 등록된 핸드폰 번호 송부</p>
+                    <p className="text-sm font-bold text-gray-800 mb-1">가상계좌 입금</p>
+                    <p className="text-sm text-gray-500 leading-relaxed">PG사(토스페이먼츠)를 통해 발급된 가상계좌로 입금하시면 됩니다.</p>
+                    <p className="text-xs text-gray-500 mt-1">• 현금영수증: 결제창에서 선택 시 자동 발행<br />• 세금계산서: 결제창에서 사업자 정보 입력 시 자동 발행</p>
                   </div>
                 </div>
               </div>

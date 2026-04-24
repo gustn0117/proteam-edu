@@ -3,7 +3,7 @@ import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
-  title: "㈜프로앤팀 교육센터",
+  title: "프로앤팀(주) 교육센터",
   description: "기업 실무자 역량 강화를 위한 교육센터",
 };
 

@@ -58,7 +58,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-1.5 h-1.5 rounded-full bg-gold group-hover:scale-150 transition-transform duration-300" />
             <span className="text-lg font-bold tracking-tight text-white">
-              프로앤팀 <span className="font-normal text-white/60 hidden sm:inline">교육센터</span>
+              프로앤팀(주) <span className="font-normal text-white/60 hidden sm:inline">교육센터</span>
             </span>
           </Link>
 
