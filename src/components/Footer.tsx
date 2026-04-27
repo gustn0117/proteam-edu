@@ -12,6 +12,8 @@ export default function Footer() {
             사업자등록번호 892-88-03893
           </p>
           <p>
+            통신판매업신고 제2026-서울강남-02423호
+            <span className="mx-2 text-white/20">|</span>
             주소 서울특별시 강남구 선릉로 529, 5층 5302호(역삼동, 함양재빌딩)
           </p>
           <p>
