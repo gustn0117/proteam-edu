@@ -70,6 +70,12 @@ function getDb() {
     if (!enrollCols.find((c) => c.name === "certificate_name")) {
       db.exec("ALTER TABLE enrollments ADD COLUMN certificate_name TEXT DEFAULT ''");
     }
+    if (!enrollCols.find((c) => c.name === "payment_key")) {
+      db.exec("ALTER TABLE enrollments ADD COLUMN payment_key TEXT DEFAULT ''");
+    }
+    if (!enrollCols.find((c) => c.name === "order_id")) {
+      db.exec("ALTER TABLE enrollments ADD COLUMN order_id TEXT DEFAULT ''");
+    }
   } catch {
     // columns may already exist
   }

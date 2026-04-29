@@ -40,12 +40,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: tossData.message || "결제 승인 실패" }, { status: 400 });
   }
 
+  // Toss status: DONE = 결제완료, WAITING_FOR_DEPOSIT = 가상계좌 입금대기
+  const isPaid = tossData.status === "DONE";
+  const paymentStatus = isPaid ? "paid" : "unpaid";
+  const enrollmentStatus = isPaid ? "confirmed" : "pending";
+
   // Create or find user
   const user = await getCurrentUser();
   let userId = user?.id;
 
   if (!userId && buyerEmail) {
-    // Guest checkout: find or create user record
     const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(buyerEmail) as any;
     if (existing) {
       userId = existing.id;
@@ -64,24 +68,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "사용자 정보를 처리할 수 없습니다." }, { status: 400 });
   }
 
-  // Create enrollment with paid status
+  // Create or update enrollment, store paymentKey + orderId for webhook tracking
   const enrollmentId = uuidv4();
   try {
     db.prepare(
-      `INSERT INTO enrollments (id, user_id, course_id, payment_status, enrollment_status)
-       VALUES (?, ?, ?, 'paid', 'confirmed')`
-    ).run(enrollmentId, userId, courseId);
+      `INSERT INTO enrollments (id, user_id, course_id, payment_status, enrollment_status, payment_key, order_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
+    ).run(enrollmentId, userId, courseId, paymentStatus, enrollmentStatus, paymentKey, orderId);
   } catch (e: any) {
-    // If duplicate (already enrolled), update to paid
     if (e.message?.includes("UNIQUE")) {
       db.prepare(
-        `UPDATE enrollments SET payment_status='paid', enrollment_status='confirmed'
+        `UPDATE enrollments SET payment_status=?, enrollment_status=?, payment_key=?, order_id=?
          WHERE user_id = ? AND course_id = ?`
-      ).run(userId, courseId);
+      ).run(paymentStatus, enrollmentStatus, paymentKey, orderId, userId, courseId);
     } else {
       throw e;
     }
   }
 
-  return NextResponse.json({ success: true, enrollmentId });
+  return NextResponse.json({
+    success: true,
+    enrollmentId,
+    method: tossData.method,
+    status: tossData.status,
+    virtualAccount: tossData.virtualAccount || null,
+  });
 }
