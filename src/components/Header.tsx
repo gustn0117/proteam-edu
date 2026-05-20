@@ -145,8 +145,10 @@ function NavLinks({
         <div className="border-t border-white/10 mt-2 pt-2 flex flex-col gap-1">
           {user ? (
             <>
-              <span className="px-3 py-2.5 text-white/50 text-xs">{user.name}님</span>
-              <button onClick={logout} className="text-left px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+              <Link href="/account" className="px-3 py-2.5 rounded-lg text-base text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+                {user.name}님 · 내 정보 관리
+              </Link>
+              <button onClick={logout} className="text-left px-3 py-2.5 rounded-lg text-base text-white/70 hover:bg-white/10 hover:text-white transition-colors">
                 로그아웃
               </button>
             </>
@@ -183,7 +185,9 @@ function NavLinks({
       <div className="flex items-center gap-1 ml-3 pl-3 border-l border-white/15">
         {user ? (
           <>
-            <span className="px-3 py-2 text-white/50 text-xs">{user.name}님</span>
+            <Link href="/account" className="px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white transition-colors">
+              {user.name}님
+            </Link>
             <button onClick={logout} className="px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white transition-colors">
               로그아웃
             </button>
