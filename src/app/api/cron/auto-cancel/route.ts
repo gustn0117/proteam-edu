@@ -12,13 +12,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Find unpaid enrollments older than 24 hours
+  // Find unpaid enrollments older than 48 hours (2 days)
   const result = db.prepare(`
     UPDATE enrollments
     SET enrollment_status = 'cancelled'
     WHERE payment_status = 'unpaid'
       AND enrollment_status IN ('pending', 'confirmed')
-      AND created_at <= datetime('now', '-24 hours')
+      AND created_at <= datetime('now', '-48 hours')
   `).run();
 
   return NextResponse.json({

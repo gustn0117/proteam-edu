@@ -1,7 +1,54 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+interface Enrollment {
+  id: string;
+  course_id: string;
+  course_name: string;
+  start_date: string;
+  end_date: string;
+  duration: string;
+  location: string;
+  fee: number;
+  payment_status: string;
+  enrollment_status: string;
+  created_at: string;
+}
 
 export default function PaymentPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d?.user) { setLoading(false); return; }
+        setUser(d.user);
+        return fetch("/api/enrollments").then((r) => r.json());
+      })
+      .then((d) => { if (d?.enrollments) setEnrollments(d.enrollments); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const formatDate = (d: string) => d?.replace(/-/g, ".");
+  const formatDateRange = (start: string, end: string) =>
+    start === end ? formatDate(start) : `${formatDate(start)} ~ ${formatDate(end)}`;
+
+  // 결제 대상: 유료 + 미결제 + 취소/수료 아님
+  const payable = enrollments.filter(
+    (e) => e.fee > 0 && e.payment_status === "unpaid" &&
+      e.enrollment_status !== "cancelled" && e.enrollment_status !== "completed" &&
+      e.enrollment_status !== "refund_requested"
+  );
+
   return (
     <div>
       <section className="relative overflow-hidden">
@@ -36,8 +83,7 @@ export default function PaymentPage() {
             </h2>
 
             <p className="text-gray-500 text-sm mb-6">
-              교육비용 결제는 아래 두 가지 방법으로 가능합니다. 교육과정 페이지에서 원하는 과정을 선택하신 후,
-              결제창에서 신용카드 또는 가상계좌를 선택하실 수 있습니다.
+              교육비용 결제는 아래 두 가지 방법으로 가능합니다. 결제창에서 신용카드 또는 가상계좌를 선택하실 수 있습니다.
             </p>
 
             <div className="space-y-5">
@@ -77,17 +123,60 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            {/* 결제하러 가기 */}
-            <div className="mt-8 text-center">
-              <Link
-                href="/courses"
-                className="inline-flex items-center gap-2 bg-gold text-primary-dark px-6 py-3 rounded-xl font-semibold hover:bg-gold-light transition-all shadow-sm hover:shadow-md shadow-gold/20"
-              >
-                교육과정 보러가기
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </Link>
+            {/* 결제하기 - 미결제 신청 목록 */}
+            <div className="mt-10 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-primary" />
+                결제할 교육과정
+              </h3>
+
+              {loading ? (
+                <div className="py-10 text-center">
+                  <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin mx-auto" />
+                </div>
+              ) : !user ? (
+                <div className="bg-slate-50 border border-slate-100 rounded-xl p-8 text-center">
+                  <p className="text-gray-500 mb-4">결제하려면 로그인이 필요합니다.</p>
+                  <Link href="/login" className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-light transition-colors">
+                    로그인
+                  </Link>
+                </div>
+              ) : payable.length === 0 ? (
+                <div className="bg-slate-50 border border-slate-100 rounded-xl p-8 text-center">
+                  <p className="text-gray-500 mb-4">결제할 교육과정이 없습니다.</p>
+                  <Link href="/courses" className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-light transition-colors">
+                    교육과정 보러가기
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {payable.map((e) => (
+                    <div key={e.id} className="border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="font-bold text-gray-900">{e.course_name}</p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          {formatDateRange(e.start_date, e.end_date)} · {e.duration} · {e.location}
+                        </p>
+                        <p className="text-lg font-extrabold text-primary mt-2">
+                          {e.fee.toLocaleString()}<span className="text-sm font-medium ml-0.5">원</span>
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => router.push(`/checkout?courseId=${e.course_id}`)}
+                        className="bg-gold text-primary-dark px-6 py-3 rounded-xl font-bold text-sm hover:bg-gold-light transition-all shadow-sm hover:shadow-md shadow-gold/20 shrink-0"
+                      >
+                        결제하기
+                      </button>
+                    </div>
+                  ))}
+                  <p className="text-xs text-amber-600 mt-2">
+                    ※ 교육 신청 후 2일 이내에 결제하지 않으면 신청이 자동 취소됩니다.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* 서비스 제공 및 환불 정책 */}
