@@ -69,5 +69,11 @@ export async function POST(req: NextRequest) {
     `INSERT INTO enrollments (id, user_id, course_id) VALUES (?, ?, ?)`
   ).run(id, user.id, course_id);
 
+  // 정원 도달 시 자동 접수마감
+  const newCount = (enrolledCount.count as number) + 1;
+  if (newCount >= course.capacity) {
+    db.prepare("UPDATE courses SET status = 'closed' WHERE id = ?").run(course_id);
+  }
+
   return NextResponse.json({ success: true, id });
 }

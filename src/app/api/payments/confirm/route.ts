@@ -9,7 +9,7 @@ const SECRET_KEY = process.env.TOSS_SECRET_KEY || "test_sk_docs_OaPz8L5KdmQXkzRz
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { paymentKey, orderId, amount, courseId, buyerName, buyerEmail, buyerPhone, organization } = body;
+  const { paymentKey, orderId, amount, courseId, buyerName, buyerEmail, buyerPhone, organization, department } = body;
 
   if (!paymentKey || !orderId || !amount || !courseId) {
     return NextResponse.json({ error: "필수 정보가 누락되었습니다." }, { status: 400 });
@@ -58,14 +58,30 @@ export async function POST(req: NextRequest) {
       const bcrypt = require("bcryptjs");
       const tempPw = bcrypt.hashSync(uuidv4(), 10);
       db.prepare(
-        `INSERT INTO users (id, email, password, name, organization, phone, role)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`
-      ).run(userId, buyerEmail, tempPw, buyerName || "비회원", organization || "", buyerPhone || "", "user");
+        `INSERT INTO users (id, email, password, name, organization, department, phone, role)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+      ).run(userId, buyerEmail, tempPw, buyerName || "비회원", organization || "", department || "", buyerPhone || "", "user");
     }
   }
 
   if (!userId) {
     return NextResponse.json({ error: "사용자 정보를 처리할 수 없습니다." }, { status: 400 });
+  }
+
+  // Update existing user's organization/department/phone with the buyer info from checkout
+  if (userId && (organization || department || buyerPhone)) {
+    db.prepare(
+      `UPDATE users SET
+        organization = CASE WHEN ? != '' THEN ? ELSE organization END,
+        department = CASE WHEN ? != '' THEN ? ELSE department END,
+        phone = CASE WHEN ? != '' THEN ? ELSE phone END
+       WHERE id = ?`
+    ).run(
+      organization || "", organization || "",
+      department || "", department || "",
+      buyerPhone || "", buyerPhone || "",
+      userId
+    );
   }
 
   // Create or update enrollment, store paymentKey + orderId for webhook tracking

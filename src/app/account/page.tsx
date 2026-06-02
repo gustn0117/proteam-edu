@@ -9,10 +9,18 @@ interface User {
   name: string;
   email: string;
   organization: string;
+  department: string;
   phone: string;
   newsletter: number;
   role: string;
 }
+
+const formatPhone = (input: string) => {
+  const digits = input.replace(/[^0-9]/g, "").slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+};
 
 export default function AccountPage() {
   const router = useRouter();
@@ -22,6 +30,7 @@ export default function AccountPage() {
   // Profile form
   const [name, setName] = useState("");
   const [organization, setOrganization] = useState("");
+  const [department, setDepartment] = useState("");
   const [phone, setPhone] = useState("");
   const [newsletter, setNewsletter] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
@@ -40,7 +49,8 @@ export default function AccountPage() {
         setUser(d.user);
         setName(d.user.name || "");
         setOrganization(d.user.organization || "");
-        setPhone(d.user.phone || "");
+        setDepartment(d.user.department || "");
+        setPhone(formatPhone(d.user.phone || ""));
         setNewsletter(!!d.user.newsletter);
       })
       .catch(() => router.push("/login"))
@@ -55,7 +65,7 @@ export default function AccountPage() {
       const res = await fetch("/api/auth/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, organization, phone, newsletter }),
+        body: JSON.stringify({ name, organization, department, phone, newsletter }),
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error || "오류가 발생했습니다."); return; }
@@ -137,14 +147,22 @@ export default function AccountPage() {
               <label className={labelCls}>이름 *</label>
               <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={inputCls} />
             </div>
-            <div>
-              <label className={labelCls}>소속</label>
-              <input type="text" value={organization} onChange={(e) => setOrganization(e.target.value)} className={inputCls} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>소속</label>
+                <input type="text" value={organization} onChange={(e) => setOrganization(e.target.value)}
+                  placeholder="회사명/기관명" className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>부서</label>
+                <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="부서명" className={inputCls} />
+              </div>
             </div>
             <div>
               <label className={labelCls}>연락처</label>
-              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-                placeholder="010-1234-5678" className={inputCls} />
+              <input type="tel" value={phone} onChange={(e) => setPhone(formatPhone(e.target.value))}
+                placeholder="010-1234-5678" maxLength={13} className={inputCls} />
             </div>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)}

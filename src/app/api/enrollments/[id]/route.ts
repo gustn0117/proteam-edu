@@ -34,5 +34,20 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   }
 
   db.prepare("UPDATE enrollments SET enrollment_status = 'cancelled' WHERE id = ?").run(id);
+
+  // 정원 미달 시 마감 → 접수중 자동 재개
+  reopenCourseIfBelowCapacity(enrollment.course_id);
+
   return NextResponse.json({ success: true, message: "교육 신청이 취소되었습니다." });
+}
+
+function reopenCourseIfBelowCapacity(courseId: string) {
+  const course = db.prepare("SELECT capacity, status FROM courses WHERE id = ?").get(courseId) as any;
+  if (!course || course.status !== "closed") return;
+  const cnt = db.prepare(
+    "SELECT COUNT(*) as count FROM enrollments WHERE course_id = ? AND enrollment_status != 'cancelled'"
+  ).get(courseId) as any;
+  if (cnt.count < course.capacity) {
+    db.prepare("UPDATE courses SET status = 'accepting' WHERE id = ?").run(courseId);
+  }
 }

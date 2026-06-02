@@ -10,15 +10,15 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
   }
 
-  const { name, organization, phone, newsletter } = await req.json();
+  const { name, organization, department, phone, newsletter } = await req.json();
 
   if (!name || !name.trim()) {
     return NextResponse.json({ error: "이름을 입력해주세요." }, { status: 400 });
   }
 
   db.prepare(
-    `UPDATE users SET name = ?, organization = ?, phone = ?, newsletter = ? WHERE id = ?`
-  ).run(name.trim(), organization || "", phone || "", newsletter ? 1 : 0, user.id);
+    `UPDATE users SET name = ?, organization = ?, department = ?, phone = ?, newsletter = ? WHERE id = ?`
+  ).run(name.trim(), organization || "", department || "", phone || "", newsletter ? 1 : 0, user.id);
 
   return NextResponse.json({ success: true });
 }

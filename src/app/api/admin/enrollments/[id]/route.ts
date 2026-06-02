@@ -42,6 +42,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   values.push(id);
   db.prepare(`UPDATE enrollments SET ${updates.join(", ")} WHERE id = ?`).run(...values);
 
+  // 신청상태가 변경되면 강좌 정원 재계산 → 마감/접수중 자동 전환
+  syncCourseStatusForEnrollment(id);
+
   return NextResponse.json({ success: true });
 }
 
@@ -52,7 +55,28 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   }
 
   const { id } = await params;
+  const enr = db.prepare("SELECT course_id FROM enrollments WHERE id = ?").get(id) as any;
   db.prepare("DELETE FROM enrollments WHERE id = ?").run(id);
 
+  if (enr?.course_id) syncCourseStatus(enr.course_id);
+
   return NextResponse.json({ success: true });
+}
+
+function syncCourseStatusForEnrollment(enrollmentId: string) {
+  const enr = db.prepare("SELECT course_id FROM enrollments WHERE id = ?").get(enrollmentId) as any;
+  if (enr?.course_id) syncCourseStatus(enr.course_id);
+}
+
+function syncCourseStatus(courseId: string) {
+  const course = db.prepare("SELECT capacity, status FROM courses WHERE id = ?").get(courseId) as any;
+  if (!course) return;
+  const cnt = db.prepare(
+    "SELECT COUNT(*) as count FROM enrollments WHERE course_id = ? AND enrollment_status != 'cancelled'"
+  ).get(courseId) as any;
+  if (cnt.count >= course.capacity && course.status === "accepting") {
+    db.prepare("UPDATE courses SET status = 'closed' WHERE id = ?").run(courseId);
+  } else if (cnt.count < course.capacity && course.status === "closed") {
+    db.prepare("UPDATE courses SET status = 'accepting' WHERE id = ?").run(courseId);
+  }
 }

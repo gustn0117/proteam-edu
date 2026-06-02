@@ -34,7 +34,16 @@ function CheckoutContent() {
   const [buyerEmail, setBuyerEmail] = useState("");
   const [buyerPhone, setBuyerPhone] = useState("");
   const [organization, setOrganization] = useState("");
+  const [department, setDepartment] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  // 010-XXXX-XXXX 자동 하이픈
+  const formatPhone = (input: string) => {
+    const digits = input.replace(/[^0-9]/g, "").slice(0, 11);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+  };
 
   useEffect(() => {
     if (!courseId) {
@@ -54,6 +63,9 @@ function CheckoutContent() {
           setUser(d.user);
           setBuyerName(d.user.name || "");
           setBuyerEmail(d.user.email || "");
+          setBuyerPhone(formatPhone(d.user.phone || ""));
+          setOrganization(d.user.organization || "");
+          setDepartment(d.user.department || "");
         }
       })
       .catch(() => {});
@@ -79,6 +91,10 @@ function CheckoutContent() {
       alert("성함, 이메일, 연락처를 모두 입력해 주세요.");
       return;
     }
+    if (!organization.trim()) {
+      alert("소속을 입력해 주세요.");
+      return;
+    }
     if (!agreeTerms) {
       alert("환불 정책에 동의해 주세요.");
       return;
@@ -86,6 +102,14 @@ function CheckoutContent() {
     if (!widgets || !course) return;
 
     const orderId = `proteam_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const successParams = new URLSearchParams({
+      courseId: course.id,
+      buyerName,
+      buyerEmail,
+      buyerPhone,
+      organization,
+      department,
+    });
 
     try {
       await widgets.requestPayment({
@@ -94,8 +118,9 @@ function CheckoutContent() {
         customerName: buyerName,
         customerEmail: buyerEmail,
         customerMobilePhone: buyerPhone.replace(/-/g, ""),
-        successUrl: `${window.location.origin}/checkout/success?courseId=${course.id}&buyerName=${encodeURIComponent(buyerName)}&buyerEmail=${encodeURIComponent(buyerEmail)}&buyerPhone=${encodeURIComponent(buyerPhone)}&organization=${encodeURIComponent(organization)}`,
+        successUrl: `${window.location.origin}/checkout/success?${successParams.toString()}`,
         failUrl: `${window.location.origin}/checkout/fail`,
+        useEscrow: false,
       });
     } catch (err: any) {
       if (err?.code === "USER_CANCEL") return;
@@ -177,8 +202,8 @@ function CheckoutContent() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">연락처 *</label>
-              <input type="tel" value={buyerPhone} onChange={(e) => setBuyerPhone(e.target.value)}
-                placeholder="010-1234-5678"
+              <input type="tel" value={buyerPhone} onChange={(e) => setBuyerPhone(formatPhone(e.target.value))}
+                placeholder="010-1234-5678" maxLength={13}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
             </div>
             <div className="sm:col-span-2">
@@ -186,9 +211,16 @@ function CheckoutContent() {
               <input type="email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
             </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">소속 (선택)</label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">소속 *</label>
               <input type="text" value={organization} onChange={(e) => setOrganization(e.target.value)}
+                placeholder="회사명/기관명" required
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">부서 (선택)</label>
+              <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)}
+                placeholder="부서명"
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
             </div>
           </div>

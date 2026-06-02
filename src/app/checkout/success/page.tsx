@@ -27,6 +27,7 @@ function SuccessContent() {
     const buyerEmail = searchParams.get("buyerEmail");
     const buyerPhone = searchParams.get("buyerPhone");
     const organization = searchParams.get("organization");
+    const department = searchParams.get("department");
 
     if (!paymentKey || !orderId || !amount || !courseId) {
       setStatus("error");
@@ -37,7 +38,7 @@ function SuccessContent() {
     fetch("/api/payments/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paymentKey, orderId, amount, courseId, buyerName, buyerEmail, buyerPhone, organization }),
+      body: JSON.stringify({ paymentKey, orderId, amount, courseId, buyerName, buyerEmail, buyerPhone, organization, department }),
     })
       .then((r) => r.json())
       .then((d) => {
