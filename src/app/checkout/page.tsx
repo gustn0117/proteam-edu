@@ -120,7 +120,6 @@ function CheckoutContent() {
         customerMobilePhone: buyerPhone.replace(/-/g, ""),
         successUrl: `${window.location.origin}/checkout/success?${successParams.toString()}`,
         failUrl: `${window.location.origin}/checkout/fail`,
-        useEscrow: false,
       });
     } catch (err: any) {
       if (err?.code === "USER_CANCEL") return;
