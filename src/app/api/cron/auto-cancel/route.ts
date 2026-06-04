@@ -30,12 +30,13 @@ export async function GET(req: NextRequest) {
 
   // 정원 미달 시 마감 → 접수중 자동 재개
   for (const { course_id } of affectedCourses) {
-    const course = db.prepare("SELECT capacity, status FROM courses WHERE id = ?").get(course_id) as any;
+    const course = db.prepare("SELECT capacity, capacity_internal, status FROM courses WHERE id = ?").get(course_id) as any;
     if (!course || course.status !== "closed") continue;
+    const limit = (course.capacity_internal && course.capacity_internal > 0) ? course.capacity_internal : course.capacity;
     const cnt = db.prepare(
       "SELECT COUNT(*) as count FROM enrollments WHERE course_id = ? AND enrollment_status != 'cancelled'"
     ).get(course_id) as any;
-    if (cnt.count < course.capacity) {
+    if (cnt.count < limit) {
       db.prepare("UPDATE courses SET status = 'accepting' WHERE id = ?").run(course_id);
     }
   }

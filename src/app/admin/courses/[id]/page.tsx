@@ -220,10 +220,16 @@ export default function AdminCourseEditPage() {
               <input type="text" required value={form.duration} onChange={(e) => set("duration", e.target.value)} className={inputCls} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">모집정원</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">공개 모집정원 (수강생 노출)</label>
               <input type="number" required value={form.capacity} onChange={(e) => set("capacity", +e.target.value)} className={inputCls} />
+              <p className="text-xs text-gray-400 mt-1">사이트에 표시되는 정원 (예: 30명)</p>
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">내부 한계 정원 (실제 마감 기준)</label>
+              <input type="number" value={form.capacity_internal || 0} onChange={(e) => set("capacity_internal", +e.target.value)} className={inputCls} />
+              <p className="text-xs text-gray-400 mt-1">실제 마감 기준 (예: 50명). 0이면 공개 정원과 동일하게 동작.</p>
+            </div>
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">교육장소</label>
               <input type="text" required value={form.location} onChange={(e) => set("location", e.target.value)} className={inputCls} />
             </div>

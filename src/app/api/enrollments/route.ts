@@ -60,7 +60,10 @@ export async function POST(req: NextRequest) {
     )
     .get(course_id) as any;
 
-  if (enrolledCount.count >= course.capacity) {
+  // 실제 마감 정원: capacity_internal이 0보다 크면 그것, 아니면 공개 정원(capacity)
+  const limit = (course.capacity_internal && course.capacity_internal > 0) ? course.capacity_internal : course.capacity;
+
+  if (enrolledCount.count >= limit) {
     return NextResponse.json({ error: "모집 정원이 초과되었습니다." }, { status: 400 });
   }
 
@@ -71,7 +74,7 @@ export async function POST(req: NextRequest) {
 
   // 정원 도달 시 자동 접수마감
   const newCount = (enrolledCount.count as number) + 1;
-  if (newCount >= course.capacity) {
+  if (newCount >= limit) {
     db.prepare("UPDATE courses SET status = 'closed' WHERE id = ?").run(course_id);
   }
 

@@ -70,6 +70,9 @@ function getDb() {
     if (!courseCols.find((c) => c.name === "location_map_url")) {
       db.exec("ALTER TABLE courses ADD COLUMN location_map_url TEXT DEFAULT ''");
     }
+    if (!courseCols.find((c) => c.name === "capacity_internal")) {
+      db.exec("ALTER TABLE courses ADD COLUMN capacity_internal INTEGER DEFAULT 0");
+    }
     const enrollCols = db.prepare("PRAGMA table_info(enrollments)").all() as { name: string }[];
     if (!enrollCols.find((c) => c.name === "certificate_name")) {
       db.exec("ALTER TABLE enrollments ADD COLUMN certificate_name TEXT DEFAULT ''");
@@ -79,6 +82,9 @@ function getDb() {
     }
     if (!enrollCols.find((c) => c.name === "order_id")) {
       db.exec("ALTER TABLE enrollments ADD COLUMN order_id TEXT DEFAULT ''");
+    }
+    if (!enrollCols.find((c) => c.name === "refund_requested_at")) {
+      db.exec("ALTER TABLE enrollments ADD COLUMN refund_requested_at TEXT DEFAULT ''");
     }
   } catch {
     // columns may already exist

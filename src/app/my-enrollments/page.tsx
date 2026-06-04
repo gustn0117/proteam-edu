@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatKstDateTime } from "@/lib/format";
 
 interface Enrollment {
   id: string;
@@ -17,11 +18,12 @@ interface Enrollment {
   enrollment_status: string;
   certificate_url: string;
   created_at: string;
+  refund_requested_at?: string;
 }
 
 export default function MyEnrollmentsPage() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [user, setUser] = useState<any>(null);
+  const [, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -37,22 +39,6 @@ export default function MyEnrollmentsPage() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [router]);
-
-  const handleCancel = async (id: string) => {
-    if (!confirm("정말 취소하시겠습니까?")) return;
-    try {
-      const res = await fetch(`/api/enrollments/${id}`, { method: "DELETE" });
-      const data = await res.json();
-      if (!res.ok) { alert(data.error || "오류가 발생했습니다."); return; }
-      alert(data.message);
-      setEnrollments((prev) => prev.map((e) => e.id === id
-        ? { ...e, enrollment_status: data.message.includes("환불") ? "refund_requested" : "cancelled" }
-        : e
-      ));
-    } catch {
-      alert("요청 중 오류가 발생했습니다.");
-    }
-  };
 
   const paymentLabel = (s: string) => {
     switch (s) {
@@ -92,11 +78,6 @@ export default function MyEnrollmentsPage() {
     }
   };
 
-  const canCancel = (e: Enrollment) =>
-    e.enrollment_status !== "cancelled" &&
-    e.enrollment_status !== "refund_requested" &&
-    e.enrollment_status !== "completed";
-
   const formatDate = (d: string) => d?.replace(/-/g, ".");
 
   const formatDateRange = (start: string, end: string) => {
@@ -118,7 +99,7 @@ export default function MyEnrollmentsPage() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">교육신청 확인 / 취소</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">교육신청 확인</h1>
             <nav className="hidden sm:flex items-center gap-1.5 text-sm text-gray-400">
               <Link href="/" className="hover:text-primary transition-colors">홈</Link>
               <span>&gt;</span>
@@ -131,7 +112,6 @@ export default function MyEnrollmentsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
-        {/* Section title */}
         <h2 className="text-base font-bold text-primary mb-4 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-primary" />
           나의 교육신청 내역
@@ -154,12 +134,10 @@ export default function MyEnrollmentsPage() {
               {enrollments.map((e) => (
                 <div key={e.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                   <div className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <Link href={`/courses/${e.course_id}`} className="font-semibold text-gray-900 hover:text-primary transition-colors text-sm">
-                        {e.course_name}
-                      </Link>
-                    </div>
-                    <div className="text-xs text-gray-400 mb-3">
+                    <Link href={`/courses/${e.course_id}`} className="font-semibold text-gray-900 hover:text-primary transition-colors text-sm">
+                      {e.course_name}
+                    </Link>
+                    <div className="text-xs text-gray-400 mt-1 mb-3">
                       {formatDateRange(e.start_date, e.end_date)}
                     </div>
                     <div className="grid grid-cols-3 gap-2 text-xs mb-3">
@@ -176,22 +154,19 @@ export default function MyEnrollmentsPage() {
                         <span className={statusColor(e.enrollment_status)}>{statusLabel(e.enrollment_status)}</span>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <div>
-                        {e.enrollment_status === "completed" ? (
-                          <Link href={`/certificate/${e.id}`} className="text-primary text-xs font-semibold hover:underline">
-                            수료증 보기
-                          </Link>
-                        ) : (
-                          <span className="text-gray-300 text-xs">수료증 미발급</span>
-                        )}
-                      </div>
-                      {canCancel(e) && (
-                        <button onClick={() => handleCancel(e.id)} className="bg-gray-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-gray-700 transition-colors">
-                          {e.payment_status === "paid" ? "환불신청" : "취소"}
-                        </button>
+                    <div className="text-xs text-gray-400 space-y-0.5 pt-3 border-t border-gray-100">
+                      <div>신청일시: <span className="text-gray-600">{formatKstDateTime(e.created_at)}</span></div>
+                      {e.refund_requested_at && (
+                        <div>환불요청: <span className="text-orange-500">{formatKstDateTime(e.refund_requested_at)}</span></div>
                       )}
                     </div>
+                    {e.enrollment_status === "completed" && (
+                      <div className="mt-3 pt-3 border-t border-gray-100">
+                        <Link href={`/certificate/${e.id}`} className="text-primary text-xs font-semibold hover:underline">
+                          수료증 보기
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -208,9 +183,9 @@ export default function MyEnrollmentsPage() {
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">수강료</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">결제상황</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">신청상태</th>
-                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">신청일</th>
+                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">신청일시 (KST)</th>
+                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">환불요청 (KST)</th>
                       <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">수료증</th>
-                      <th className="px-4 py-3.5 text-center font-semibold whitespace-nowrap">취소/환불</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -233,23 +208,17 @@ export default function MyEnrollmentsPage() {
                         <td className="px-4 py-3.5 text-center">
                           <span className={statusColor(e.enrollment_status)}>{statusLabel(e.enrollment_status)}</span>
                         </td>
-                        <td className="px-4 py-3.5 text-center text-gray-500 whitespace-nowrap">
-                          {formatDate((e.created_at?.split("T")[0] || e.created_at?.split(" ")[0]) ?? "")}
+                        <td className="px-4 py-3.5 text-center text-gray-500 whitespace-nowrap text-xs">
+                          {formatKstDateTime(e.created_at)}
+                        </td>
+                        <td className="px-4 py-3.5 text-center text-orange-500 whitespace-nowrap text-xs">
+                          {e.refund_requested_at ? formatKstDateTime(e.refund_requested_at) : <span className="text-gray-300">-</span>}
                         </td>
                         <td className="px-4 py-3.5 text-center">
                           {e.enrollment_status === "completed" ? (
                             <Link href={`/certificate/${e.id}`} className="text-primary font-semibold hover:underline text-xs">
                               보기
                             </Link>
-                          ) : (
-                            <span className="text-gray-300 text-xs">-</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3.5 text-center">
-                          {canCancel(e) ? (
-                            <button onClick={() => handleCancel(e.id)} className="bg-gray-600 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-gray-700 transition-colors">
-                              {e.payment_status === "paid" ? "환불신청" : "취소"}
-                            </button>
                           ) : (
                             <span className="text-gray-300 text-xs">-</span>
                           )}
@@ -261,7 +230,6 @@ export default function MyEnrollmentsPage() {
               </div>
             </div>
 
-            {/* Result count */}
             <p className="mt-3 text-xs text-gray-400">
               총 {enrollments.length}건
             </p>

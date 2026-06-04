@@ -190,8 +190,56 @@ export default function CoursesPage() {
           </p>
         )}
 
-        {/* Table */}
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        {/* Mobile Card Layout */}
+        <div className="md:hidden space-y-3">
+          {filtered.length === 0 ? (
+            <div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-400">
+              등록된 교육과정이 없습니다.
+            </div>
+          ) : (
+            filtered.map((c) => (
+              <div key={c.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded ${c.category === "offline" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>
+                      {c.category === "offline" ? "오프라인" : "온라인"}
+                    </span>
+                    {c.course_type && (
+                      <span className="text-[11px] font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">{c.course_type}</span>
+                    )}
+                  </div>
+                  {c.status === "accepting" ? (
+                    <span className="text-[11px] font-semibold text-primary">접수중</span>
+                  ) : (
+                    <span className="text-[11px] font-semibold text-gray-400">접수마감</span>
+                  )}
+                </div>
+                <Link
+                  href={`/courses/${c.id}`}
+                  className="block font-semibold text-gray-900 hover:text-primary transition-colors text-sm mb-2"
+                >
+                  {c.name}
+                </Link>
+                <div className="text-xs text-gray-500 space-y-0.5 mb-3">
+                  <div>교육기간: {formatDateRange(c.start_date, c.end_date)}</div>
+                  <div>모집정원: {c.capacity}명</div>
+                </div>
+                {c.status === "accepting" ? (
+                  <button
+                    onClick={() => handleEnroll(c.id)}
+                    disabled={enrolling === c.id}
+                    className="w-full bg-gray-600 text-white py-2 rounded text-xs font-medium hover:bg-gray-700 transition-colors disabled:opacity-50"
+                  >
+                    {enrolling === c.id ? "처리중..." : "신청"}
+                  </button>
+                ) : null}
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden md:block bg-white border border-gray-200 rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

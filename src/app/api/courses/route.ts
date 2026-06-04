@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
   const id = uuidv4();
 
   db.prepare(
-    `INSERT INTO courses (id, name, start_date, end_date, duration, capacity, location, status, category, course_type, fee, description)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO courses (id, name, start_date, end_date, duration, capacity, capacity_internal, location, status, category, course_type, fee, description)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     id,
     body.name,
@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
     body.end_date,
     body.duration,
     body.capacity,
+    body.capacity_internal || 0,
     body.location,
     body.status || "accepting",
     body.category || "offline",

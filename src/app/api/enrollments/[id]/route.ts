@@ -29,7 +29,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
   if (enrollment.payment_status === "paid") {
     // Paid enrollment → refund request regardless of enrollment_status
-    db.prepare("UPDATE enrollments SET enrollment_status = 'refund_requested' WHERE id = ?").run(id);
+    db.prepare("UPDATE enrollments SET enrollment_status = 'refund_requested', refund_requested_at = datetime('now') WHERE id = ?").run(id);
     return NextResponse.json({ success: true, message: "환불 신청이 접수되었습니다." });
   }
 
@@ -42,12 +42,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 }
 
 function reopenCourseIfBelowCapacity(courseId: string) {
-  const course = db.prepare("SELECT capacity, status FROM courses WHERE id = ?").get(courseId) as any;
+  const course = db.prepare("SELECT capacity, capacity_internal, status FROM courses WHERE id = ?").get(courseId) as any;
   if (!course || course.status !== "closed") return;
+  const limit = (course.capacity_internal && course.capacity_internal > 0) ? course.capacity_internal : course.capacity;
   const cnt = db.prepare(
     "SELECT COUNT(*) as count FROM enrollments WHERE course_id = ? AND enrollment_status != 'cancelled'"
   ).get(courseId) as any;
-  if (cnt.count < course.capacity) {
+  if (cnt.count < limit) {
     db.prepare("UPDATE courses SET status = 'accepting' WHERE id = ?").run(courseId);
   }
 }

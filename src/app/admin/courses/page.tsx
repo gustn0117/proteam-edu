@@ -141,8 +141,14 @@ export default function AdminCoursesPage() {
             <input type="text" required value={form.duration} onChange={(e) => set("duration", e.target.value)} placeholder="예: 1일, 6시간" className={inputCls} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">모집정원</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">공개 모집정원</label>
             <input type="number" required value={form.capacity} onChange={(e) => set("capacity", +e.target.value)} className={inputCls} />
+            <p className="text-xs text-gray-400 mt-1">사이트 표시용</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">내부 한계 정원</label>
+            <input type="number" value={(form as any).capacity_internal || 0} onChange={(e) => set("capacity_internal" as any, +e.target.value)} className={inputCls} />
+            <p className="text-xs text-gray-400 mt-1">실제 마감 기준 (0이면 공개정원과 동일)</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">교육장소</label>

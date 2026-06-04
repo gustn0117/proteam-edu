@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { formatKstDateTime } from "@/lib/format";
 
 interface Enrollment {
   id: string;
@@ -14,6 +15,7 @@ interface Enrollment {
   certificate_url: string;
   course_name: string;
   created_at: string;
+  refund_requested_at?: string;
 }
 
 export default function AdminCourseEnrollmentsPage() {
@@ -97,7 +99,7 @@ export default function AdminCourseEnrollmentsPage() {
   };
 
   const exportCSV = () => {
-    const headers = ["이름", "소속", "이메일", "휴대전화", "비용납부", "신청상태", "신청일"];
+    const headers = ["이름", "소속", "이메일", "휴대전화", "비용납부", "신청상태", "신청일시(KST)", "환불요청(KST)"];
     const rows = filtered.map((e) => [
       e.user_name,
       e.organization || "",
@@ -105,7 +107,8 @@ export default function AdminCourseEnrollmentsPage() {
       e.user_phone || "",
       e.payment_status === "paid" ? "결제완료" : "결제 미완료",
       e.enrollment_status === "completed" ? "수료" : e.enrollment_status === "confirmed" ? "확인완료" : e.enrollment_status === "pending" ? "대기중" : e.enrollment_status === "cancelled" ? "취소됨" : "환불신청",
-      formatDateTime(e.created_at),
+      formatKstDateTime(e.created_at),
+      e.refund_requested_at ? formatKstDateTime(e.refund_requested_at) : "",
     ]);
     const bom = "\uFEFF";
     const csv = bom + [headers, ...rows].map((r) => r.map((v) => `"${v}"`).join(",")).join("\n");
@@ -118,11 +121,7 @@ export default function AdminCourseEnrollmentsPage() {
     URL.revokeObjectURL(url);
   };
 
-  const formatDateTime = (d: string) => {
-    if (!d) return "-";
-    const date = d.split("T")[0] || d.split(" ")[0];
-    return date?.replace(/-/g, ".");
-  };
+  const formatDateTime = (d: string) => formatKstDateTime(d) || "-";
 
   const selectCls = "px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer";
 
@@ -225,7 +224,8 @@ export default function AdminCourseEnrollmentsPage() {
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
-                  <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">신청일</th>
+                  <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">신청일시 (KST)</th>
+                  <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">환불요청 (KST)</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">삭제</th>
                 </tr>
               </thead>
@@ -288,6 +288,7 @@ export default function AdminCourseEnrollmentsPage() {
                       )}
                     </td>
                     <td className="px-4 py-4 text-gray-400 text-xs whitespace-nowrap">{formatDateTime(e.created_at)}</td>
+                    <td className="px-4 py-4 text-orange-500 text-xs whitespace-nowrap">{e.refund_requested_at ? formatDateTime(e.refund_requested_at) : <span className="text-gray-300">-</span>}</td>
                     <td className="px-4 py-4 text-center">
                       <button onClick={() => deleteEnrollment(e.id)}
                         className="text-red-400 hover:text-red-600 transition-colors">

@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   if (courseId) {
     enrollments = db
       .prepare(
-        `SELECT e.*, u.name as user_name, u.organization, u.email as user_email, u.phone as user_phone,
+        `SELECT e.*, u.name as user_name, u.organization, u.email as user_email, u.phone as user_phone, u.department,
                 c.name as course_name, c.start_date, c.end_date
          FROM enrollments e
          JOIN users u ON e.user_id = u.id
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
   } else {
     enrollments = db
       .prepare(
-        `SELECT e.*, u.name as user_name, u.organization, u.email as user_email, u.phone as user_phone,
+        `SELECT e.*, u.name as user_name, u.organization, u.email as user_email, u.phone as user_phone, u.department,
                 c.name as course_name, c.start_date, c.end_date
          FROM enrollments e
          JOIN users u ON e.user_id = u.id

@@ -69,14 +69,15 @@ function syncCourseStatusForEnrollment(enrollmentId: string) {
 }
 
 function syncCourseStatus(courseId: string) {
-  const course = db.prepare("SELECT capacity, status FROM courses WHERE id = ?").get(courseId) as any;
+  const course = db.prepare("SELECT capacity, capacity_internal, status FROM courses WHERE id = ?").get(courseId) as any;
   if (!course) return;
+  const limit = (course.capacity_internal && course.capacity_internal > 0) ? course.capacity_internal : course.capacity;
   const cnt = db.prepare(
     "SELECT COUNT(*) as count FROM enrollments WHERE course_id = ? AND enrollment_status != 'cancelled'"
   ).get(courseId) as any;
-  if (cnt.count >= course.capacity && course.status === "accepting") {
+  if (cnt.count >= limit && course.status === "accepting") {
     db.prepare("UPDATE courses SET status = 'closed' WHERE id = ?").run(courseId);
-  } else if (cnt.count < course.capacity && course.status === "closed") {
+  } else if (cnt.count < limit && course.status === "closed") {
     db.prepare("UPDATE courses SET status = 'accepting' WHERE id = ?").run(courseId);
   }
 }
