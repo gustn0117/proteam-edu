@@ -15,6 +15,7 @@ interface CertificateData {
   duration: string;
   location: string;
   completed_at: string;
+  cert_number: string;
 }
 
 export default function CertificatePage() {
@@ -44,8 +45,6 @@ export default function CertificatePage() {
     return `${y}년 ${parseInt(m)}월 ${parseInt(day)}일`;
   };
 
-  const formatDateShort = (d: string) => d?.replace(/-/g, ".");
-
   const todayFormatted = () => {
     const now = new Date();
     return `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
@@ -73,8 +72,6 @@ export default function CertificatePage() {
   }
 
   if (!data) return null;
-
-  const certNumber = `PT-${data.enrollment_id.slice(0, 8).toUpperCase()}`;
 
   return (
     <div className="min-h-screen bg-gray-200 py-8 print:bg-white print:py-0">
@@ -120,49 +117,49 @@ export default function CertificatePage() {
           <div className="absolute inset-[48px] flex flex-col items-center justify-between py-8 md:py-12">
 
             {/* Certificate number */}
-            <p className="text-[10px] md:text-xs text-gray-400 tracking-widest self-end">
-              제 {certNumber} 호
+            <p className="text-sm md:text-base text-gray-500 tracking-widest self-end">
+              {data.cert_number}
             </p>
 
             {/* Title */}
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-[0.3em] text-gray-900 mb-2">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-[0.3em] text-gray-900 mb-2">
                 수 료 증
               </h1>
-              <div className="w-24 h-0.5 bg-amber-700/30 mx-auto mt-3" />
+              <div className="w-32 h-0.5 bg-amber-700/30 mx-auto mt-4" />
             </div>
 
             {/* Main content */}
-            <div className="w-full max-w-[520px] space-y-6 md:space-y-8">
+            <div className="w-full max-w-[640px] space-y-7 md:space-y-10">
               {/* Name */}
               <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-wider border-b-2 border-gray-900 pb-2 inline-block px-8">
+                <p className="text-3xl md:text-4xl font-bold text-gray-900 tracking-wider border-b-2 border-gray-900 pb-2 inline-block px-10">
                   {data.display_name}
                 </p>
                 {data.organization && (
-                  <p className="text-xs md:text-sm text-gray-500 mt-2">({data.organization})</p>
+                  <p className="text-base md:text-lg text-gray-500 mt-3">({data.organization})</p>
                 )}
               </div>
 
               {/* Details table */}
-              <div className="space-y-3 md:space-y-4 text-sm md:text-base">
+              <div className="space-y-4 md:space-y-5 text-base md:text-xl">
                 <div className="flex">
-                  <span className="w-28 md:w-32 text-gray-500 font-medium shrink-0">교 육 과 정</span>
+                  <span className="w-32 md:w-40 text-gray-500 font-medium shrink-0">교 육 과 정</span>
                   <span className="text-gray-900 font-semibold">{data.course_name}</span>
                 </div>
                 <div className="flex">
-                  <span className="w-28 md:w-32 text-gray-500 font-medium shrink-0">교 육 기 간</span>
+                  <span className="w-32 md:w-40 text-gray-500 font-medium shrink-0">교 육 기 간</span>
                   <span className="text-gray-900">
                     {formatDate(data.start_date)} ~ {formatDate(data.end_date)}
                   </span>
                 </div>
                 <div className="flex">
-                  <span className="w-28 md:w-32 text-gray-500 font-medium shrink-0">교 육 시 간</span>
+                  <span className="w-32 md:w-40 text-gray-500 font-medium shrink-0">교 육 시 간</span>
                   <span className="text-gray-900">{data.duration}</span>
                 </div>
                 {data.location && (
                   <div className="flex">
-                    <span className="w-28 md:w-32 text-gray-500 font-medium shrink-0">교 육 장 소</span>
+                    <span className="w-32 md:w-40 text-gray-500 font-medium shrink-0">교 육 장 소</span>
                     <span className="text-gray-900">{data.location}</span>
                   </div>
                 )}
@@ -170,29 +167,28 @@ export default function CertificatePage() {
             </div>
 
             {/* Certificate body text */}
-            <div className="text-center max-w-[480px]">
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+            <div className="text-center max-w-[600px]">
+              <p className="text-base md:text-xl text-gray-700 leading-relaxed">
                 위 사람은 상기 교육과정을 성실히 이수하였으므로<br />
                 이 증서를 수여합니다.
               </p>
             </div>
 
             {/* Date */}
-            <p className="text-sm md:text-base text-gray-700">{todayFormatted()}</p>
+            <p className="text-base md:text-xl text-gray-700">{todayFormatted()}</p>
 
             {/* Issuer */}
-            <div className="text-center">
-              <p className="text-lg md:text-xl font-bold text-gray-900 tracking-wider mb-1">
-                ㈜ 프 로 앤 팀
+            <div className="text-center relative">
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-wider inline-block relative">
+                프로앤팀 교육센터장
+                {/* 직인 */}
+                <img
+                  src="/직인.png"
+                  alt="직인"
+                  className="absolute -right-24 md:-right-28 -top-3 w-20 md:w-24 h-20 md:h-24 object-contain"
+                  style={{ mixBlendMode: "multiply" }}
+                />
               </p>
-              <p className="text-xs md:text-sm text-gray-500">PRO&amp;TEAM Co., Ltd.</p>
-              <div className="mt-3 relative inline-block">
-                <p className="text-sm md:text-base font-semibold text-gray-800">대표이사</p>
-                {/* Stamp effect */}
-                <div className="absolute -right-14 -top-3 w-12 h-12 rounded-full border-2 border-red-500/60 flex items-center justify-center rotate-[-8deg]">
-                  <span className="text-red-500/70 text-[10px] font-bold leading-none text-center">프로<br />앤팀</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>

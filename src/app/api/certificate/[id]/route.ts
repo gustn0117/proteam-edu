@@ -57,5 +57,18 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   // Use certificate_name if set by admin, otherwise user_name
   const displayName = data.certificate_name || data.user_name;
-  return NextResponse.json({ certificate: { ...data, display_name: displayName } });
+
+  // 수료증 번호: 제{year}-{4자리 일련번호}호
+  // 일련번호는 같은 해에 완료된 수료증 중 created_at 기준으로 몇 번째인지로 결정
+  const seqRow = db.prepare(`
+    SELECT COUNT(*) AS seq FROM enrollments
+    WHERE enrollment_status = 'completed'
+      AND strftime('%Y', created_at) = strftime('%Y', (SELECT created_at FROM enrollments WHERE id = ?))
+      AND created_at <= (SELECT created_at FROM enrollments WHERE id = ?)
+  `).get(id, id) as { seq: number };
+
+  const year = (data.completed_at || "").slice(0, 4) || new Date().getFullYear().toString();
+  const cert_number = `제${year}-${String(seqRow.seq).padStart(4, "0")}호`;
+
+  return NextResponse.json({ certificate: { ...data, display_name: displayName, cert_number } });
 }
