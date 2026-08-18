@@ -10,6 +10,7 @@ interface Enrollment {
   organization: string;
   user_email: string;
   user_phone: string;
+  patent_no?: string;
   payment_status: string;
   enrollment_status: string;
   certificate_url: string;
@@ -99,12 +100,13 @@ export default function AdminCourseEnrollmentsPage() {
   };
 
   const exportCSV = () => {
-    const headers = ["이름", "소속", "이메일", "휴대전화", "비용납부", "신청상태", "신청일시(KST)", "환불요청(KST)"];
+    const headers = ["이름", "소속", "이메일", "휴대전화", "변리사 등록번호", "비용납부", "신청상태", "신청일시(KST)", "환불요청(KST)"];
     const rows = filtered.map((e) => [
       e.user_name,
       e.organization || "",
       e.user_email,
       e.user_phone || "",
+      e.patent_no || "",
       e.payment_status === "paid" ? "결제완료" : "결제 미완료",
       e.enrollment_status === "completed" ? "수료" : e.enrollment_status === "confirmed" ? "확인완료" : e.enrollment_status === "pending" ? "대기중" : e.enrollment_status === "cancelled" ? "취소됨" : "환불신청",
       formatKstDateTime(e.created_at),
@@ -221,6 +223,7 @@ export default function AdminCourseEnrollmentsPage() {
                   <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">소속</th>
                   <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">이메일</th>
                   <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">휴대전화</th>
+                  <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">변리사 등록번호</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">비용 납부</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">신청 상태</th>
                   <th className="px-4 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">수료증</th>
@@ -236,6 +239,7 @@ export default function AdminCourseEnrollmentsPage() {
                     <td className="px-4 py-4 text-gray-500">{e.organization || "-"}</td>
                     <td className="px-4 py-4 text-gray-500">{e.user_email}</td>
                     <td className="px-4 py-4 text-gray-500 whitespace-nowrap">{e.user_phone || "-"}</td>
+                    <td className="px-4 py-4 text-gray-500 whitespace-nowrap">{e.patent_no || "-"}</td>
                     <td className="px-4 py-4 text-center">
                       <select
                         value={e.payment_status}

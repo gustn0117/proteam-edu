@@ -63,6 +63,9 @@ function getDb() {
     if (!userCols.find((c) => c.name === "department")) {
       db.exec("ALTER TABLE users ADD COLUMN department TEXT DEFAULT ''");
     }
+    if (!userCols.find((c) => c.name === "patent_no")) {
+      db.exec("ALTER TABLE users ADD COLUMN patent_no TEXT DEFAULT ''");
+    }
     const courseCols = db.prepare("PRAGMA table_info(courses)").all() as { name: string }[];
     if (!courseCols.find((c) => c.name === "course_type")) {
       db.exec("ALTER TABLE courses ADD COLUMN course_type TEXT DEFAULT ''");

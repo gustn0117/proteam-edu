@@ -10,6 +10,7 @@ interface User {
   email: string;
   organization: string;
   department: string;
+  patent_no: string;
   phone: string;
   newsletter: number;
   role: string;
@@ -31,6 +32,7 @@ export default function AccountPage() {
   const [name, setName] = useState("");
   const [organization, setOrganization] = useState("");
   const [department, setDepartment] = useState("");
+  const [patentNo, setPatentNo] = useState("");
   const [phone, setPhone] = useState("");
   const [newsletter, setNewsletter] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
@@ -50,6 +52,7 @@ export default function AccountPage() {
         setName(d.user.name || "");
         setOrganization(d.user.organization || "");
         setDepartment(d.user.department || "");
+        setPatentNo(d.user.patent_no || "");
         setPhone(formatPhone(d.user.phone || ""));
         setNewsletter(!!d.user.newsletter);
       })
@@ -65,7 +68,7 @@ export default function AccountPage() {
       const res = await fetch("/api/auth/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, organization, department, phone, newsletter }),
+        body: JSON.stringify({ name, organization, department, patentNo, phone, newsletter }),
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error || "오류가 발생했습니다."); return; }
@@ -158,6 +161,11 @@ export default function AccountPage() {
                 <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)}
                   placeholder="부서명" className={inputCls} />
               </div>
+            </div>
+            <div>
+              <label className={labelCls}>변리사 등록번호 (의무연수 신청 시)</label>
+              <input type="text" value={patentNo} onChange={(e) => setPatentNo(e.target.value)}
+                placeholder="예) 12345" className={inputCls} />
             </div>
             <div>
               <label className={labelCls}>연락처</label>

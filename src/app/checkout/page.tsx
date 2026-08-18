@@ -35,6 +35,7 @@ function CheckoutContent() {
   const [buyerPhone, setBuyerPhone] = useState("");
   const [organization, setOrganization] = useState("");
   const [department, setDepartment] = useState("");
+  const [patentNo, setPatentNo] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   // 010-XXXX-XXXX 자동 하이픈
@@ -66,6 +67,7 @@ function CheckoutContent() {
           setBuyerPhone(formatPhone(d.user.phone || ""));
           setOrganization(d.user.organization || "");
           setDepartment(d.user.department || "");
+          setPatentNo(d.user.patent_no || "");
         }
       })
       .catch(() => {});
@@ -109,6 +111,7 @@ function CheckoutContent() {
       buyerPhone,
       organization,
       department,
+      patentNo,
     });
 
     try {
@@ -221,6 +224,13 @@ function CheckoutContent() {
               <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)}
                 placeholder="부서명"
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">변리사 등록번호 (의무연수 신청 시)</label>
+              <input type="text" value={patentNo} onChange={(e) => setPatentNo(e.target.value)}
+                placeholder="예) 12345"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+              <p className="text-xs text-gray-400 mt-1.5">대한변리사회 의무연수 인정을 위해 필요합니다. 해당되지 않으면 비워두셔도 됩니다.</p>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ export interface User {
   name: string;
   organization: string;
   department: string;
+  patent_no: string;
   phone: string;
   role: string;
   newsletter: number;
@@ -19,7 +20,7 @@ export async function getCurrentUser(): Promise<User | null> {
 
   const user = db
     .prepare(
-      "SELECT id, email, name, organization, department, phone, role, newsletter FROM users WHERE id = ?"
+      "SELECT id, email, name, organization, department, patent_no, phone, role, newsletter FROM users WHERE id = ?"
     )
     .get(sessionId) as User | undefined;
 
@@ -33,7 +34,7 @@ export async function getAdminUser(): Promise<User | null> {
 
   const user = db
     .prepare(
-      "SELECT id, email, name, organization, department, phone, role, newsletter FROM users WHERE id = ? AND role = 'admin'"
+      "SELECT id, email, name, organization, department, patent_no, phone, role, newsletter FROM users WHERE id = ? AND role = 'admin'"
     )
     .get(sessionId) as User | undefined;
 
