@@ -246,11 +246,7 @@ export default function RefundPage() {
                   <ul className="space-y-1.5 pl-1">
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-1.5 shrink-0" />
-                      <span><span className="font-medium text-gray-700">당일 취소:</span> 당일 환불</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-1.5 shrink-0" />
-                      <span><span className="font-medium text-gray-700">익일 이후 취소:</span> 취소 신청 완료 후 3~5일 소요</span>
+                      <span><span className="font-medium text-gray-700">카드대금 청구 전 취소:</span> 취소 신청 완료 후 3~5일 소요</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold/60 mt-1.5 shrink-0" />
