@@ -17,6 +17,8 @@ function SuccessContent() {
   const [status, setStatus] = useState<"loading" | "paid" | "waiting" | "error">("loading");
   const [error, setError] = useState("");
   const [virtualAccount, setVirtualAccount] = useState<VirtualAccount | null>(null);
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const [paidEmail, setPaidEmail] = useState("");
 
   useEffect(() => {
     const paymentKey = searchParams.get("paymentKey");
@@ -44,6 +46,8 @@ function SuccessContent() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) {
+          setNeedsLogin(!d.loggedIn);
+          setPaidEmail(d.buyerEmail || "");
           if (d.status === "WAITING_FOR_DEPOSIT" && d.virtualAccount) {
             setVirtualAccount(d.virtualAccount);
             setStatus("waiting");
@@ -78,7 +82,19 @@ function SuccessContent() {
               </svg>
             </div>
             <h1 className="text-xl font-bold text-gray-900 mb-2">결제가 완료되었습니다</h1>
-            <p className="text-gray-500 text-sm mb-8">교육신청이 확정되었습니다.<br />교육 일정에 맞춰 안내 메일을 발송해 드립니다.</p>
+            <p className="text-gray-500 text-sm mb-6">교육신청이 확정되었습니다.<br />교육 일정에 맞춰 안내 메일을 발송해 드립니다.</p>
+            {paidEmail && (
+              <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 mb-6 text-left">
+                <p className="text-xs text-gray-400 mb-0.5">신청 확인 계정</p>
+                <p className="text-sm font-semibold text-gray-800 break-all">{paidEmail}</p>
+                {needsLogin && (
+                  <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                    이미 가입된 이메일입니다. 위 계정으로 <Link href="/login" className="text-primary font-semibold underline underline-offset-2">로그인</Link>하시면
+                    신청 내역을 확인하실 수 있습니다.
+                  </p>
+                )}
+              </div>
+            )}
             <div className="flex flex-col gap-2">
               <Link href="/my-enrollments" className="bg-primary text-white py-3 rounded-lg font-medium text-sm hover:bg-primary-light transition-colors">
                 교육신청 확인

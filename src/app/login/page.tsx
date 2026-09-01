@@ -31,7 +31,11 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/courses");
+      // 결제 화면 등에서 넘어온 경우 원래 보던 곳으로 돌려보낸다.
+      // (useSearchParams 대신 location을 읽어 이 페이지를 정적 렌더 상태로 유지)
+      const redirect = new URLSearchParams(window.location.search).get("redirect");
+      const safeRedirect = redirect && redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "/courses";
+      router.push(safeRedirect);
       router.refresh();
     } catch {
       setError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");

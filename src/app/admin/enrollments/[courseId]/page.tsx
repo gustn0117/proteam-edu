@@ -11,6 +11,7 @@ interface Enrollment {
   user_email: string;
   user_phone: string;
   patent_no?: string;
+  dup_emails?: string | null;
   payment_status: string;
   enrollment_status: string;
   certificate_url: string;
@@ -235,7 +236,17 @@ export default function AdminCourseEnrollmentsPage() {
               <tbody className="divide-y divide-gray-50">
                 {filtered.map((e) => (
                   <tr key={e.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-4 py-4 font-semibold text-gray-900 whitespace-nowrap">{e.user_name}</td>
+                    <td className="px-4 py-4 font-semibold text-gray-900 whitespace-nowrap">
+                      {e.user_name}
+                      {e.dup_emails && (
+                        <span
+                          title={`같은 분으로 보이는 다른 계정이 있습니다: ${e.dup_emails}\n두 계정에 신청 내역이 나뉘어 있을 수 있습니다.`}
+                          className="ml-1.5 inline-flex items-center gap-1 align-middle px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold cursor-help"
+                        >
+                          ⚠ 중복계정
+                        </span>
+                      )}
+                    </td>
                     <td className="px-4 py-4 text-gray-500">{e.organization || "-"}</td>
                     <td className="px-4 py-4 text-gray-500">{e.user_email}</td>
                     <td className="px-4 py-4 text-gray-500 whitespace-nowrap">{e.user_phone || "-"}</td>

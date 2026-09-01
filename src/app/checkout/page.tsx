@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+import { isValidEmail, suggestEmailFix } from "@/lib/email";
 
 const CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || "test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 
@@ -37,6 +38,9 @@ function CheckoutContent() {
   const [department, setDepartment] = useState("");
   const [patentNo, setPatentNo] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  // 신청 내역은 이메일 기준으로 계정에 연결되므로, 오타가 나면 신청 내역이 다른 계정으로 갈라진다
+  const emailSuggestion = suggestEmailFix(buyerEmail);
 
   // 010-XXXX-XXXX 자동 하이픈
   const formatPhone = (input: string) => {
@@ -92,6 +96,16 @@ function CheckoutContent() {
     if (!buyerName || !buyerEmail || !buyerPhone) {
       alert("성함, 이메일, 연락처를 모두 입력해 주세요.");
       return;
+    }
+    if (!isValidEmail(buyerEmail)) {
+      alert("이메일 주소를 다시 확인해 주세요.");
+      return;
+    }
+    if (emailSuggestion) {
+      const ok = confirm(
+        `입력하신 이메일 주소를 다시 확인해 주세요.\n\n입력: ${buyerEmail}\n혹시: ${emailSuggestion}\n\n신청 내역은 이메일 기준으로 관리되므로, 주소가 다르면 교육신청 확인 화면에서 내역이 보이지 않을 수 있습니다.\n\n입력하신 주소 그대로 결제를 진행할까요?`
+      );
+      if (!ok) return;
     }
     if (!organization.trim()) {
       alert("소속을 입력해 주세요.");
@@ -194,8 +208,22 @@ function CheckoutContent() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
           <div className="px-6 py-5 border-b border-gray-100">
             <h2 className="text-base font-bold text-gray-900">신청자 정보</h2>
-            {!user && <p className="text-xs text-gray-400 mt-1">비회원도 결제 가능합니다.</p>}
           </div>
+          {!user && (
+            <div className="mx-6 mt-5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3.5 flex items-start gap-3">
+              <svg className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+              </svg>
+              <div className="text-sm text-blue-900">
+                <p className="font-semibold mb-0.5">이미 회원이시면 로그인 후 결제해 주세요.</p>
+                <p className="text-blue-800/80 text-xs leading-relaxed">
+                  비회원으로도 결제하실 수 있지만, 이메일을 다르게 입력하시면 신청 내역이 기존 계정과 따로 관리됩니다.{" "}
+                  <Link href={`/login?redirect=${encodeURIComponent(`/checkout?courseId=${courseId ?? ""}`)}`}
+                    className="font-bold underline underline-offset-2">로그인하기</Link>
+                </p>
+              </div>
+            </div>
+          )}
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">성함 *</label>
@@ -211,7 +239,16 @@ function CheckoutContent() {
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일 *</label>
               <input type="email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                className={`w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary ${emailSuggestion ? "border-amber-400 bg-amber-50/40" : "border-gray-200"}`} />
+              {emailSuggestion ? (
+                <p className="text-xs text-amber-700 mt-1.5">
+                  혹시 <button type="button" onClick={() => setBuyerEmail(emailSuggestion)}
+                    className="font-bold underline underline-offset-2 hover:text-amber-900">{emailSuggestion}</button> 아니신가요?
+                  <span className="text-amber-600"> (눌러서 바로 수정)</span>
+                </p>
+              ) : (
+                <p className="text-xs text-gray-400 mt-1.5">신청 내역 확인에 사용되는 주소입니다. 오타가 없는지 확인해 주세요.</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">소속 *</label>

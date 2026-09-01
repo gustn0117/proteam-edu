@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { v4 as uuidv4 } from "uuid";
+import { setSessionCookie } from "@/lib/session";
 
 const SECRET_KEY = process.env.TOSS_SECRET_KEY || "test_sk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
 
@@ -48,13 +49,18 @@ export async function POST(req: NextRequest) {
   // Create or find user
   const user = await getCurrentUser();
   let userId = user?.id;
+  // 이번 결제로 계정이 새로 만들어졌는지 (자동 로그인 허용 여부를 가른다)
+  let accountCreated = false;
+  let matchedExistingAccount = false;
 
   if (!userId && buyerEmail) {
     const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(buyerEmail) as any;
     if (existing) {
       userId = existing.id;
+      matchedExistingAccount = true;
     } else {
       userId = uuidv4();
+      accountCreated = true;
       const bcrypt = require("bcryptjs");
       const tempPw = bcrypt.hashSync(uuidv4(), 10);
       db.prepare(
@@ -104,11 +110,24 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     success: true,
     enrollmentId,
     method: tossData.method,
     status: tossData.status,
     virtualAccount: tossData.virtualAccount || null,
+    // 비회원 결제 후 "교육신청 확인"이 로그인 화면으로 튕기지 않도록 화면에서 안내에 사용
+    loggedIn: !!user || accountCreated,
+    existingAccount: matchedExistingAccount,
+    buyerEmail: buyerEmail || null,
   });
+
+  // 비회원 결제로 계정이 새로 생성된 경우에만 자동 로그인시킨다.
+  // 기존 계정에 이메일만 맞춘 경우까지 로그인시키면 남의 이메일을 입력해
+  // 그 사람의 신청 내역을 열람할 수 있게 되므로 제외한다.
+  if (accountCreated && !user) {
+    setSessionCookie(response, userId);
+  }
+
+  return response;
 }

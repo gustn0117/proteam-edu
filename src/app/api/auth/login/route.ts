@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { setSessionCookie } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -17,11 +18,7 @@ export async function POST(req: NextRequest) {
     user: { id: user.id, name: user.name, email: user.email, role: user.role },
   });
 
-  response.cookies.set("session_id", user.id, {
-    httpOnly: true,
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  setSessionCookie(response, user.id);
 
   return response;
 }
