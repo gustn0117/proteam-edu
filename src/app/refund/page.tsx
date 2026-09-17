@@ -148,6 +148,9 @@ export default function RefundPage() {
                 </div>
               </div>
             )}
+            <p className="mt-3 text-xs text-gray-400">
+              취소 또는 환불 신청하신 과정은 &apos;교육과정 및 신청&apos; 메뉴에서 바로 다시 신청하실 수 있습니다.
+            </p>
           </div>
         )}
 

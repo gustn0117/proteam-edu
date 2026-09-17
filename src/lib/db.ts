@@ -55,6 +55,24 @@ function getDb() {
       FOREIGN KEY (course_id) REFERENCES courses(id),
       UNIQUE(user_id, course_id)
     );
+    -- 취소/환불 신청한 건을 같은 과정에 다시 신청하면, 기존 신청 행을 여기로 옮긴 뒤 새로 만든다.
+    -- enrollments에 (user_id, course_id) UNIQUE 제약이 있어 한 행만 남길 수 있으므로,
+    -- 결제·환불 기록(payment_key, order_id, 환불요청 시각)이 사라지지 않도록 보관하는 용도.
+    CREATE TABLE IF NOT EXISTS enrollment_archives (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      course_id TEXT NOT NULL,
+      payment_status TEXT DEFAULT 'unpaid',
+      enrollment_status TEXT DEFAULT 'pending',
+      payment_key TEXT DEFAULT '',
+      order_id TEXT DEFAULT '',
+      certificate_name TEXT DEFAULT '',
+      certificate_url TEXT DEFAULT '',
+      refund_requested_at TEXT DEFAULT '',
+      created_at TEXT DEFAULT '',
+      archived_at TEXT DEFAULT (datetime('now')),
+      archived_reason TEXT DEFAULT ''
+    );
   `);
 
   // Migrations

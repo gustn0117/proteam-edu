@@ -43,5 +43,19 @@ export async function GET(req: NextRequest) {
     ? db.prepare(`${BASE_SQL} WHERE e.course_id = ? ORDER BY e.created_at DESC`).all(courseId)
     : db.prepare(`${BASE_SQL} ORDER BY e.created_at DESC`).all();
 
-  return NextResponse.json({ enrollments });
+  // 수강생이 환불 신청 후 같은 과정을 다시 신청하면 기존 건이 보관 테이블로 옮겨진다.
+  // 환불 처리가 남아 있는 건이므로 관리자 화면에서 놓치지 않도록 함께 내려준다.
+  const ARCHIVE_SQL = `
+    SELECT a.*, u.name as user_name, u.email as user_email, u.phone as user_phone,
+           c.name as course_name
+    FROM enrollment_archives a
+    JOIN users u ON a.user_id = u.id
+    JOIN courses c ON a.course_id = c.id
+    WHERE a.enrollment_status = 'refund_requested' AND a.payment_status = 'paid'
+  `;
+  const pendingRefunds = courseId
+    ? db.prepare(`${ARCHIVE_SQL} AND a.course_id = ? ORDER BY a.archived_at DESC`).all(courseId)
+    : db.prepare(`${ARCHIVE_SQL} ORDER BY a.archived_at DESC`).all();
+
+  return NextResponse.json({ enrollments, pendingRefunds });
 }

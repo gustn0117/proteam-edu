@@ -20,10 +20,23 @@ interface Enrollment {
   refund_requested_at?: string;
 }
 
+// 수강생이 환불 신청 후 같은 과정을 다시 신청해서, 기존 신청 건이 보관 처리된 경우
+interface PendingRefund {
+  id: string;
+  user_name: string;
+  user_email: string;
+  user_phone: string;
+  order_id: string;
+  payment_key: string;
+  refund_requested_at: string;
+  archived_at: string;
+}
+
 export default function AdminCourseEnrollmentsPage() {
   const { courseId } = useParams();
   const router = useRouter();
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [pendingRefunds, setPendingRefunds] = useState<PendingRefund[]>([]);
   const [courseName, setCourseName] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -36,6 +49,7 @@ export default function AdminCourseEnrollmentsPage() {
           setEnrollments(d.enrollments);
           if (d.enrollments.length > 0) setCourseName(d.enrollments[0].course_name);
         }
+        setPendingRefunds(d?.pendingRefunds || []);
       })
       .catch(() => {});
   };
@@ -141,6 +155,29 @@ export default function AdminCourseEnrollmentsPage() {
       <h2 className="text-lg font-bold text-gray-900 mb-6">
         {courseName || "교육과정"} <span className="text-gray-400 font-normal">—</span> 신청자 현황
       </h2>
+
+      {/* 환불 처리가 남아 있는 건 (수강생이 환불 신청 후 같은 과정을 다시 신청한 경우) */}
+      {pendingRefunds.length > 0 && (
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-5 mb-6">
+          <h3 className="text-sm font-bold text-orange-800 mb-1 flex items-center gap-2">
+            ⚠ 환불 처리가 필요한 이전 신청 건 {pendingRefunds.length}건
+          </h3>
+          <p className="text-xs text-orange-700/80 mb-3">
+            환불 신청 후 같은 과정을 다시 신청하셔서, 이전 신청 건이 아래로 옮겨졌습니다. 환불 처리는 별도로 진행해 주세요.
+          </p>
+          <div className="space-y-2">
+            {pendingRefunds.map((r) => (
+              <div key={r.id} className="bg-white border border-orange-100 rounded-lg px-4 py-3 text-xs text-gray-600 flex flex-wrap gap-x-5 gap-y-1">
+                <span className="font-bold text-gray-900">{r.user_name}</span>
+                <span>{r.user_email}</span>
+                <span>{r.user_phone || "-"}</span>
+                <span>주문번호 <span className="font-mono text-gray-800">{r.order_id || "-"}</span></span>
+                <span>환불요청 {formatKstDateTime(r.refund_requested_at) || "-"}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
